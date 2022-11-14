@@ -51,3 +51,72 @@ Jared
     ```json
     «JSON-looking thing that has the
     keys and types in it»
+
+13. declining a chatroom membership - put
+Endpoint Path: /users/<int:pk>/
+Endpoint Method: PUT
+Headers:
+    Authorization: Bearer token
+Request Shape:
+    {
+        pending request: boolean
+    }
+Response: An indication of success or failure
+Response Shape:
+    ```json
+    {
+      "success": boolean,
+      "message": string
+    }
+    ```
+
+
+14. create a chatroom - post
+Endpoint path: /chatrooms
+Endpoint method: POST
+Headers:
+    Authorization: Bearer token
+Request Shape:
+    ```json
+    {
+        "name": string
+    }
+    ```
+response: Indication of success or failure
+response Shape:
+    ```json
+    {
+      "success": boolean,
+      "message": string
+    }
+    ```
+
+15. delete a chatroom - delete
+Endpoint path: /chatrooms/<int:pk>
+Endpount Method: DELETE
+Headers:
+    Authorization: Bearer token
+Response: Always true
+Response shape (JSON):
+    ```json
+    true
+    ```
+
+16. reactions - put
+Endpoint path: /chatrooms/<int:pk>/messages/<int:pk>
+Endpount Method: PUT
+Headers:
+    Authorization: Bearer token
+Request Shape:
+    ```json
+    {
+        emoji: option
+    }
+Response: Indication of success or failure
+Response shape (JSON):
+    ```json
+    {
+      "success": boolean,
+      "message": string
+    }
+    ```
