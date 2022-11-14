@@ -1,7 +1,6 @@
 
 Wenqi
 9. edit a message - put
-### «Human-readable of the endpoint»
 
 * Endpoint path: /messages/int:pk/
 * Endpoint method: PUT
@@ -39,7 +38,6 @@ Wenqi
 
 
 10. adding a member to a chatroom - put
-### «Human-readable of the endpoint»
 
 * Endpoint path: /members/int:pk/
 * Endpoint method: PUT
@@ -70,7 +68,6 @@ Wenqi
 
 
 11. accepting a membership for chatroom- put
-### «Human-readable of the endpoint»
 
 * Endpoint path: /membership/int:pk/
 * Endpoint method: PUT
@@ -102,7 +99,6 @@ Wenqi
 
 
 12. deleting a member of a chatroom  - delete
-### «Human-readable of the endpoint»
 
 * Endpoint path: /members/:memberId
 * Endpoint method: DELETE
