@@ -72,7 +72,10 @@
   * Authorization: Bearer token
 
 * Request shape (JSON):
-    ```body
+    ```json
+    {
+      "chatroom_id": number,
+    }
 
     ```
 
@@ -82,6 +85,6 @@
     {
         "members": string,
         "memebers_id": number,
-        "chatroom_id": number, 
+        "chatroom_id": number,
     }
     ```
