@@ -1,30 +1,31 @@
 
 Wenqi
 9. edit a message - put
-### «Human-readable of the endpoint»
 
-* Endpoint path: /messages
+* Endpoint path: /messages/int:pk/
 * Endpoint method: PUT
-* Query parameters:
-  * «name»: «purpose»
 
 * Headers:
   * Authorization: Bearer token
 
 * Request shape (JSON):
     ```json
-    «JSON-looking thing that has the
-    keys and types in it»
+    {
+      "message": [
+        {
+          "updated_message": string,
+        }
+      ]
+    }
     ```
 
-* Response: «Human-readable description
-            of response»
+* Response: A message context has been changed.
 * Response shape (JSON):
     ```json
     {
       "message": [
         {
-          "group_id": string,
+          "chatroom_id": string,
           "user_id": username,
           "message_id": number,
           "time_stamp": datetime,
@@ -36,32 +37,28 @@ Wenqi
 
 
 10. adding a member to a chatroom - put
-### «Human-readable of the endpoint»
 
-* Endpoint path: /members
+* Endpoint path: /members/int:pk/
 * Endpoint method: PUT
-* Query parameters:
-  * «name»: «purpose»
 
 * Headers:
   * Authorization: Bearer token
 
 * Request shape (JSON):
     ```json
-    «JSON-looking thing that has the
-    keys and types in it»
+    {
+      "membership": True
+    }
     ```
 
-* Response: «Human-readable description
-            of response»
+* Response: A member is added to a chatroom
 * Response shape (JSON):
     ```json
     {
       "member": [
         {
           "user_id": username,
-          "member_id": number,
-          "group_id": string,
+          "chatroom_id": string,
         }
       ]
     }
@@ -69,32 +66,28 @@ Wenqi
 
 
 11. accepting a membership for chatroom- put
-### «Human-readable of the endpoint»
 
-* Endpoint path: «path to use»
-* Endpoint method: «HTTP method»
-* Query parameters:
-  * «name»: «purpose»
+* Endpoint path: /membership/int:pk/
+* Endpoint method: PUT
 
 * Headers:
   * Authorization: Bearer token
 
 * Request shape (JSON):
     ```json
-    «JSON-looking thing that has the
-    keys and types in it»
+    {
+      "accepted": True
+    }
     ```
 
-* Response: «Human-readable description
-            of response»
+* Response: User accepts the membership invitation
 * Response shape (JSON):
     ```json
     {
       "joined_chatroom": [
         {
           "user_id": username,
-          "member_id": number,
-          "group_id": string,
+          "chatroom_id": string,
           "joined_time": datetime,
         }
       ]
@@ -103,12 +96,9 @@ Wenqi
 
 
 12. deleting a member of a chatroom  - delete
-### «Human-readable of the endpoint»
 
 * Endpoint path: /members/:memberId
 * Endpoint method: DELETE
-* Query parameters:
-  * member_id
 
 * Headers:
   * Authorization: Bearer token
@@ -120,8 +110,7 @@ Wenqi
       "member_deleted": [
         {
           "user_id": username,
-          "member_id": number,
-          "group_id": string,
+          "chatroom_id": string,
         }
       ]
     }

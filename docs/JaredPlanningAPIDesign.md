@@ -52,6 +52,7 @@ Jared
     «JSON-looking thing that has the
     keys and types in it»
 
+
 13. declining a chatroom membership - put
 Endpoint Path: /users/<int:pk>/
 Endpoint Method: PUT
