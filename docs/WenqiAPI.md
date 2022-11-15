@@ -19,14 +19,13 @@ Wenqi
     }
     ```
 
-* Response: «Human-readable description
-            of response»
+* Response: A message context has been changed.
 * Response shape (JSON):
     ```json
     {
       "message": [
         {
-          "group_id": string,
+          "chatroom_id": string,
           "user_id": username,
           "message_id": number,
           "time_stamp": datetime,
@@ -59,8 +58,7 @@ Wenqi
       "member": [
         {
           "user_id": username,
-          "member_id": number,
-          "group_id": string,
+          "chatroom_id": string,
         }
       ]
     }
@@ -89,8 +87,7 @@ Wenqi
       "joined_chatroom": [
         {
           "user_id": username,
-          "member_id": number,
-          "group_id": string,
+          "chatroom_id": string,
           "joined_time": datetime,
         }
       ]
@@ -113,8 +110,7 @@ Wenqi
       "member_deleted": [
         {
           "user_id": username,
-          "member_id": number,
-          "group_id": string,
+          "chatroom_id": string,
         }
       ]
     }
