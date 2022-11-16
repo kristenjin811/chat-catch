@@ -23,6 +23,10 @@ Jared
 15. delete a chatroom - delete
 16. reactions - put
 
+13. As a User, I want to decline a membership request for a chatroom, so I can managethe amount and quality of chatrooms I am in.
+14. As a User, I want to create a chatroom, so that I might bring together a new group of users to chat about a particular topic.
+15. As a Chatroom Creater, I want to delete a chatroom, so that I do not need to maintain chatrooms that are dead and keep having them in my list of chatrooms.
+16. As a chatroom member, I want to respond to messages with an emoji, so that I can engage with a message without writing another message.
 
 
 
