@@ -5,6 +5,11 @@ Dean
 3. signup - post
 4. list of chat room members - get
 
+1. As a user, I want to be able to log in, So that I know my information and conversations are safe
+2. As a user, I want to be able to log out, So that I know my information and conversations are safe
+3. As a user, I want users to have to sign-up / have accounts, So that random users are not allowed to break any terms of service (harassment/bulling)
+4. As a user, I want to be able to see all the chat room members, So that I can connect with them / or reach out to them separately / read bio
+
 Michael
 5. list of chat rooms - get
 6. Show selected chatroom - get
@@ -29,7 +34,7 @@ Jared
 15. delete a chatroom - delete
 16. reactions - put
 
-13. As a User, I want to decline a membership request for a chatroom, so I can managethe amount and quality of chatrooms I am in.
+13. As a User, I want to decline a membership request for a chatroom, so I can manage the amount and quality of chatrooms I am in.
 14. As a User, I want to create a chatroom, so that I might bring together a new group of users to chat about a particular topic.
 15. As a Chatroom Creater, I want to delete a chatroom, so that I do not need to maintain chatrooms that are dead and keep having them in my list of chatrooms.
 16. As a chatroom member, I want to respond to messages with an emoji, so that I can engage with a message without writing another message.
