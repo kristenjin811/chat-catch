@@ -7,7 +7,7 @@ Dean
 
 1. As a user, I want to be able to log in, So that I know my information and conversations are safe
 2. As a user, I want to be able to log out, So that I know my information and conversations are safe
-3. As a user, I want users to have to sign-up / have accounts, So that random users are not allowed to break any terms of service (harassment/bulling)
+3. As a user, I want users to have to sign-up / have accounts, So that random users are not allowed to break any terms of service (harassment/bullying)
 4. As a user, I want to be able to see all the chat room members, So that I can connect with them / or reach out to them separately / read bio
 
 Michael
