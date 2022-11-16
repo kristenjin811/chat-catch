@@ -109,7 +109,7 @@ response Shape:
 
 15. delete a chatroom - delete
 Endpoint path: /chatrooms/<int:pk>
-Endpount Method: DELETE
+Endpoint Method: DELETE
 Headers:
     Authorization: Bearer token
 Response: Always true
@@ -120,7 +120,7 @@ Response shape (JSON):
 
 16. reactions - put
 Endpoint path: /chatrooms/<int:pk>/messages/<int:pk>
-Endpount Method: PUT
+Endpoint Method: PUT
 Headers:
     Authorization: Bearer token
 Request Shape:
