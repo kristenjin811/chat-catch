@@ -25,6 +25,10 @@ As a chat-catch customer
 I want to be able to log in
 So that I know my information and conversations are safe
 
+
+### Issue:
+Being able to log in
+
 ### Log out
 
 * Endpoint path: /logout
@@ -45,6 +49,9 @@ As a chat-catch customer
 I want to be able to log out
 So that I know my information and conversations are safe
 
+
+###
+Being able to log out
 
 ### Sign up
 
@@ -75,8 +82,11 @@ So that I know my information and conversations are safe
 
 ### User Story:
 As a chat-catch customer
-I want users to have accounts
+I want users to have to sign-up / have accounts
 So that random users are not allowed to break any terms of service (harassment/bulling)
+
+### Issue
+Being able to Sign up
 
 ### List of Chatrooms
 
@@ -110,3 +120,6 @@ So that random users are not allowed to break any terms of service (harassment/b
 As a chat-catch customer
 I want to be able to see all the chat room members
 So that I can connect with them / or reach out to them separately / read bio
+
+### Issue:
+Being able to get all users in a chat room
