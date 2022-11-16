@@ -17,6 +17,12 @@ Wenqi
 11. accepting a membership for chatroom- put
 12. deleting a member of a chatroom  - delete
 
+9. As a user, I want to modify a message that I already sent, so that the message speaks what I want to say.
+10. As a chatroom creator, I want to add other user into a chatroom that I am in, so that the user can chat together in the group.
+11. As a user, I want to accept a chatroom membership, so that I can talk in the chatroom.
+12. As a creator of a chatroom, I want to delete a member from the group, so that I have control on which users can be in this chatroom.
+
+
 Jared
 13. declining a chatroom membership - delete
 14. create a chatroom - post
