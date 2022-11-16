@@ -111,7 +111,7 @@ Being able to Sign up
     ```json
     {
         "members": string,
-        "memebers_id": number,
+        "members_id": number,
         "chatroom_id": number,
     }
     ```
