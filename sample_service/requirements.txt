@@ -1,3 +1,4 @@
 fastapi[all]==0.78.0
 uvicorn[standard]==0.17.6
 pytest
+pymongo==4.1.1

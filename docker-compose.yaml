@@ -1,5 +1,15 @@
 # volumes:
+volumes:
+  mongo-data:
+    external: true
 services:
+  mongo:
+    image: mongo:5
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
   fastapi:
     build:
       context: sample_service
@@ -8,7 +18,11 @@ services:
       - 8000:8000
     volumes:
       - ./sample_service:/app
-      
+    environment:
+      DATABASE_URL: mongodb://root:password@mongo
+      DATABASE_NAME: mongo-data
+      WAIT_HOSTS: mongo:27017
+
   ghi:
     image: node:lts-bullseye
     command: /bin/bash run.sh
@@ -23,4 +37,3 @@ services:
       HOST: "0.0.0.0"
       PUBLIC_URL: http://localhost:3000
       REACT_APP_SAMPLE_SERVICE_API_HOST: http://localhost:8000
-            
