@@ -19,6 +19,12 @@
     ```
 
 
+
+### User Story:
+As a chat-catch customer
+I want to be able to log in
+So that I know my information and conversations are safe
+
 ### Log out
 
 * Endpoint path: /logout
@@ -32,6 +38,12 @@
     ```json
     true
     ```
+
+
+### User Story:
+As a chat-catch customer
+I want to be able to log out
+So that I know my information and conversations are safe
 
 
 ### Sign up
@@ -61,6 +73,11 @@
     }
     ```
 
+### User Story:
+As a chat-catch customer
+I want users to have accounts
+So that random users are not allowed to break any terms of service (harassment/bulling)
+
 ### List of Chatrooms
 
 * Endpoint path: /list_chatroom_members
@@ -79,7 +96,7 @@
 
     ```
 
-* Response: A list of chat room memebers
+* Response: A list of chat room members
 * Response shape (JSON):
     ```json
     {
@@ -88,3 +105,8 @@
         "chatroom_id": number,
     }
     ```
+
+### User Story:
+As a chat-catch customer
+I want to be able to see all the chat room members
+So that I can connect with them / or reach out to them separately / read bio
