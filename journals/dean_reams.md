@@ -1,3 +1,16 @@
+11/16/22
+Today, I worked on:
+
+* Adding a branch to implement queries/models for the reaction endpoints
+
+At first I worked with the group to nail down some commonality as far as naming conventions
+for our branch and how we were going to try and deal with merge requests.
+
+
+
+Today I found that -a after say git branch -a would show all the branches that you have
+access to.
+
 11/15/22
 Today, I worked on:
 
@@ -12,7 +25,7 @@ us to a fastapi page.
 Solo I worked on creating user stories for the api endpoints I worked on previously.
 
 Today we found what uvicorn is doing after a brief google search. I didn't know that
-it was server. 
+it was server.
 
 
 11/10/22
