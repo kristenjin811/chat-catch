@@ -10,6 +10,17 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
+  mongo-express:
+    image: mongo-express:latest
+    depends_on:
+      - mongo
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_USERNAME: root
+      ME_CONFIG_MONGODB_PASSWORD: password
+      ME_CONFIG_MONGODB_URL: mongodb://root:password@mongo
+    restart: always
   fastapi:
     build:
       context: sample_service
