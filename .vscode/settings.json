@@ -2,5 +2,6 @@
   "editor.formatOnPaste": true,
   "python.formatting.provider": "black",
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "python.analysis.extraPaths": ["./sample_service/api/routers"]
 }
