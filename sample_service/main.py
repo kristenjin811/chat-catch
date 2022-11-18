@@ -27,3 +27,18 @@ def launch_details():
             "tz:": "PST"
         }
     }
+
+@app.get("/api/reactions")
+def get_reactions():
+    return {
+        "reactions": {
+            "picture_url": str
+        }
+    }
+
+
+@app.get("/api/messages")
+def get_all():
+  return {
+    "messages": str
+  }
