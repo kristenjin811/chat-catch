@@ -38,3 +38,11 @@ class UserQueries(Queries):
             document["id"] = str(document["_id"])
             users.append(UserOut(**document))
         return users
+
+    def get_user(self, id):
+        user = self.collection.find_one({"_id": id})
+        user["id"] = str(user["_id"])
+        return user
+
+    def delete_user(self, id):
+        self.collection.delete_one({"_id": id})
