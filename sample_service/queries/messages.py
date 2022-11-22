@@ -1,18 +1,19 @@
 from pydantic import BaseModel
 from fastapi import Response
 from queries.client import Queries
+from datetime import datetime
 
 
 class MessageIn(BaseModel):
     message: str
     edited: bool
-    # created: datetime.datetime
+    # created: datetime.now
 
 class MessageOut(BaseModel):
     id: str
     message: str
     edited: bool
-    # created: datetime.datetime
+    # created: datetime.now
 
 
 

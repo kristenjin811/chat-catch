@@ -1,3 +1,28 @@
+11/22/22
+Today, I worked on:
+
+*
+
+11/21/22
+Today, I worked on:
+
+* Finishing more of the endpoints and fixing any errors
+
+Today was all about finally getting to endpoints after getting mongo to
+work with fastapi. We did as a group get post, delete, and get to work.
+Alot of ah-ha moments come in the from of code. So far it's been placement
+so that scope is properly established.
+
+
+11/18/22
+Today, I worked on:
+
+* Trying to get mongo_db to connect to fastapi
+
+Today was a bit tuff as I did not get done what I wanted to do.
+Mongo didn't want to be friends with us. We did finally get mongo to accept
+a post request from fast api. It did have errors though.. so kind of a win.
+
 11/16/22
 Today, I worked on:
 
