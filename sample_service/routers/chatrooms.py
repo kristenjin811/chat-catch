@@ -14,3 +14,11 @@ async def create_chatroom(
     except:
         pass
     return info
+
+@router.get("/api/chatrooms/", response_model=ChatroomOut)
+async def get_all_chatrooms(
+    info: ChatroomIn,
+    chatrooms: ChatroomQueries = Depends(),
+):
+    try:
+        info = chatrooms.get_all(info)
