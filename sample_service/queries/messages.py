@@ -14,16 +14,6 @@ class MessageOut(BaseModel):
     edited: bool
 
 
-class UserQueries(Queries):
-    DB_NAME = "user"
-    COLLECTION = "users"
-
-    def create(self, info = UserIn, response_model = UserOut):
-    # created: datetime.now
-
-
-
-
 class MessageQueries(Queries):
     DB_NAME = "message"
     COLLECTION = "messages"
@@ -36,18 +26,7 @@ class MessageQueries(Queries):
         except:
             pass
         props["id"] = str(props["_id"])
-        return UserOut(**props)
-
-    def get_all_users(self):
-        users = []
-        props = self.collection.find({})
-        for document in props:
-            document["id"] = str(document["_id"])
-            users.append(UserOut(**document))
-        return users
-
-
-
+        return MessageOut(**props)
 
     def get_all_messages(self):
         messages = []

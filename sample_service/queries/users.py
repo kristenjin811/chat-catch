@@ -16,6 +16,8 @@ class UserOut(BaseModel):
     first_name: str
     last_name: str
 
+class UserOutWithPassword(UserOut):
+    hashed_password: str 
 
 class UserQueries(Queries):
     DB_NAME = "user"
