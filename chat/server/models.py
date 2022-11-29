@@ -1,18 +1,18 @@
 from typing import List, Optional
-
 from pydantic import BaseModel, Field
 from dateime import datetime
-from uuid import UUID, uuid4
+from bson import ObjectId
 
 
 class User(BaseModel):
     username: str
     hashed_password: str
     salt: str
+    avatar: Optional[str]
 
 
 class UserInDB(User):
-    _id: UUID = Field(default=uuid4)
+    _id: ObjectId
     date_created: datetime = Field(default=datetime.utcnow)
 
 
@@ -22,17 +22,27 @@ class Message(BaseModel):
 
 
 class MessageInDB(Message):
-    _id: UUID = Field(default=uuid4)
+    _id: ObjectId
     timestamp: datetime = Field(default=datetime.utcnow)
 
 
 class Room(BaseModel):
     room_name: str
-    members: Optional[List[UserInDB]] = None
-    messages: Optional[List[MessageInDB]] = None
+    members: Optional[List[UserInDB]] = []
+    messages: Optional[List[MessageInDB]] = []
     last_pinged: datetime = Field(default=datetime.utcnow)
+    active: bool = False
 
 
 class RoomInDB(Room):
-    _id: UUID = Field(default=uuid4)
+    _id: ObjectId
     date_created: datetime = Field(default=datetime.utcnow)
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: Optional[str] = None
