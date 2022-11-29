@@ -1,7 +1,5 @@
 from pydantic import BaseModel
-from fastapi import Response
 from queries.client import Queries
-from datetime import datetime
 
 
 class MessageIn(BaseModel):
@@ -18,13 +16,11 @@ class MessageQueries(Queries):
     DB_NAME = "message"
     COLLECTION = "messages"
 
-    def create(self, info = MessageIn, response_model = MessageOut):
+    def create(self, info=MessageIn, response_model=MessageOut):
         props = info.dict()
 
-        try:
-            self.collection.insert_one(props)
-        except:
-            pass
+        self.collection.insert_one(props)
+
         props["id"] = str(props["_id"])
         return MessageOut(**props)
 
