@@ -9,3 +9,4 @@ Click==7.1.2
 h11==0.11.0
 httptools==0.4.0
 websockets==10.0
+motor
