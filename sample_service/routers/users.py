@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, Response, Request
 from queries.users import UserIn, UserOut, UserQueries
+from queries.messages import MessageQueries
 from bson.objectid import ObjectId
 
 
@@ -10,10 +11,12 @@ router = APIRouter()
 async def create_account(
     info: UserIn,  # this is what should be in the body
     users: UserQueries = Depends(),
+
 ):
 
     try:
        info = users.create(info)
+
     except:
         pass
     print("USER IN::::::", UserIn)

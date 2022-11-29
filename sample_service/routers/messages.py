@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Response, Request
+from fastapi import APIRouter, Depends, Response, Request, WebSocketDisconnect, WebSocket
 from queries.messages import MessageIn, MessageOut, MessageQueries
 from bson.objectid import ObjectId
 
@@ -40,3 +40,10 @@ async def delete_message(
 ) -> bool:
     message.delete_message(ObjectId(id))
     return True
+
+
+
+
+@router.websocket("/chat")
+async def chat():
+    pass

@@ -2,7 +2,8 @@ from pydantic import BaseModel
 from fastapi import Response
 from queries.client import Queries
 
-class UserIn(BaseModel):
+
+class PollerIn(BaseModel):
     username: str
     email: str
     password: str
@@ -10,21 +11,23 @@ class UserIn(BaseModel):
     last_name: str
 
 
-class UserOut(BaseModel):
+class PollerOut(BaseModel):
     id: str
     username: str
     email: str
     first_name: str
     last_name: str
 
-class UserOutWithPassword(UserOut):
+class UserOutWithPassword(PollerOut):
     hashed_password: str
 
-class UserQueries(Queries):
-    DB_NAME = "user"
-    COLLECTION = "users"
 
-    def create(self, info = UserIn, response_model = UserOut):
+
+class PollerQueries(Queries):
+    DB_NAME = "chat"
+    COLLECTION = "userVO"
+
+    def create(self, info = PollerIn, response_model = PollerOut):
         props = info.dict()
 
         try:
@@ -32,14 +35,14 @@ class UserQueries(Queries):
         except:
             pass
         props["id"] = str(props["_id"])
-        return UserOut(**props)
+        return PollerOut(**props)
 
     def get_all_users(self):
         users = []
         props = self.collection.find({})
         for document in props:
             document["id"] = str(document["_id"])
-            users.append(UserOut(**document))
+            users.append(PollerOut(**document))
         return users
 
     def get_user(self, id):
@@ -49,3 +52,5 @@ class UserQueries(Queries):
 
     def delete_user(self, id):
         self.collection.delete_one({"_id": id})
+
+    

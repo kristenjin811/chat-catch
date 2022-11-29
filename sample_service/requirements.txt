@@ -3,3 +3,4 @@ uvicorn[standard]==0.17.6
 pytest
 pymongo==4.1.1
 jwtdown-fastapi>=0.2.0
+dnspython
