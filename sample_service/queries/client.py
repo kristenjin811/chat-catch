@@ -13,7 +13,7 @@ client = pymongo.MongoClient(MONGO_URL)
 #     print(dumps(change))
 #     print("")
 # print(client.test2.test2.insert_one({"Hello": "world"}).inserted_id)
-# print(client.chat.userVO.insert_one({"Hello": "world"}).inserted_id)
+print(client.chat.userVO.insert_one({"Hello": "world"}).inserted_id)
 # change_stream = client.changestream.collection.watch()
 # for change in change_stream:
 #     print(dumps(change))
