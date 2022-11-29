@@ -1,29 +1,37 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from fastapi import Response
 from queries.client import Queries
 
+
 class UserIn(BaseModel):
     username: str
-    email: str
+    email: EmailStr
     password: str
     first_name: str
     last_name: str
 
+
 class UserOut(BaseModel):
     id: str
     username: str
-    email: str
+    email: EmailStr
     first_name: str
     last_name: str
 
+
 class UserOutWithPassword(UserOut):
-    hashed_password: str 
+    hashed_password: str
+
+
+class AccountPasswordDB(AccountIn):
+    id: PydanticObjectId
+
 
 class UserQueries(Queries):
     DB_NAME = "user"
     COLLECTION = "users"
 
-    def create(self, info = UserIn, response_model = UserOut):
+    def create(self, info=UserIn, response_model=UserOut):
         props = info.dict()
 
         try:
@@ -48,3 +56,14 @@ class UserQueries(Queries):
 
     def delete_user(self, id):
         self.collection.delete_one({"_id": id})
+
+    # def create(self, info: UserIn, hashed_password: str) -> AccountPasswordDB:
+    #     props = info.dict()
+    #     props["password"] = hashed_password
+
+    #     try:
+    #         self.collection.insert_one(props)
+    #     except DuplicateKeyError:
+    #         raise DuplicateAccountError()
+    #     props["id"] = str(props["_id"])
+    #     return AccountPasswordDB(**props)
