@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Response, Request
+from fastapi import APIRouter, Depends, Response
 from queries.messages import MessageIn, MessageOut, MessageQueries
 from bson.objectid import ObjectId
 
@@ -6,17 +6,17 @@ from bson.objectid import ObjectId
 router = APIRouter()
 
 
-@router.post("/api/messages", response_model = MessageOut)
+@router.post("/api/messages", response_model=MessageOut)
 async def create_message(
     info: MessageIn,  # this is what should be in the body
     messages: MessageQueries = Depends(),
 ):
-
     try:
-       info = messages.create(info)
-    except:
-        pass
+        info = messages.create(info)
+    except Exception as e:
+        print(e)
     return info
+
 
 @router.get("/api/messages")
 def get_all_messages(
@@ -25,6 +25,7 @@ def get_all_messages(
     response = message.get_all_messages()
     return response
 
+
 @router.get("/api/messages/{id}")
 def get_message(
     id: str,
@@ -32,6 +33,7 @@ def get_message(
 ):
     messages = messages.get_message(ObjectId(id))
     return MessageOut(**messages)
+
 
 @router.delete("/api/messages/{id}", response_model=bool)
 async def delete_message(
