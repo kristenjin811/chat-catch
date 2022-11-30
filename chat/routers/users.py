@@ -1,25 +1,23 @@
 from fastapi import APIRouter, Depends, Response, Request
-from queries.users import UserIn, UserOut, UserQueries
+from queries.users import UserIn, UserOut, UserQueries, UserCreated
 from bson.objectid import ObjectId
 
 
 router = APIRouter()
 
 
-@router.post("/api/users", response_model = UserOut)
+@router.post("/api/users", response_model = UserCreated)
 async def create_account(
-    info: UserIn,  # this is what should be in the body
+    info: UserIn,
     users: UserQueries = Depends(),
 ):
 
     try:
-       info = users.create(info)
+       users.create(info)
     except:
         pass
-    print("USER IN::::::", UserIn)
-    print("USER OUT::::::", UserOut)
 
-    return info
+    return UserCreated(created = True)
 
 @router.get("/api/users")
 def get_users(

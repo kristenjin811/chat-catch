@@ -40,3 +40,14 @@ async def delete_message(
 ) -> bool:
     message.delete_message(ObjectId(id))
     return True
+
+
+
+@router.put("/api/messages/{id}")
+async def create_or_update_message(
+    id: str,
+    message: Response, messages: MessageQueries = Depends()
+):
+    messages = messages.create_or_update_message(ObjectId(id))
+
+    # messages = messages.create_or_update_message(ObjectId(id))

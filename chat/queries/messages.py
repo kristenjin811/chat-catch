@@ -46,3 +46,11 @@ class MessageQueries(Queries):
 
     def delete_message(self, id):
         self.collection.delete_one({"_id": id})
+
+    def create_or_update_message(self, id, info= MessageIn):
+        message = self.collection.find_one({"_id": id})
+        print("first::::", message)
+        message["yellow"] = str(message["_id"])
+        print("middle::::", message)
+        self.collection.update_one({"_id": id}, {"$set": message})
+        print("after::::", message)

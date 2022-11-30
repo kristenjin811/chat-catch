@@ -16,6 +16,9 @@ class UserOut(BaseModel):
     first_name: str
     last_name: str
 
+class UserCreated(BaseModel):
+    created: bool
+
 
 class UserQueries(Queries):
     DB_NAME = "user"
