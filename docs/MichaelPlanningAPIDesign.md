@@ -56,7 +56,7 @@ Send a Message
     {
       "message": [
         {
-         "message": string,
+         "message": string
         }
       ]
     }
