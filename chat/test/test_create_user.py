@@ -24,7 +24,7 @@ def test_create_account():
             pass
 
     app.dependency_overrides[UserQueries] = TestUserQuery
-    response = client.post("/api/users", json=TestUser)
+    response = client.post("/api/users/", json=TestUser)
     assert response.status_code == 200
     assert response.json() == TestUserCreated
     app.dependency_overrides = {}

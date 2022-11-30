@@ -6,7 +6,7 @@ from bson.objectid import ObjectId
 router = APIRouter()
 
 
-@router.post("/api/users", response_model = UserCreated)
+@router.post("/api/users/", response_model = UserCreated)
 async def create_account(
     info: UserIn,
     users: UserQueries = Depends(),
@@ -19,7 +19,7 @@ async def create_account(
 
     return UserCreated(created = True)
 
-@router.get("/api/users")
+@router.get("/api/users/")
 def get_users(
     response: Response, users: UserQueries = Depends()
 ):

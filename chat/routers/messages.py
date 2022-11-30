@@ -6,19 +6,19 @@ from bson.objectid import ObjectId
 router = APIRouter()
 
 
-@router.post("/api/messages", response_model = MessageOut)
+@router.post("/api/messages/")
 async def create_message(
-    info: MessageIn,  # this is what should be in the body
+    info: MessageIn,
     messages: MessageQueries = Depends(),
 ):
 
     try:
-       info = messages.create(info)
+       messages.create(info)
     except:
         pass
     return info
 
-@router.get("/api/messages")
+@router.get("/api/messages/")
 def get_all_messages(
     response: Response, message: MessageQueries = Depends()
 ):

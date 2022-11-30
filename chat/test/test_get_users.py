@@ -12,6 +12,6 @@ def test_get_all_users():
             pass
 
     app.dependency_overrides[UserQueries] = TestQuery
-    response = client.get("/api/users")
+    response = client.get("/api/users/")
     assert response.status_code == 200
     app.dependency_overrides = {}
