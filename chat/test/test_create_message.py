@@ -10,9 +10,6 @@ TestMessage = {
 }
 
 
-
-
-
 def test_create_message():
     class TestMessageQuery:
         def create_message(self):

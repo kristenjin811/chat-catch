@@ -1,6 +1,6 @@
 from pydantic import BaseModel
-from fastapi import Response
 from queries.client import Queries
+
 
 class UserIn(BaseModel):
     username: str
@@ -9,12 +9,14 @@ class UserIn(BaseModel):
     first_name: str
     last_name: str
 
+
 class UserOut(BaseModel):
     id: str
     username: str
     email: str
     first_name: str
     last_name: str
+
 
 class UserCreated(BaseModel):
     created: bool
@@ -24,13 +26,13 @@ class UserQueries(Queries):
     DB_NAME = "user"
     COLLECTION = "users"
 
-    def create(self, info = UserIn, response_model = UserOut):
+    def create(self, info=UserIn, response_model=UserOut):
         props = info.dict()
 
         try:
             self.collection.insert_one(props)
-        except:
-            pass
+        except Exception as e:
+            print(e)
         props["id"] = str(props["_id"])
         return UserOut(**props)
 

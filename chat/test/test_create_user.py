@@ -17,7 +17,6 @@ TestUserCreated = {
 }
 
 
-
 def test_create_account():
     class TestUserQuery:
         def create_account(self):
