@@ -2,11 +2,13 @@ from fastapi import (
     APIRouter,
     WebSocket,
     WebSocketDisconnect,
-    Depends,
+    # Depends,
 )
-import os
+
+# import os
 import json
 from datetime import datetime, timezone
+from typing import List
 
 router = APIRouter()
 
@@ -70,9 +72,9 @@ manager = ConnectionManager()
 
 
 @router.websocket("/chat")
-async def websocket_endpoint(websocket: WebSocket, jwt_jose=Depends(get_jwt)):
+async def websocket_endpoint(websocket: WebSocket):
 
-    username = await manager.connect(websocket, jwt_jose)
+    username = await manager.connect(websocket)
     try:
         while True:
             message = await websocket.receive_text()

@@ -3,10 +3,12 @@
 from pydantic import BaseModel
 
 from bson.objectid import ObjectId
+from models import PydanticObjectId
+
 
 class UserIn(BaseModel):
     username: str
-    email: EmailStr
+    email: str
     password: str
     first_name: str
     last_name: str
@@ -15,7 +17,7 @@ class UserIn(BaseModel):
 class UserOut(BaseModel):
     id: str
     username: str
-    email: EmailStr
+    email: str
     first_name: str
     last_name: str
 
@@ -33,8 +35,8 @@ class UserForm(BaseModel):
     password: str
 
 
-class UserToken(Token):
-    account: UserOut
+# class UserToken(Token):
+#     account: UserOut
 
 
 class HttpError(BaseModel):

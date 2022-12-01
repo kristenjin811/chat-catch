@@ -7,7 +7,8 @@ steps = [
             required_limited_text VARCHAR(1000) NOT NULL,
             required_unlimited_text TEXT NOT NULL,
             required_date_time TIMESTAMP NOT NULL,
-            automatically_set_date_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            automatically_set_date_time TIMESTAMP \n
+            NOT NULL DEFAULT CURRENT_TIMESTAMP,
             required_integer INTEGER NOT NULL,
             required_money MONEY NOT NULL
         );
@@ -15,7 +16,7 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE dummy;
-        """
+        """,
     ],
     [
         # "Up" SQL statement
@@ -25,7 +26,8 @@ steps = [
             required_limited_text VARCHAR(1000) NOT NULL,
             required_unlimited_text TEXT NOT NULL,
             required_date_time TIMESTAMP NOT NULL,
-            automatically_set_date_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            automatically_set_date_time TIMESTAMP \n
+            NOT NULL DEFAULT CURRENT_TIMESTAMP,
             required_integer INTEGER NOT NULL,
             required_money MONEY NOT NULL
         );
@@ -33,6 +35,6 @@ steps = [
         # "Down" SQL statement
         """
         DROP TABLE big_dummy;
-        """
-    ]
+        """,
+    ],
 ]

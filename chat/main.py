@@ -1,4 +1,8 @@
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import (
+    FastAPI,
+    WebSocket,
+    # WebSocketDisconnect
+)
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 import os
@@ -104,7 +108,8 @@ async def websocket_endpoint(websocket: WebSocket, chatroom_name, user_name):
                     await manager.broadcast(f"{data}")
             else:
                 logger.warning(
-                    f"Websocket state: {websocket.application_state}, reconnecting..."
+                    f"Websocket state: {websocket.application_state}"
+                    + ",reconnecting..."
                 )
                 await manager.connect(websocket, chatroom_name)
     except Exception as ex:
