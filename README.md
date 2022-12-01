@@ -1,3 +1,13 @@
+## Chat Catch
+<p align="center">
+  <img width="auto" height="auto" src="images/chat-logo.png">
+</p>
+
+## OverView
+<p align="center">
+  <img width="auto" height="auto" src="images/OverviewCC.png">
+</p>
+
 # Module3 Project Gamma
 
 ## Getting started
@@ -14,7 +24,12 @@ tasks for this week.
 
 ## Deliverables
 ### Wireframes
-EndPoints -
+<p align="center">
+  <img width="auto" height="auto" src="images/WireFrameCC.png">
+</p>
+
+
+## EndPoints -
 1. login - post
 2. logout - delete
 3. signup - post

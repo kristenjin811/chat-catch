@@ -1,7 +1,8 @@
-# from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI
+# WebSocket, WebSocketDisconnect
 # from fastapi.responses import HTMLResponse
-# from fastapi.middleware.cors import CORSMiddleware
-# import os
+from fastapi.middleware.cors import CORSMiddleware
+import os
 # from routers import users, websocket
 # from mongodb import connect_to_mongo, close_mongo_connection, get_nosql_db
 # from config import MONGODB_DB_NAME
@@ -13,26 +14,26 @@
 # import logging
 # from api import router as api_router
 
-# # from authenticator import authenticator
+# from authenticator import authenticator
 # from routers import users, websocket
 
 
-# app = FastAPI()
+app = FastAPI()
 # logger = logging.getLogger(__name__)
-# # app.include_router(users.router)
-# # app.include_router(authenticator.router)
-# # app.include_router(messages.router)
-# # app.include_router(auth.auth.router)
+# app.include_router(users.router)
+# app.include_router(authenticator.router)
+# app.include_router(messages.router)
+# app.include_router(auth.auth.router)
 # app.include_router(websocket.router)
 
 
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=[os.environ.get("CORS_HOST", "http://localhost:3000")],
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[os.environ.get("CORS_HOST", "http://localhost:3000")],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # @app.on_event("startup")
