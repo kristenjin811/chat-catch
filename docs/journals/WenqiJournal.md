@@ -19,8 +19,24 @@ Any API work/docs need to be in the readme.md
 
 Today, I worked on:
 
-*
-
 * When I was trying to set up the project on my local computer with docker compose, the terminal kept saying that my port 8000 was in use. My team mates tried to help me with this. We tried to delete all the images and containers, used many commands, restarted my laptop, and it still did not work. Finally, I tried with sudo lsof -i:8000 to check what is running on port 8000, and then typed sudo kill <<pid number>> to kill the process running on port 8000. The commands work and the port issue was fixed.
 
 The project now works in my local environment with swagger ui.
+
+## Nov 23, 2022
+
+This week, I worked on creating authenticator. I did pair programming with Michael and I was the driver. I used a website to generate the 64-indexed key. We tried to connect to SIGNING KEY from docker-compose.yaml file, but somehow it just does not recognize the signing key which I put in there. We checked the format and everything but couldn't figure out what we missed. Hopefully we can solve this blocker tomorrow.
+
+## Nov 24, 2022
+
+The blocker from yester was solved but we didnt change any code for it. It seems that sometimes the computer just need wait for a moment and then it work. Now, we are able to connect to the SIGNING KEY in docker-compose file.
+
+## Nov 29, 2022
+I worked on CI/CD on my own today. I was able to make CI work. The react front end showed on the new url.
+Will be continuing working on the CD part tomorrow.
+
+## Nov 30, 2022
+I worked on CD part today. I successfully deployed the project on render.com. I still need to figure out how to connect mongodb to the deployment.
+
+## Nov 30, 2022
+The deployment stopped when one person from our team commit their changes. We need to figure out how to commit without failing the deployment. 
