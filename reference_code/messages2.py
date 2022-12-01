@@ -20,17 +20,14 @@ async def create_message(
 
 
 @router.get("/api/messages/")
-def get_all_messages(
-    response: Response, message: MessageQueries = Depends()
-):
+def get_all_messages(response: Response, message: MessageQueries = Depends()):
     response = message.get_all_messages()
     return response
 
 
 @router.get("/api/messages/{id}")
 def get_message(
-    id: str,
-    message: Response, messages: MessageQueries = Depends()
+    id: str, message: Response, messages: MessageQueries = Depends()
 ):
     messages = messages.get_message(ObjectId(id))
     return MessageOut(**messages)
@@ -38,26 +35,21 @@ def get_message(
 
 @router.delete("/api/messages/{id}", response_model=bool)
 async def delete_message(
-    id: str,
-    messages: Response, message: MessageQueries = Depends()
+    id: str, messages: Response, message: MessageQueries = Depends()
 ) -> bool:
     message.delete_message(ObjectId(id))
     return True
 
 
-<<<<<<< HEAD:chat/routers/messages.py
 @router.put("/api/messages/{id}")
 async def create_or_update_message(
-    id: str,
-    message: Response, messages: MessageQueries = Depends()
+    id: str, message: Response, messages: MessageQueries = Depends()
 ):
     messages = messages.create_or_update_message(ObjectId(id))
 
     # messages = messages.create_or_update_message(ObjectId(id))
-=======
 
 
 @router.websocket("/chat")
 async def chat():
     pass
->>>>>>> socket-branch:sample_service/routers/messages.py
