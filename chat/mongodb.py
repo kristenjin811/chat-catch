@@ -1,11 +1,9 @@
-# from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo import MongoClient
 import logging
 from config import MONGODB_URL, MAX_CONNECTIONS_COUNT, MIN_CONNECTIONS_COUNT
 
 
 class MongoDB:
-    # client: AsyncIOMotorClient = None
     client: MongoClient = None
 
 

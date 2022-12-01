@@ -1,3 +1,18 @@
+November 30, 2022
+
+November 29, 2022
+
+November 28, 2022
+
+November 23, 2022
+
+November 22, 2022
+
+November 21, 2022
+
+November 18, 2022
+
+November 17, 2022
 
 November 16, 2022
 Began making a model map in excalidraw that maps out the models and their relationships. Made issues to create model queries and group members assigned themselves to them. The group tested creating new branches, pushing them, and did a mock merge request.

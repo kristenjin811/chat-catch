@@ -5,7 +5,6 @@ from fastapi import (
     Depends,
 )
 import os
-from jose import jwt
 import json
 from datetime import datetime, timezone
 
@@ -16,44 +15,32 @@ def timestamp():
     return datetime.now(timezone.utc).isoformat()
 
 
-def get_jwt():
-    return jwt
-
-
 class ConnectionManager:
     def __init__(self):
-        self.active_connections = dict()
+        self.active_connections: List[WebSocket] = []
         self.current_message_id = 0
 
-    async def connect(self, websocket: WebSocket, jwt_jose):
+    async def connect(self, websocket: WebSocket, client_id: int):
         await websocket.accept()
-        token_data = jwt_jose.decode(
-            websocket.query_params["token"],
-            os.environ["SIGNING_KEY"],
-            algorithms=["HS256"],
-        )
-
-        username = token_data["account"]["username"]
-        self.active_connections[username] = websocket
+        self.active_connections.append(websocket)
         await self.send_personal_message(
             "Welcome!",
-            username,
+            client_id,
             websocket,
         )
-        return username
 
-    def disconnect(self, username: str):
-        del self.active_connections[username]
+    def disconnect(self, websocket: WebSocket):
+        self.active_connections.remove(websocket)
 
     async def send_personal_message(
         self,
         message: str,
-        username: str,
+        client_id: int,
         websocket: WebSocket,
     ):
         payload = json.dumps(
             {
-                "username": username,
+                "client_id": client_id,
                 "content": message,
                 "timestamp": timestamp(),
                 "message_id": self.next_message_id(),
@@ -61,17 +48,17 @@ class ConnectionManager:
         )
         await websocket.send_text(payload)
 
-    async def broadcast(self, message: str, username: str):
+    async def broadcast(self, message: str, client_id: int):
         payload = json.dumps(
             {
-                "username": username,
+                "client_id": client_id,
                 "content": message,
                 "timestamp": timestamp(),
                 "message_id": self.next_message_id(),
             }
         )
         print("active connections:", len(self.active_connections))
-        for connection in self.active_connections.values():
+        for connection in self.active_connections:
             await connection.send_text(payload)
 
     def next_message_id(self):

@@ -6,14 +6,16 @@ WORKDIR /app
 # Modify these instructions to do that
 COPY requirements.txt requirements.txt
 COPY main.py main.py
-COPY queries queries
-COPY routers routers
-COPY model.py model.py
+COPY models.py models.py
+COPY websocket_manager.py websocket_manager.py
+COPY config.py config.py
 
 # Copy all of the subdirectories in your service's directory
 # Modify these instructions to do that
 # COPY queries queries
 # COPY routers routers
+COPY api api
+COPY controllers controllers
 
 
 # If you're using a relational database with migrations,

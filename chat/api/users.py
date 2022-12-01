@@ -6,50 +6,43 @@ from fastapi import (
     status,
     HTTPException,
 )
-from queries.users import UserIn, UserOut, UserQueries
+from models import UserIn, UserOut
 from jwtdown_fastapi.authentication import Token
 from routers.auth import auth
 from bson.objectid import ObjectId
 from pydantic import BaseModel
 
 
-class UserForm(BaseModel):
-    username: str
-    password: str
-
-
-class UserToken(Token):
-    account: UserOut
-
-
-class HttpError(BaseModel):
-    detail: str
-
-
 router = APIRouter()
 
+# endpoints:
+# create_user <@router.post("/api/users")>
+# get_all_users <@router.get("/api/users")>
+# get_user <@router.get("/api/users/{user_id}")>
+# update_user <@router.put("/api/users/{user_id}">
+# delete_user <@router.delete("/api/users/{user_id}">
 
-@router.get("/api/token", response_model=UserToken | None)
-async def get_token(
-    request: Request,
-    user: UserOut = Depends(auth.try_get_current_account_data),
-) -> UserToken | None:
-    if auth.cookie_name in request.cookies:
-        return {
-            "access_token": request.cookies[auth.cookie_name],
-            "type": "Bearer",
-            "user": user,
-        }
-    else:
-        raise Exception("No cookie in request")
+# @router.get("/api/token", response_model=UserToken | None)
+# async def get_token(
+#     request: Request,
+#     user: UserOut = Depends(auth.try_get_current_account_data),
+# ) -> UserToken | None:
+#     if auth.cookie_name in request.cookies:
+#         return {
+#             "access_token": request.cookies[auth.cookie_name],
+#             "type": "Bearer",
+#             "user": user,
+#         }
+#     else:
+#         raise Exception("No cookie in request")
 
 
 @router.post("/api/users", response_model=UserOut | HttpError)
-async def create_account(
+async def create_user(
     info: UserIn,  # this is what should be in the body
     users: UserQueries = Depends(),
 ):
-    hashed_password = auth.hash_password(info.password)
+    # hashed_password = auth.hash_password(info.password)
     try:
         users.create(info, hashed_password)
     except DuplicateUserError:
