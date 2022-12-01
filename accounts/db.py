@@ -1,8 +1,8 @@
 import os
-from pymongo import MongoClient
+import pymongo
 
 
 client = pymongo.MongoClient(os.environ["DATABASE_URL"])
-dbname = os.environ['MONGODATABASE']
+dbname = os.environ["DATABASE_NAME"]
 # host_info = mongo_client["HOST"]
 db = client[dbname]

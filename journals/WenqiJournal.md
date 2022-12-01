@@ -1,4 +1,4 @@
-## July 7, 2021
+## Nov 15, 2022
 
 Today, I worked on:
 
@@ -13,3 +13,14 @@ FastAPI docs page running locally using docker compose
 Create journal files if they are not made already
 Take MVP and put it in the readme.md
 Any API work/docs need to be in the readme.md
+
+
+## Nov 16, 2022
+
+Today, I worked on:
+
+*
+
+* When I was trying to set up the project on my local computer with docker compose, the terminal kept saying that my port 8000 was in use. My team mates tried to help me with this. We tried to delete all the images and containers, used many commands, restarted my laptop, and it still did not work. Finally, I tried with sudo lsof -i:8000 to check what is running on port 8000, and then typed sudo kill <<pid number>> to kill the process running on port 8000. The commands work and the port issue was fixed.
+
+The project now works in my local environment with swagger ui.

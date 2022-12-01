@@ -7,7 +7,7 @@ Dean
 
 1. As a user, I want to be able to log in, So that I know my information and conversations are safe
 2. As a user, I want to be able to log out, So that I know my information and conversations are safe
-3. As a user, I want users to have to sign-up / have accounts, So that random users are not allowed to break any terms of service (harassment/bulling)
+3. As a user, I want users to have to sign-up / have accounts, So that random users are not allowed to break any terms of service (harassment/bullying)
 4. As a user, I want to be able to see all the chat room members, So that I can connect with them / or reach out to them separately / read bio
 
 Michael
@@ -109,7 +109,7 @@ response Shape:
 
 15. delete a chatroom - delete
 Endpoint path: /chatrooms/<int:pk>
-Endpount Method: DELETE
+Endpoint Method: DELETE
 Headers:
     Authorization: Bearer token
 Response: Always true
@@ -120,7 +120,7 @@ Response shape (JSON):
 
 16. reactions - put
 Endpoint path: /chatrooms/<int:pk>/messages/<int:pk>
-Endpount Method: PUT
+Endpoint Method: PUT
 Headers:
     Authorization: Bearer token
 Request Shape:

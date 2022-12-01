@@ -1,6 +1,6 @@
 
 November 16, 2022
-Began making a model map in excalidraw that maps out the models and their relationships. Made issues to create model queries and group members assigned themselves to them.
+Began making a model map in excalidraw that maps out the models and their relationships. Made issues to create model queries and group members assigned themselves to them. The group tested creating new branches, pushing them, and did a mock merge request.
 We realized that we need to continue fleshing out the model maps to figure out what queries to make and how to break up our microservices.
 My ah-ha moment today was realizing that I cannot wait for the mongo db lecture.
 

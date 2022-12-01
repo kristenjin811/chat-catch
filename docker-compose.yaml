@@ -10,15 +10,39 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
-  fastapi:
+  mongo-express:
+    image: mongo-express:latest
+    depends_on:
+      - mongo
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_USERNAME: root
+      ME_CONFIG_MONGODB_PASSWORD: password
+      ME_CONFIG_MONGODB_URL: mongodb://root:password@mongo
+    restart: always
+  fastapi-accounts:
     build:
-      context: sample_service
+      context: accounts
+      dockerfile: Dockerfile.dev
+    ports:
+      - 8001:8001
+    volumes:
+      - ./accounts:/app
+    environment:
+      DATABASE_URL: mongodb://root:password@mongo
+      DATABASE_NAME: mongo-data
+      WAIT_HOSTS: mongo:27017
+  fastapi-chat:
+    build:
+      context: chat
       dockerfile: Dockerfile.dev
     ports:
       - 8000:8000
     volumes:
-      - ./sample_service:/app
+      - ./chat:/app
     environment:
+      SIGNING_KEY: 87fe4a3fcfb60092dbaeb854a196bc3d9b190aed7930c734749e85245de698420c25f8e6899c421b4494e99459e01058de5daa9d49584cd62ec975da9aea33da
       DATABASE_URL: mongodb://root:password@mongo
       DATABASE_NAME: mongo-data
       WAIT_HOSTS: mongo:27017
@@ -36,4 +60,5 @@ services:
       NODE_ENV: development
       HOST: "0.0.0.0"
       PUBLIC_URL: http://localhost:3000
-      REACT_APP_SAMPLE_SERVICE_API_HOST: http://localhost:8000
+      REACT_APP_CHAT_API_HOST: http://localhost:8000
+      REACT_APP_ACCOUNTS_API_HOST: http://localhost:8001
