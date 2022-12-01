@@ -33,8 +33,8 @@ build-front-end-job:
     # CI/CD variables, that value will override the value here.
     # You need to substitute in your real values for
     # GROUP_NAME, PROJECT_NAME, & WEBSERVICE_NAME below.
-    PUBLIC_URL: https://GROUP_NAME.gitlab.io/PROJECT_NAME/
-    REACT_APP_SAMPLE_SERVICE_API_HOST: https://WEBSERVICE_NAME.onrender.com
+    PUBLIC_URL: https://chatty-cathys.gitlab.io/chat-catch/
+    REACT_APP_SAMPLE_SERVICE_API_HOST: https://chat-catch.onrender.com
   script:
     - cd ghi
     - npm install
