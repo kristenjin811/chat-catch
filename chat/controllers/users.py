@@ -1,8 +1,59 @@
-# from pydantic import BaseModel, EmailStr
-# from fastapi import Response
-# from models import PydanticObjectId, UserIn, UserOut
-# from config import MONGODB_DB_NAME
-# from mongodb import get_nosql_db
+from pydantic import BaseModel, EmailStr
+from fastapi import Response
+from models import PydanticObjectId, User, UserInDB
+from config import MONGODB_DB_NAME
+from mongodb import get_nosql_db
+
+
+def format_ids(nested_dictionary):
+    """
+        Loops through nested dictionary (with arrays 1 layer deep) to
+        properly format the MongoDB '_id' field to
+    a string instead of an ObjectId
+    """
+    for key, value in nested_dictionary.items():
+        if type(value) is dict:
+            nested_dictionary[key] = format_ids(value)
+        elif type(value) is list:
+            new_arr = []
+            for item in value:
+                if type(item) is dict:
+                    new_arr.append(format_ids(item))
+                else:
+                    new_arr.append(item)
+            nested_dictionary[key] = new_arr
+        else:
+            if key == "_id":
+                nested_dictionary[key] = str(value)
+    return nested_dictionary
+
+
+async def get_user_db(name) -> UserInDB:
+    client = await get_nosql_db()
+    db = client[MONGODB_DB_NAME]
+    users_collection = db.users
+    row = users_collection.find_one({"username": name})
+    if row is not None:
+        row = format_ids(row)
+        return row
+    else:
+        return None
+
+
+async def create_user(request, collection):
+    # salt = bcrypt.gensalt().decode()
+    # hashed_password = get_password_hash(request.password + salt)
+
+    user = {}
+    user["username"] = request.username
+    # user["salt"] = salt
+    # user["hashed_password"] = hashed_password
+    dbuser = UserInDB(**user)
+    try:
+        response = collection.insert_one(dict(dbuser))
+        return {"id_inserted": str(response.inserted_id)}
+    except Exception as e:
+        raise Exception(f"{e}")
 
 
 # async def create_user(self, info=UserIn, response_model=UserOut):

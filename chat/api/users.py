@@ -1,20 +1,31 @@
-# from fastapi import (
-#     APIRouter,
-#     Depends,
-#     Response,
-#     Request,
-#     status,
-#     HTTPException,
-# )
+from fastapi import (
+    APIRouter,
+    Depends,
+    Response,
+    Request,
+    status,
+    HTTPException,
+)
+
 # # from models import UserIn, UserOut
+from models import User, UserInDB
+from pymongo import MongoClient
+
 # # from jwtdown_fastapi.authentication import Token
 # # from routers.auth import auth
-# # from bson.objectid import ObjectId
-# # from pydantic import BaseModel
+from requests import RegisterRequest
+from bson.objectid import ObjectId
+from pydantic import BaseModel
+from controllers.users import get_user_db, create_user
+from mongodb import get_nosql_db
+from config import MONGODB_DB_NAME
+import logging
+
+logger = logging.getLogger(__name__)
+router = APIRouter()
 
 
-# router = APIRouter()
-
+@router.post
 # # endpoints:
 # # create_user <@router.post("/api/users")>
 # # get_all_users <@router.get("/api/users")>
@@ -35,6 +46,16 @@
 # #         }
 # #     else:
 # #         raise Exception("No cookie in request")
+
+
+@router.post("/register")
+async def create_user_in_db(
+    request: RegisterRequest, client: MongoClient = Depends(get_nosql_db())
+):
+    db = client[MONGODB_DB_NAME]
+    collection = db.users
+    new_user = await create_user(request, collection)
+    return new_user
 
 
 # @router.post("/api/users", response_model=UserOut | HttpError)
@@ -62,10 +83,16 @@
 #     return response
 
 
+@router.get("/users/{name}")
+async def get_user(name: str) -> UserInDB:
+    response = await get_user_db(name)
+    return response
+
+
 # @router.get("/api/users/{id}")
-# def get_user(id: str, user: Response, users: UserQueries = Depends()):
-#     user = users.get_user(ObjectId(id))
-#     return UserOut(**user)
+# def get_user(id: str, user: Response, users: User = Depends()):
+#     user = users.get_user_db(Response.username)
+#     return User(**user)
 
 
 # @router.delete("/api/users/{id}", response_model=bool)
