@@ -48,7 +48,7 @@ build-front-end-job:
 pages:
   stage: deploy
   rules:
-    - if: $CI_COMMIT_BRANCH == "CI/CD"
+    - if: $CI_COMMIT_BRANCH == "main"
   dependencies:
     - build-front-end-job
   needs:
