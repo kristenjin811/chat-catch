@@ -10,12 +10,22 @@ router = APIRouter()
 async def create_account(
     info: UserIn,
     users: UserQueries = Depends(),
+
 ):
 
     try:
+<<<<<<< HEAD:chat/routers/users.py
         users.create(info)
     except Exception as e:
         print(e)
+=======
+       info = users.create(info)
+
+    except:
+        pass
+    print("USER IN::::::", UserIn)
+    print("USER OUT::::::", UserOut)
+>>>>>>> socket-branch:sample_service/routers/users.py
 
     return UserCreated(created=True)
 

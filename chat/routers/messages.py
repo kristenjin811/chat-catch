@@ -45,6 +45,7 @@ async def delete_message(
     return True
 
 
+<<<<<<< HEAD:chat/routers/messages.py
 @router.put("/api/messages/{id}")
 async def create_or_update_message(
     id: str,
@@ -53,3 +54,10 @@ async def create_or_update_message(
     messages = messages.create_or_update_message(ObjectId(id))
 
     # messages = messages.create_or_update_message(ObjectId(id))
+=======
+
+
+@router.websocket("/chat")
+async def chat():
+    pass
+>>>>>>> socket-branch:sample_service/routers/messages.py
