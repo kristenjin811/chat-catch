@@ -30,7 +30,7 @@ router = APIRouter()
 # with request form for input, function gets current
 # user and mongoclient. Then uses the controller
 # function insert_chatroom to add created chatroom to the database
-@router.post("/chatrooms", tags=["Rooms"])
+@router.post("/chatrooms", tags=["Chatrooms"])
 async def create_chatroom(
     # request: ChatRoomCreateRequest,
     # client: MongoClient = Depends(get_nosql_db),
