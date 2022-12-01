@@ -1,3 +1,4 @@
+#this is where the high level mongo functions are defined.
 from pymongo import MongoClient
 import logging
 from config import MONGODB_URL, MAX_CONNECTIONS_COUNT, MIN_CONNECTIONS_COUNT
