@@ -4,8 +4,8 @@ from fastapi import (
     # WebSocketDisconnect
 )
 from fastapi.responses import HTMLResponse
-from fastapi.middleware.cors import CORSMiddleware
-import os
+# from fastapi.middleware.cors import CORSMiddleware
+# import os
 
 # from api.users import get_user
 # from controllers.users import get_user_db
@@ -23,7 +23,7 @@ from api import router as api_router
 # from routers import users, websocket
 
 
-# app = FastAPI()
+app = FastAPI()
 # logger = logging.getLogger(__name__)
 # # app.include_router(users.router)
 # # app.include_router(authenticator.router)
