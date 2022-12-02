@@ -70,6 +70,7 @@ app.add_middleware(
 #     await close_mongo_connection()
 
 
+# testing
 @app.get("/api/launch-details")
 def launch_details():
     return {
