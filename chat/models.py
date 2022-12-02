@@ -1,7 +1,8 @@
 # this models.py file holds all the models
 # from fastapi import Response
 from pydantic import BaseModel, Field
-from typing import List, Optional
+
+# from typing import List, Optional
 from bson import ObjectId
 from datetime import datetime
 
