@@ -39,4 +39,11 @@ Will be continuing working on the CD part tomorrow.
 I worked on CD part today. I successfully deployed the project on render.com. I still need to figure out how to connect mongodb to the deployment.
 
 ## Nov 30, 2022
-The deployment stopped when one person from our team commit their changes. We need to figure out how to commit without failing the deployment. 
+The deployment stopped when one person from our team commit their changes. We need to figure out how to commit without failing the deployment.
+
+
+## Dec 1, 2022
+The deployment was only successful with a specific commit. I fixed it and today it was able to automatically and successfully deploy with the latest commit. Fastapi docs was shown on render url. The frontend is showing on its public url as well. Pipline is all fixed. I still need to check if mongodb is connected when our team has routes and data ready for it.
+
+## Dec 2, 2022
+Goal: Today's goal was to check if MongoDB is successfully connected to our published application. When our team started working this morning, I saw that our deployment failed again. Need to fix that.
