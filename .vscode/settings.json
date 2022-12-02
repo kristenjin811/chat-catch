@@ -3,5 +3,5 @@
   "python.formatting.provider": "black",
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "python.analysis.extraPaths": ["./sample_service/api/routers"]
+  "python.analysis.extraPaths": ["./chat/requests"]
 }

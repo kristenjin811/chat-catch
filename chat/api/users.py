@@ -13,19 +13,18 @@ from pymongo import MongoClient
 
 # # from jwtdown_fastapi.authentication import Token
 # # from routers.auth import auth
-from requests import RegisterRequest
-from bson.objectid import ObjectId
+# from bson.objectid import ObjectId
 from pydantic import BaseModel
 from controllers.users import get_user_db, create_user
 from mongodb import get_nosql_db
 from config import MONGODB_DB_NAME
 import logging
+from requests import RegisterRequest
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
-@router.post
 # # endpoints:
 # # create_user <@router.post("/api/users")>
 # # get_all_users <@router.get("/api/users")>
@@ -50,13 +49,33 @@ router = APIRouter()
 
 @router.post("/register")
 async def create_user_in_db(
-    request: RegisterRequest, client: MongoClient = Depends(get_nosql_db())
+    request: RegisterRequest,
+    client: MongoClient = Depends(get_nosql_db())
 ):
     db = client[MONGODB_DB_NAME]
     collection = db.users
     new_user = await create_user(request, collection)
     return new_user
 
+
+@router.get("/users/{name}")
+async def get_user(name: str) -> UserInDB:
+    response = await get_user_db(name)
+    return response
+
+
+# @router.get("/api/users/{id}")
+# def get_user(id: str, user: Response, users: User = Depends()):
+#     user = users.get_user_db(Response.username)
+#     return User(**user)
+
+
+# @router.delete("/api/users/{id}", response_model=bool)
+# async def delete_user(
+#     id: str, user: Response, users: UserQueries = Depends()
+# ) -> bool:
+#     users.delete_user(ObjectId(id))
+#     return True
 
 # @router.post("/api/users", response_model=UserOut | HttpError)
 # async def create_user(
@@ -81,23 +100,3 @@ async def create_user_in_db(
 # def get_users(response: Response, users: UserQueries = Depends()):
 #     response = users.get_all_users()
 #     return response
-
-
-@router.get("/users/{name}")
-async def get_user(name: str) -> UserInDB:
-    response = await get_user_db(name)
-    return response
-
-
-# @router.get("/api/users/{id}")
-# def get_user(id: str, user: Response, users: User = Depends()):
-#     user = users.get_user_db(Response.username)
-#     return User(**user)
-
-
-# @router.delete("/api/users/{id}", response_model=bool)
-# async def delete_user(
-#     id: str, user: Response, users: UserQueries = Depends()
-# ) -> bool:
-#     users.delete_user(ObjectId(id))
-#     return True
