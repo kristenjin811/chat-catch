@@ -146,7 +146,7 @@ class MessagesIn(BaseModel):
 
 # class MessageInDB(Message):
 #     _id: ObjectId
-#     timestamp: datetime = Field(default=datetime.utcnow)
+#     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
 
 # class ChatroomIn(BaseModel):

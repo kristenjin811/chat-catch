@@ -1,7 +1,23 @@
+12/2/22
+
+12/1/22
+Today, I worked on:
+
+-continuing to reimplement code
+
+After the restructuring of the code base, it did take a bit of
+work to get everything back up to a working state. Now it is a bit
+clearer and ready to start working. Where we created endpoints
+and tested them got a few up and running was semi productive event,
+even though I wish we were farther lol.
+
 11/30/22
 Today, I worked on:
 
--
+- helping refactor file structure
+
+After looking at the code base, the group decided it was a little
+confusing so the structure was redone to allow for better clarity on the code base.
 
 11/29/22
 Today, I worked on:
