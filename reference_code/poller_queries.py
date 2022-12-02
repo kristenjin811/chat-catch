@@ -22,7 +22,6 @@
 #     hashed_password: str
 
 
-
 # class PollerQueries(Queries):
 #     DB_NAME = "chat"
 #     COLLECTION = "userVO"
