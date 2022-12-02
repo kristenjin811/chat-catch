@@ -92,19 +92,19 @@ manager = ConnectionManager
 #         return HTMLResponse(f.read())
 
 
-# @app.websocket("/ws/{room_name}/{user_name}")
-# async def websocket_endpoint(websocket: WebSocket, room_name, user_name):
+# @app.websocket("/ws/{chatroom_name}/{user_name}")
+# async def websocket_endpoint(websocket: WebSocket, chatroom_name, user_name):
 #     try:
 #         # add user
-#         await manager.connect(websocket, room_name)
-#         await add_user_to_room(user_name, room_name)
-#         room = await get_room(room_name)
+#         await manager.connect(websocket, chatroom_name)
+#         await add_user_to_chatroom(user_name, chatroom_name)
+#         chatroom = await get_chatroom(chatroom_name)
 #         data = {
 #             "content": f"{user_name} has entered the chat",
 #             "user": {"username": user_name},
-#             "room_name": room_name,
+#             "chatroom_name": chatroom_name,
 #             "type": "entrance",
-#             "new_room_obj": room,
+#             "new_chatroom_obj": chatroom,
 #         }
 #         await manager.broadcast(f"{json.dumps(data, default=str)}")
 #         # wait for messages
@@ -118,7 +118,7 @@ manager = ConnectionManager
 #                 ):
 #                     logger.warning(message_data["content"])
 #                     logger.info("Disconnecting from Websocket")
-#                     await manager.disconnect(websocket, room_name)
+#                     await manager.disconnect(websocket, chatroom_name)
 #                     break
 #                 else:
 #                     await upload_message_to_room(data)
@@ -129,21 +129,24 @@ manager = ConnectionManager
 #                     f"Websocket state: {websocket.application_state},
 #  reconnecting..."
 #                 )
-#                 await manager.connect(websocket, room_name)
-#     except Exception as ex:
+#                 await manager.connect(websocket, chatroom_name)
+#     except Exception as e:
 #         template = "An exception of type {0} occured, Arguments:\n{1!r}"
-#         message = template.format(type(ex).__name__, ex.args)
+#         message = template.format(type(e).__name__, e.args)
 #         logger.error(message)
 #         # remove user
 #         logger.warning("Disconnecting Websocket")
-#         await remove_user_from_room(None, room_name, username=user_name)
-#         room = await get_room(room_name)
+#         await remove_user_from_chatroom(
+#           None, chatroom_name,
+#           username=user_name
+#           )
+#         chatroom = await get_chatroom(chatroom_name)
 #         data = {
 #             "content": f"{user_name} has left the chat",
 #             "user": {"username": user_name},
-#             "room_name": room_name,
+#             "chatroom_name": chatroom_name,
 #             "type": "dismissal",
-#             "new_room_obj": room,
+#             "new_chatroom_obj": chatroom,
 #         }
 #         await manager.broadcast(f"{json.dumps(data, default=str)}")
-#         await manager.disconnect(websocket, room_name)
+#         await manager.disconnect(websocket, chatroom_name)

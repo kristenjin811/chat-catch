@@ -1,11 +1,17 @@
 from .users import get_user_db
 from models import ChatroomInDB
+
 # from pydantic import BaseModel, EmailStr
 # from fastapi import Response
 # from models import PydanticObjectId, UserIn, UserOut
 from config import MONGODB_DB_NAME
 from mongodb import get_nosql_db
 from utils import format_ids
+import logging
+from bson import ObjectId
+import json
+
+logger = logging.getLogger(__name__)
 
 # jmoussa has set_room_activity, not sure what its purpose is
 
@@ -20,7 +26,23 @@ from utils import format_ids
 
 
 async def upload_message_to_chatroom(data):
-    pass
+    message_data = json.loads(data)
+    client = await get_nosql_db()
+    db = client[MONGODB_DB_NAME]
+    try:
+        chatroom = await get_chatroom(message_data["chatroom_name"])
+        user = await get_user_db(message_data["user"]["username"])
+        message_data["user"] = user
+        message_data.pop("chatroom_name", None)
+        collection = db.chatrooms
+        collection.update_one(
+            {"_id": ObjectId(chatroom["_id"])},
+            {"$push": {"messages": message_data}},
+        )
+        return True
+    except Exception as e:
+        logger.error(f"error adding message to DB: {type(e)}{e}")
+        return False
 
 
 # insert created chatroom document into the
