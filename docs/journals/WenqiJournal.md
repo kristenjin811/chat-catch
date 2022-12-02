@@ -47,3 +47,7 @@ The deployment was only successful with a specific commit. I fixed it and today 
 
 ## Dec 2, 2022
 Goal: Today's goal was to check if MongoDB is successfully connected to our published application. When our team started working this morning, I saw that our deployment failed again. Need to fix that.
+
+I haven't seen this error message before:
+``` pymongo.errors.ServerSelectionTimeoutError: mongo:27017: [Errno -2] Name or service not known, Timeout: 30s, Topology Description: <TopologyDescription id: 638a5751e06dccaa5544c07e, topology_type: Unknown, servers: [<ServerDescription ('mongo', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('mongo:27017: [Errno -2] Name or service not known')>]>```
+I think it has something to do with mongodb connection.

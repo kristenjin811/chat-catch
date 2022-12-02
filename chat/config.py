@@ -1,4 +1,6 @@
-MONGODB_URL = "mongodb://root:password@mongo"
+import os
+
+MONGODB_URL = os.environ.get("DATABASE_URL")
 # "mongodb://127.0.0.1:27017"
 MONGODB_DB_NAME = "chat_catch"
 MAX_CONNECTIONS_COUNT = 10
