@@ -24,11 +24,12 @@ from api import router as api_router
 
 
 app = FastAPI()
-# logger = logging.getLogger(__name__)
-# # app.include_router(users.router)
-# # app.include_router(authenticator.router)
-# # app.include_router(messages.router)
-# # app.include_router(auth.auth.router)
+app.include_router(api_router, prefix="/api")
+logger = logging.getLogger(__name__)
+# app.include_router(users.router)
+# app.include_router(authenticator.router)
+# app.include_router(messages.router)
+# app.include_router(auth.auth.router)
 # app.include_router(websocket.router)
 
 
@@ -157,6 +158,3 @@ def homepage():
 #         }
 #         await manager.broadcast(f"{json.dumps(data, default=str)}")
 #         await manager.disconnect(websocket, room_name)
-
-
-app.include_router(api_router, prefix="/api")
