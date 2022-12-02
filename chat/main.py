@@ -1,8 +1,7 @@
-from fastapi import FastAPI
-# WebSocket, WebSocketDisconnect
+# from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 # from fastapi.responses import HTMLResponse
-from fastapi.middleware.cors import CORSMiddleware
-import os
+# from fastapi.middleware.cors import CORSMiddleware
+# import os
 # from routers import users, websocket
 # from mongodb import connect_to_mongo, close_mongo_connection, get_nosql_db
 # from config import MONGODB_DB_NAME
@@ -11,86 +10,89 @@ import os
 # from routers.websocket import ConnectionManager
 # import json
 # from starlette.websockets import WebSocketState
-# import logging
-# from api import router as api_router
+from api import router as api_router
 
-# from authenticator import authenticator
+# # from authenticator import authenticator
 # from routers import users, websocket
 
 
-app = FastAPI()
+# app = FastAPI()
 # logger = logging.getLogger(__name__)
-# app.include_router(users.router)
-# app.include_router(authenticator.router)
-# app.include_router(messages.router)
-# app.include_router(auth.auth.router)
+# # app.include_router(users.router)
+# # app.include_router(authenticator.router)
+# # app.include_router(messages.router)
+# # app.include_router(auth.auth.router)
 # app.include_router(websocket.router)
 
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[os.environ.get("CORS_HOST", "http://localhost:3000")],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=[os.environ.get("CORS_HOST", "http://localhost:3000")],
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
 
 
-# @app.on_event("startup")
-# async def startup_event():
-#     await connect_to_mongo()
-#     client = await get_nosql_db()
-#     db = client[MONGODB_DB_NAME]
-#     try:
-#         db.create_collection("users")
-#     except pymongo.errors.CollectionInvalid as e:
-#         logging.warning(e)
-#     try:
-#         db.create_collection("rooms")
-#     except pymongo.errors.CollectionInvalid as e:
-#         logging.warning(e)
-#     try:
-#         db.create_collection("messages")
-#     except pymongo.errors.CollectionInvalid as e:
-#         logging.warning(e)
-#     try:
-#         user_collection = db.users
-#         room_collection = db.rooms
-#         user_collection.create_index(
-# "username", name="username", unique=True)
-#         room_collection.create_index(
-#             "room_name", name="room_name", unique=True
-#         )
-#     except pymongo.errors.CollectionInvalid as e:
-#         logging.warning(e)
+@app.on_event("startup")
+async def startup_event():
+    await connect_to_mongo()
+    client = await get_nosql_db()
+    db = client[MONGODB_DB_NAME]
+    try:
+        db.create_collection("users")
+    except pymongo.errors.CollectionInvalid as e:
+        logging.warning(e)
+    try:
+        db.create_collection("chatrooms")
+    except pymongo.errors.CollectionInvalid as e:
+        logging.warning(e)
+    try:
+        db.create_collection("messages")
+    except pymongo.errors.CollectionInvalid as e:
+        logging.warning(e)
+    try:
+        user_collection = db.users
+        chatroom_collection = db.chatrooms
+        user_collection.create_index(
+            "username",
+            name="username",
+            unique=True,
+        )
+        chatroom_collection.create_index(
+            "chatroom_name",
+            name="chatroom_name",
+            unique=True,
+        )
+    except pymongo.errors.CollectionInvalid as e:
+        logging.warning(e)
 
 
-# @app.on_event("shutdown")
-# async def shutdown_event():
-#     await close_mongo_connection()
+@app.on_event("shutdown")
+async def shutdown_event():
+    await close_mongo_connection()
 
 
-# testing
-@app.get("/api/launch-details")
-def launch_details():
-    return {
-        "launch_details": {
-            "year": 2022,
-            "month": 12,
-            "day": "9",
-            "hour": 19,
-            "min": 0,
-            "tz:": "PST",
-        }
-    }
+# # @app.get("/api/launch-details")
+# # def launch_details():
+# #     return {
+# #         "launch_details": {
+# #             "year": 2022,
+# #             "month": 12,
+# #             "day": "9",
+# #             "hour": 19,
+# #             "min": 0,
+# #             "tz:": "PST",
+# #         }
+# #     }
 
-# manager = ConnectionManager
+manager = ConnectionManager
 
 
-# @app.get("/")
-# def homepage():
-#     with open("index.html") as f:
-#         return HTMLResponse(f.read())
+@app.get("/")
+def homepage():
+    with open("index.html") as f:
+        return HTMLResponse(f.read())
 
 
 # @app.websocket("/ws/{room_name}/{user_name}")
@@ -150,4 +152,4 @@ def launch_details():
 #         await manager.disconnect(websocket, room_name)
 
 
-# app.include_router(api_router, prefix="/api")
+app.include_router(api_router, prefix="/api")

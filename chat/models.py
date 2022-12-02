@@ -1,51 +1,65 @@
 # this models.py file holds all the models
 # from fastapi import Response
 from pydantic import BaseModel, Field
-from typing import List, Optional
+
+# from typing import List, Optional
 from bson import ObjectId
-from models import PydanticObjectId
 from datetime import datetime
 
 
 class User(BaseModel):
     username: str
-    hashed_password: str
-    salt: str
-    avatar: Optional[str]
-
-
-class UserIn(BaseModel):
-    username: str
-    email: str
-    password: str
-    first_name: str
-    last_name: str
-
-
-class UserOut(BaseModel):
-    id: str
-    username: str
-    email: str
-    first_name: str
-    last_name: str
-
-
-class UserOutWithPassword(UserOut):
-    hashed_password: str
-
-
-class UserPasswordDB(UserIn):
-    id: PydanticObjectId
-
-
-class UserForm(BaseModel):
-    username: str
-    password: str
+    # hashed_password: str
+    # salt: str
+    # profile_pic_img_src: Optional[str]
+    # favorites: List[str] = []
+    # disabled: bool = False
 
 
 class UserInDB(User):
     _id: ObjectId
-    date_created: datetime = Field(default=datetime.utcnow)
+    date_created: datetime = Field(default_factory=datetime.utcnow)
+
+
+# class User(BaseModel):
+#     username: str
+#     hashed_password: str
+#     salt: str
+#     avatar: Optional[str]
+
+
+# class UserIn(BaseModel):
+#     username: str
+#     email: str
+#     password: str
+#     first_name: str
+#     last_name: str
+
+
+# class UserOut(BaseModel):
+#     id: str
+#     username: str
+#     email: str
+#     first_name: str
+#     last_name: str
+
+
+# class UserOutWithPassword(UserOut):
+#     hashed_password: str
+
+
+# class UserPasswordDB(UserIn):
+#     id: PydanticObjectId
+
+
+# class UserForm(BaseModel):
+#     username: str
+#     password: str
+
+
+# class UserInDB(User):
+#     _id: ObjectId
+#     date_created: datetime = Field(default=datetime.utcnow)
 
 
 # class UserToken(Token):
@@ -110,26 +124,26 @@ class MessagesIn(BaseModel):
 #         self.collection.delete_one({"_id": id})
 
 
-class Message(BaseModel):
-    user: UserInDB
-    content: str = None
+# class Message(BaseModel):
+#     user: UserInDB
+#     content: str = None
 
 
-class MessageInDB(Message):
-    _id: ObjectId
-    timestamp: datetime = Field(default=datetime.utcnow)
+# class MessageInDB(Message):
+#     _id: ObjectId
+#     timestamp: datetime = Field(default=datetime.utcnow)
 
 
-class ChatroomIn(BaseModel):
-    name: str
-    owner: str
-    members: str
-    messages: str
+# class ChatroomIn(BaseModel):
+#     name: str
+#     owner: str
+#     members: str
+#     messages: str
 
 
-class ChatroomOut(BaseModel):
-    id: str
-    name: str
+# class ChatroomOut(BaseModel):
+#     id: str
+#     name: str
 
 
 # class ChatroomQueries(Queries):
@@ -155,26 +169,26 @@ class ChatroomOut(BaseModel):
 #         return ChatroomOut(**props)
 
 
-class Room(BaseModel):
-    room_name: str
-    members: Optional[List[UserInDB]] = []
-    messages: Optional[List[MessageInDB]] = []
-    last_pinged: datetime = Field(default=datetime.utcnow)
-    active: bool = False
+# class Room(BaseModel):
+#     room_name: str
+#     members: Optional[List[UserInDB]] = []
+#     messages: Optional[List[MessageInDB]] = []
+#     last_pinged: datetime = Field(default=datetime.utcnow)
+#     active: bool = False
 
 
-class RoomInDB(Room):
-    _id: ObjectId
-    date_created: datetime = Field(default=datetime.utcnow)
+# class RoomInDB(Room):
+#     _id: ObjectId
+#     date_created: datetime = Field(default=datetime.utcnow)
 
 
-class Token(BaseModel):
-    access_token: str
-    token_type: str
+# class Token(BaseModel):
+#     access_token: str
+#     token_type: str
 
 
-class TokenData(BaseModel):
-    username: Optional[str] = None
+# class TokenData(BaseModel):
+#     username: Optional[str] = None
 
 
 class PydanticObjectId(ObjectId):
