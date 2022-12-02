@@ -10,8 +10,10 @@ COPY models.py models.py
 COPY websocket_manager.py websocket_manager.py
 COPY config.py config.py
 COPY mongodb.py mongodb.py
-COPY requests.py requests.py
-
+COPY request_forms.py request_forms.py
+COPY utils.py utils.py
+COPY test test
+COPY tests tests
 # Copy all of the subdirectories in your service's directory
 # Modify these instructions to do that
 # COPY queries queries
