@@ -4,9 +4,10 @@ from fastapi import APIRouter
 
 # import routers from all files in api directory
 from api.users import router as user_router
-
+from api.chatrooms import router as chatrooms_router
 router = APIRouter()
 
 # include the routers in this main router which will
 # be imported into the main.py
 router.include_router(user_router)
+router.include_router(chatrooms_router)

@@ -13,6 +13,6 @@ class LoginRequest(BaseModel):
     password: str
 
 
-class RoomCreateRequest(BaseModel):
+class ChatroomCreateRequest(BaseModel):
     username: str
-    room_name: str
+    chatroom_name: str

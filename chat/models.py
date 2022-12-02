@@ -2,9 +2,24 @@
 # from fastapi import Response
 from pydantic import BaseModel, Field
 
-# from typing import List, Optional
+from typing import List, Optional
 from bson import ObjectId
 from datetime import datetime
+
+
+class PydanticObjectId(ObjectId):
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, value: ObjectId | str) -> ObjectId:
+        if value:
+            try:
+                ObjectId(value)
+            except ValueError:
+                raise ValueError(f"Not a valid object id: {value}")
+        return value
 
 
 class User(BaseModel):
@@ -169,17 +184,19 @@ class MessagesIn(BaseModel):
 #         return ChatroomOut(**props)
 
 
-# class Room(BaseModel):
-#     room_name: str
-#     members: Optional[List[UserInDB]] = []
-#     messages: Optional[List[MessageInDB]] = []
-#     last_pinged: datetime = Field(default=datetime.utcnow)
-#     active: bool = False
+class Chatroom(BaseModel):
+    chatroom_name: str
+    members: Optional[List[UserInDB]] = []
+    # messages: Optional[List[MessageInDB]] = []
+    last_pinged: datetime = Field(default_factory=datetime.utcnow)
+    active: bool = False
 
 
-# class RoomInDB(Room):
-#     _id: ObjectId
-#     date_created: datetime = Field(default=datetime.utcnow)
+class ChatroomInDB(Chatroom):
+    _id: ObjectId
+    chatroom_name: str
+    members: Optional[List[UserInDB]] = []
+    date_created: datetime = Field(default_factory=datetime.utcnow)
 
 
 # class Token(BaseModel):
@@ -189,18 +206,3 @@ class MessagesIn(BaseModel):
 
 # class TokenData(BaseModel):
 #     username: Optional[str] = None
-
-
-class PydanticObjectId(ObjectId):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def validate(cls, value: ObjectId | str) -> ObjectId:
-        if value:
-            try:
-                ObjectId(value)
-            except ValueError:
-                raise ValueError(f"Not a valid object id: {value}")
-        return value

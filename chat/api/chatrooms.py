@@ -1,15 +1,27 @@
 from fastapi import (
     APIRouter,
-    # Depends,
+    Depends,
     # Response,
     # Request,
     # status,
     # HTTPException,
 )
+from controllers.chatrooms import (
+    insert_chatroom,
+    get_chatrooms,
+    get_chatroom,
+    delete_chatroom,
+)
+from utils import format_ids
+# from controllers.users import get_user_db
+from config import MONGODB_DB_NAME
+from mongodb import get_nosql_db
+from pymongo import MongoClient
+from request_forms import ChatroomCreateRequest
 
 # from models import ChatroomIn, ChatroomOut
 # from jwtdown_fastapi.authentication import Token
-# import pymongo
+
 # from pydantic import BaseModel
 
 router = APIRouter()
@@ -30,16 +42,43 @@ router = APIRouter()
 # with request form for input, function gets current
 # user and mongoclient. Then uses the controller
 # function insert_chatroom to add created chatroom to the database
-@router.post("/chatrooms", tags=["Chatrooms"])
+@router.post("/chatrooms")
 async def create_chatroom(
-    # request: ChatRoomCreateRequest,
-    # client: MongoClient = Depends(get_nosql_db),
+    request: ChatroomCreateRequest,
+    client: MongoClient = Depends(get_nosql_db),
     # current_user: User = Depends(get_current_active_user),
 ):
-    # db = client[MONGODB_DB_NAME]
-    # collection = db.chatrooms
-    # response = await insert_chatroom(
-    #     request.username, request.chatroom_name, collection
-    # )
-    # return response
-    pass
+    db = client[MONGODB_DB_NAME]
+    collection = db.chatrooms
+    res = await insert_chatroom(
+        request.username, request.chatroom_name, collection
+    )
+    return res
+
+
+@router.get("/chatrooms")
+async def get_all_chatrooms(
+    client: MongoClient = Depends(get_nosql_db)
+    # current_user: User = Depends(get_current_active_user),
+):
+    chatrooms = await get_chatrooms()
+    return chatrooms
+
+
+@router.get("/chatrooms/{chatroom_name}")
+async def get_single_room(
+    chatroom_name,
+    # current_user: User = Depends(get_current_active_user),
+):
+    chatroom = await get_chatroom(chatroom_name)
+    formatted_chatroom = format_ids(chatroom)
+    return formatted_chatroom
+
+
+@router.delete("/chatrooms/{chatroom_name}")
+async def delete_chatroom_db(chatroom_name: str):
+    try:
+        await delete_chatroom(chatroom_name)
+    except Exception as e:
+        return (e)
+    return True
