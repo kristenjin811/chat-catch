@@ -13,6 +13,7 @@ from datetime import datetime
 # auth models
 # misc models
 
+
 # USER MODELS
 class User(BaseModel):
     username: str

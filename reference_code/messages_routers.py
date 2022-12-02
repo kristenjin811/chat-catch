@@ -20,7 +20,7 @@
 
 
 # @router.get("/api/messages/")
-# def get_all_messages(response: Response, message: MessageQueries = Depends()):
+# def get_all_messages(response: Response, message: MessageQueries=Depends()):
 #     response = message.get_all_messages()
 #     return response
 
