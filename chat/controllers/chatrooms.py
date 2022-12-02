@@ -1,11 +1,17 @@
 from .users import get_user_db
-from models import ChatroomInDB
+from models import ChatroomInDB, User
+
 # from pydantic import BaseModel, EmailStr
 # from fastapi import Response
 # from models import PydanticObjectId, UserIn, UserOut
 from config import MONGODB_DB_NAME
 from mongodb import get_nosql_db
 from utils import format_ids
+import logging
+from bson import ObjectId
+import json
+
+logger = logging.getLogger(__name__)
 
 # jmoussa has set_room_activity, not sure what its purpose is
 
@@ -20,7 +26,23 @@ from utils import format_ids
 
 
 async def upload_message_to_chatroom(data):
-    pass
+    message_data = json.loads(data)
+    client = await get_nosql_db()
+    db = client[MONGODB_DB_NAME]
+    try:
+        chatroom = await get_chatroom(message_data["chatroom_name"])
+        user = await get_user_db(message_data["user"]["username"])
+        message_data["user"] = user
+        message_data.pop("chatroom_name", None)
+        collection = db.chatrooms
+        collection.update_one(
+            {"_id": ObjectId(chatroom["_id"])},
+            {"$push": {"messages": message_data}},
+        )
+        return True
+    except Exception as e:
+        logger.error(f"error adding message to DB: {type(e)}{e}")
+        return False
 
 
 # insert created chatroom document into the
@@ -69,13 +91,56 @@ async def get_chatroom(chatroom_name) -> ChatroomInDB:
 # adding username of user document to chatroom
 # documents list of members
 async def add_user_to_chatroom(username: str, chatroom_name: str):
-    pass
+    client = await get_nosql_db()
+    db = client[MONGODB_DB_NAME]
+    try:
+        chatroom = await get_chatroom(chatroom_name)
+        user = await get_user_db(username)
+        collection = db.chatrooms
+        username_list = [m["username"] for m in chatroom["members"]]
+        if user["username"] not in username_list:
+            logger.info(f"adding{user['username']} to members")
+            collection.update_one(
+                {"_id": ObjectId(chatroom["_id"])},
+                {"$push": {"members": user}}
+            )
+            return True
+        else:
+            logger.info(f"{user['username']} is already a member")
+            return True
+    except Exception as e:
+        logger.error(f"Error updating members:{e}")
+        return None
 
 
 # update chatroom document in chatrooms collection by removing username of
 # user document from chatroom documents list of members
-async def remove_user_from_chatroom(username: str, chatroom_name: str):
-    pass
+async def remove_user_from_chatroom(
+    user: User,
+    chatroom_name: str,
+    username=None
+):
+    client = await get_nosql_db()
+    db = client[MONGODB_DB_NAME]
+    try:
+        chatroom = await get_chatroom(chatroom_name)
+        if username is not None and user is None:
+            user = await get_user_db(username)
+        collection = db.chatrooms
+        username_list = [m["username"] for m in chatroom["members"]]
+        if user["username"] in username_list:
+            logger.info(f"Removing{user['username']} from {chatroom_name} members")# noqa
+            collection.update_one(
+                {"_id": ObjectId(chatroom["_id"])},
+                {"$pull": {"members": {"username": user["username"]}}}
+            )
+            return True
+        else:
+            logger.info(f"{user['username']} is already out of the chatroom")
+            return True
+    except Exception as e:
+        logger.error(f"Error updating members:{e}")
+        return False
 
 
 async def delete_chatroom(chatroom_name: str):
