@@ -51,3 +51,8 @@ Goal: Today's goal was to check if MongoDB is successfully connected to our publ
 I haven't seen this error message before:
 ``` pymongo.errors.ServerSelectionTimeoutError: mongo:27017: [Errno -2] Name or service not known, Timeout: 30s, Topology Description: <TopologyDescription id: 638a5751e06dccaa5544c07e, topology_type: Unknown, servers: [<ServerDescription ('mongo', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('mongo:27017: [Errno -2] Name or service not known')>]>```
 I think it has something to do with mongodb connection.
+
+We were able to solve this issue with the help of Andrew. The connection named in config.py is wrong. It should be pointing to DATABASE_URL inside docker-compose.yaml. So it should look like this:
+```MONGODB_URL = os.environ.get("DATABASE_URL")```
+
+Goal: To import emoji api, and css.
