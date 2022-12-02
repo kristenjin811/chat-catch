@@ -4,6 +4,7 @@ from fastapi import (
     # WebSocketDisconnect
 )
 from fastapi.responses import HTMLResponse
+
 # from fastapi.middleware.cors import CORSMiddleware
 # import os
 
@@ -81,26 +82,13 @@ async def shutdown_event():
     await close_mongo_connection()
 
 
-# # @app.get("/api/launch-details")
-# # def launch_details():
-# #     return {
-# #         "launch_details": {
-# #             "year": 2022,
-# #             "month": 12,
-# #             "day": "9",
-# #             "hour": 19,
-# #             "min": 0,
-# #             "tz:": "PST",
-# #         }
-# #     }
-
 manager = ConnectionManager
 
 
-@app.get("/")
-def homepage():
-    with open("index.html") as f:
-        return HTMLResponse(f.read())
+# @app.get("/")
+# def homepage():
+#     with open("index.html") as f:
+#         return HTMLResponse(f.read())
 
 
 # @app.websocket("/ws/{room_name}/{user_name}")
