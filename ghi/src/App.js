@@ -1,5 +1,7 @@
 import logo from './chat-logo.png';
 import './App.css';
+// import { BrowserRouter, Routes, Route } from 'react-router-dom';
+// import ChatroomList from './websocket-test.js';
 
 function App() {
   return (
@@ -21,5 +23,14 @@ function App() {
     </div>
   );
 }
+// function App() {
+//   return (
+//     <BrowserRouter>
+//         <Routes>
+//             <Route path="chatrooms" element={<ChatroomList />} />
+//         </Routes>
+//     </BrowserRouter>
+//   );
+// }
 
 export default App;
