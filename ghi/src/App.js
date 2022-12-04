@@ -30,10 +30,13 @@ function App() {
   return (
     <BrowserRouter>
         <Routes>
-            <Route path="chatrooms" element={<ChatroomList  /> }  />
-            <Route path="users" element={<UserList /> } />
-            <Route path="Chat" element={<Chat/>} />
-            <Route path="Messages" element={<MessageForm /> } />
+            {/* <Route path="users" element={<UserList /> } />
+            <Route path="Chat" element={<Chat/>} /> */}
+            {/* <Route path="Messages" element={<MessageForm /> } /> */}
+            <Route path="chatrooms">
+              <Route path="" element={<ChatroomList  /> } />
+              <Route path="string"  element={<Chat />} />
+            </Route>
         </Routes>
     </BrowserRouter>
   );

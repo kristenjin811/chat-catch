@@ -82,3 +82,16 @@ async def delete_chatroom_db(chatroom_name: str):
     except Exception as e:
         return (e)
     return True
+
+@router.post("/chatrooms")
+async def create_chatroom(
+    request: ChatroomCreateRequest,
+    client: MongoClient = Depends(get_nosql_db),
+    # current_user: User = Depends(get_current_active_user),
+):
+    db = client[MONGODB_DB_NAME]
+    collection = db.messages
+    res = await insert_chatroom(
+        request.message, collection
+    )
+    return res

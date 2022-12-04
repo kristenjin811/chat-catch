@@ -1,21 +1,29 @@
 import UserList from "./UserList";
 import ChatroomList from "./websocket-test";
 
+
+function sendMessage(event){
+    let input = messageText
+    ws.send(input.value)
+    input.value = ""
+    event.preventDefault()
+};
+
 const Chat = () => {
     return (
       <div>
-        <form action="" onsubmit="sendMessage(event)">
-          <ChatroomList />
-          <UserList />
-          <button onclick="connect(event)">Connect</button>
+
+        <form action="" onSubmit={sendMessage(event)}>
+          {/* <ChatroomList />
+          <UserList /> */}
+          User: <input type="text" id="username" autoComplete="off" />
           <hr />
           <label>
-            Message: <input type="text" id="messageText" autocomplete="off" />
+            Message: <input type="text" id="messageText" autoComplete="off" />
           </label>
           <button>Send</button>
         </form>
-        <ul id='messages'>
-        </ul>
+        <ul id="messages"></ul>
         {/* <script>{
         let ws = null;
 	        function connect(event) {
@@ -29,13 +37,9 @@ const Chat = () => {
 		};
 		event.preventDefault()
 	    }
-	    function sendMessage(event) {
-		    let input = <messageText>
-		    ws.send(input.value)
-		    input.value = ""
-		    event.preventDefault()
-        }
+
         </script> */}
+
       </div>
     );
 };
