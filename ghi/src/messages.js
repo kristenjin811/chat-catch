@@ -6,11 +6,11 @@ const MessageForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = { message };
+    const data = selectedChatroom;
 
-    const url = "http://localhost:8000/api/chatrooms/";
+    const url = "http://localhost:8000/api/chatrooms/${selectedChatroom}";
     const fetchConfig = {
-      method: "POST",
+      method: "GET",
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",

@@ -18,26 +18,47 @@ const ChatroomList = () => {
         fetchChatrooms();
     }, []);
 
-    return (
-      <div className="container overflow-hidden mt-5">
-        <select
-          className="form-select"
-          name="chatroom"
-          id="chatroom"
-          value=""
-          onChange={(e) => setSelectedChatroom(e.target.value)}
-        >
-          <option value="">Choose a chatroom</option>
-          {chatrooms?.map(({ _id, chatroom_name }) => {
-            return (
-              <option key={_id} value={chatroom_name}>
-                {chatroom_name}
-              </option>
-            );
-          })}
-        </select>
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const data = selectedChatroom;
+        const url = `http://localhost:8000/api/chatrooms/${selectedChatroom}`;
+        const fetchConfig = {
+        method: "GET",
+        body: JSON.stringify(data),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    };
+    const response = await fetch(url, fetchConfig);
+    if (response.ok) {
+      event.target.reset();
+    }
+  };
 
-      </div>
+
+    return (
+        <form id="get-chatroom-form" onSubmit={handleSubmit}>
+            <div className="container overflow-hidden mt-5">
+                <select
+                className="form-select"
+                name="chatroom"
+                id="chatroom"
+                value=""
+                onChange={(e) => setSelectedChatroom(e.target.value)}
+                >
+                <option value="">Choose a chatroom</option>
+                {chatrooms?.map(({ _id, chatroom_name }) => {
+                    return (
+                    <option key={_id} value={chatroom_name}>
+                        {chatroom_name}
+                    </option>
+                    );
+                })}
+                </select>
+                <button className="btn btn-primary">Choose Chatroom</button>
+
+            </div>
+      </form>
     );
 }
 
