@@ -16,7 +16,7 @@ const Chat = () => {
         </form>
         <ul id='messages'>
         </ul>
-        <script>{
+        {/* <script>{
         let ws = null;
 	        function connect(event) {
 		    ws = new WebSocket("ws://localhost:8000/chat/ws?chatroom=" + selectedChatroom);
@@ -35,7 +35,7 @@ const Chat = () => {
 		    input.value = ""
 		    event.preventDefault()
         }
-        </script>
+        </script> */}
       </div>
     );
 };

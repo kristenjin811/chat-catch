@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ChatroomList from './websocket-test.js';
 import UserList from './UserList';
 import Chat from './ChatRoom';
+import MessageForm from './messages';
 
 // function App() {
 //   return (
@@ -32,6 +33,7 @@ function App() {
             <Route path="chatrooms" element={<ChatroomList  /> }  />
             <Route path="users" element={<UserList /> } />
             <Route path="Chat" element={<Chat/>} />
+            <Route path="Messages" element={<MessageForm /> } />
         </Routes>
     </BrowserRouter>
   );
