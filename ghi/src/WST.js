@@ -9,28 +9,15 @@ import {useState, useEffect} from 'react'
 // 3.
 // 3. message input
 
-// let chatroom = null;
-// let user = null;
-// let ws = null;
-
-// function connect(ws, chatroom, user) {
-//     if (chatroom !== null && user !== null) {
-//         ws = new WebSocket(`ws://localhost:8000/ws/${chatroom.chatroom_name}`)
-//     }
-//     return ws;
-// }
-
 
 const Chatpage = () => {
     const [chatrooms, setChatrooms] = useState([]);
     const [selectedChatroom, setSelectedChatroom] = useState(null);
-    const [user, setUser] = useState("");
+    const [user, setUser] = useState(null);
 
 
     const intializeChatroom = (selectedChatroom) => {
         setSelectedChatroom(selectedChatroom);
-        setWs(new WebSocket(`ws://localhost:8000/ws/${selectedChatroom.chatroom_name}`))
-
     }
 
 
@@ -62,7 +49,7 @@ const Chatpage = () => {
                     onChange={(e) => intializeChatroom(e.target.value)}
                 >
                     <option>{selectedChatroom}</option>
-                    {chatrooms?.map(({ _id, chatroom_name }) => {
+                    {chatrooms?.map((_id, chatroom_name) => {
                         return (
                         <option key={_id} value={chatroom_name}>
                             {chatroom_name}
@@ -78,8 +65,8 @@ const Chatpage = () => {
                 </button>
             </div>
             <div>
-            <h1>Welcome to {selectedChatroom}!</h1>
-            <form onSubmit={addMessage}>
+            {/* <h1>Welcome to {selectedChatroom}!</h1> */}
+            {/* <form onSubmit={addMessage}>
             <hr />
             <label>
                 Message: <input type="text" id="messageText" autoComplete="off" defaultValue={message} onChange={(e) => setMessage(e.target.value)} />
@@ -87,9 +74,9 @@ const Chatpage = () => {
             <button
                 type="submit"
             >Send</button>
-            </form>
+            </form> */}
             <Messages element={[selectedChatroom, user]}/>
-        </div>
+            </div>
         </div>
     );
 }
@@ -99,22 +86,41 @@ const Messages = (selectedChatroom, user) => {
     const [messages, setMessages] = useState([])
     const [message, setMessage] = useState(null)
     const [ws, setWs] = useState(null)
+    const [chatroom, setChatroom] = useState(null)
+    console.log(selectedChatroom, user, chatroom)
 
     const addMessage = (event) => {
         event.preventDefault()
         ws.send({"username": user, message})
     }
 
-    useEffect(function connect(selectedChatroom){
-            if (selectedChatroom !== null) {
-                const ws = new WebSocket(`ws://localhost:8000/ws/${selectedChatroom.chatroom_name}`);
+    useEffect(() => {
+        const fetchSelectedChatroom = async () => {
+            const url = "http://localhost:8000/api/chatrooms" + selectedChatroom;
+            const response = await fetch(url);
+            if (response.ok) {
+                const data = await response.json();
+                setChatroom(data);
             }
-            setMessages(selectedChatroom.messages)
+        };
+        fetchSelectedChatroom();
+    }, [selectedChatroom])
 
-            connect();
-        }, [selectedChatroom]);
+    function connect(chatroom){
+            if (chatroom !== null && user !== null) {
+                setWs(new WebSocket(`ws://localhost:8000/ws/${chatroom.chatroom_name}`));
+                ws.onopen = () => {
+                    ws.send("Connect");
+                }
+                ws.onmessage = (e) => {
+                    const m = JSON.parse(e.data);
+                    setMessages([...messages, m])
+                }
+                setMessages(chatroom.messages)
+            }
+        };
 
-    render (
+    return (
         <div>
             <form onSubmit={addMessage}>
                 <hr />
