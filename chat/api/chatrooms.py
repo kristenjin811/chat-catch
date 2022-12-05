@@ -11,13 +11,14 @@ from controllers.chatrooms import (
     get_chatrooms,
     get_chatroom,
     delete_chatroom,
+    upload_message_to_chatroom
 )
 from utils import format_ids
 # from controllers.users import get_user_db
 from config import MONGODB_DB_NAME
 from mongodb import get_nosql_db
 from pymongo import MongoClient
-from request_forms import ChatroomCreateRequest
+from request_forms import ChatroomCreateRequest,ChatroomMessageRequest
 
 # from models import ChatroomIn, ChatroomOut
 # from jwtdown_fastapi.authentication import Token
@@ -92,6 +93,18 @@ async def create_chatroom(
     db = client[MONGODB_DB_NAME]
     collection = db.messages
     res = await insert_chatroom(
+        request.message, collection
+    )
+    return res
+
+@router.post("/chatrooms")
+async def create_message(
+    request: ChatroomMessageRequest,
+    client: MongoClient = Depends(get_nosql_db),
+):
+    db = client[MONGODB_DB_NAME]
+    collection = db.messages
+    res = await upload_message_to_chatroom(
         request.message, collection
     )
     return res
