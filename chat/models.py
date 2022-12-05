@@ -38,6 +38,7 @@ class Message(BaseModel):
 
 class MessageInDB(Message):
     _id: ObjectId
+    message: Message
     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
 

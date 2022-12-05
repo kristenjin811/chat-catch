@@ -1,6 +1,7 @@
 import UserList from "./UserList";
 import ChatroomList from "./websocket-test";
 
+// const selectedChatroom =
 
 function sendMessage(event){
     let input = messageText
@@ -9,7 +10,7 @@ function sendMessage(event){
     event.preventDefault()
 };
 
-const Chat = () => {
+const Chat = (data) => {
     return (
       <div>
 
@@ -80,3 +81,37 @@ export default Chat;
 
 //     })
 // }
+
+
+// <div className="container overflow-hidden mt-5">
+//     <h1 className="text-center">Welcome to {selectedChatroom} Chat</h1>
+//         <select
+//           className="form-select"
+//           name="chatroom"
+//           id="chatroom"
+//           value=""
+//           onChange={(e) => setSelectedChatroom(e.target.value)}
+//         >
+//           <option>{selectedChatroom}</option>
+//           {chatrooms?.map(({ _id, chatroom_name }) => {
+//             return (
+//               <option key={_id} value={chatroom_name}>
+//                 {chatroom_name}
+//               </option>
+//             );
+//           })}
+//         </select>
+//         <button
+//           onClick={() =>
+//             navigate(
+//               `/${selectedChatroom}`
+//             )
+//           }
+//           className="btn btn-primary"
+//         >
+//           Choose Chatroom
+//         </button>
+//       </div>
+
+// <div className="shadow p-4 mt-4">
+// //           <h1 className="text-center">Create a Message</h1>

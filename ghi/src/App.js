@@ -1,10 +1,11 @@
 // import logo from './chat-logo.png';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ChatroomList from './websocket-test.js';
-import UserList from './UserList';
-import Chat from './ChatRoom';
-import MessageForm from './messages';
+// import ChatroomList from './websocket-test.js';
+// import UserList from './UserList';
+// import Chat from './ChatRoom';
+// import MessageForm from './messages';
+import Chatpage from './WST'
 
 // function App() {
 //   return (
@@ -34,8 +35,8 @@ function App() {
             <Route path="Chat" element={<Chat/>} /> */}
             {/* <Route path="Messages" element={<MessageForm /> } /> */}
             <Route path="chatrooms">
-              <Route path="" element={<ChatroomList  /> } />
-              <Route path="string"  element={<Chat />} />
+              <Route path="" element={<Chatpage /> } />
+              {/* <Route path="string"  element={<Chat />} /> */}
             </Route>
         </Routes>
     </BrowserRouter>
