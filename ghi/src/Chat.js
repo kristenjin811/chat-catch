@@ -13,7 +13,8 @@ function Chat() {
   const [inputStr, setInputStr] = useState('')
   const [showPicker, setShowPicker] = useState(false)
   const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [chatrooms, setChatrooms] = useState([]);
+  const [selectedChatroom, setSelectedChatroom] = useState("Choose a chatroom");
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -26,6 +27,19 @@ function Chat() {
     };
     fetchUsers();
   }, []);
+
+   useEffect(() => {
+     const fetchChatrooms = async () => {
+       const url = "http://localhost:8000/api/chatrooms";
+       const response = await fetch(url);
+       if (response.ok) {
+         const data = await response.json();
+         setChatrooms(data);
+       }
+     };
+     fetchChatrooms();
+   }, []);
+
 
   const onEmojiClick = (event, emojiObject) => {
     setInputStr(prevInput => prevInput + emojiObject.emoji)
@@ -56,17 +70,20 @@ function Chat() {
               <li className="members-list-title">Members</li>
               {users?.map(({ _id, username }) => {
                 return (
-                  <option className="member-name-in-list" key={_id} value={username}>
+                  <option
+                    className="member-name-in-list"
+                    key={_id}
+                    value={username}
+                  >
                     {username}
                   </option>
                 );
               })}
-
             </ul>
           </div>
           <div className="chat-area">
             <div className="chat-area-title">
-              <b>Chatroom #1</b>
+              <b>{selectedChatroom}</b>
             </div>
             <div className="chat-list"></div>
             <div className="input-area">
@@ -95,7 +112,6 @@ function Chat() {
               </Button>
             </div>
           </div>
-
           <div className="right-tabs">
             <ul className="tabs-container">
               <div className="title">
@@ -105,16 +121,39 @@ function Chat() {
             <div className="chatroom-list">
               <div className="season_tabs">
                 <div class="season_tab">
+                  <table>
+                    <thead>
+                      <tr>
+                        <ul>
+                          <li
+                            onClick={(e) => setSelectedChatroom(e.target.value)}
+                          >
+                            {chatrooms?.map(({ _id, chatroom_name }) => {
+                              return (
+                                <option
+                                  className="table table-striped "
+                                  key={_id}
+                                  value={chatroom_name}
+                                >
+                                  {chatroom_name}
+                                </option>
+                              );
+                            })}
+                          </li>
+                        </ul>
+                      </tr>
+                    </thead>
+                  </table>
                   <input type="radio" id="tab-2" name="tab-group-1" />
                   <label htmlFor="tab-2">Chatroom 1</label>
 
-                  <div class="season_content">
-                    <span>tabik 2</span>
+                  <div className="season_content">
+                    <span>Chatroom 1</span>
                   </div>
                 </div>
 
                 <div class="season_tab">
-                  <input type="radio" id="tab-3" name="tab-group-1" />
+                  <input onClick type="radio" id="tab-3" name="tab-group-1" />
                   <label htmlFor="tab-3">Chatroom 2</label>
 
                   <div class="season_content">
