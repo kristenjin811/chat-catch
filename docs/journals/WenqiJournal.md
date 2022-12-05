@@ -58,3 +58,4 @@ We were able to solve this issue with the help of Andrew. The connection named i
 ```MONGODB_URL = os.environ.get("DATABASE_URL")```
 
 Goal: To import emoji api, and css.
+I was successfully connected to emoji library using Emoji-Mart on the front-end.
