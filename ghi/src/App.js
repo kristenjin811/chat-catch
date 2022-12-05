@@ -1,5 +1,6 @@
 import React from 'react'
 import Chat from './Chat'
+import UserList from './UsersList'
 import {
   BrowserRouter,
   Routes,
@@ -15,6 +16,7 @@ function App() {
       <div className="container">
         <Routes>
           <Route path="/" element={<Chat />} />
+          <Route path="users" element={<UserList />} />
         </Routes>
       </div>
     </BrowserRouter>

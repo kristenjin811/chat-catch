@@ -1,7 +1,7 @@
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import React, { useState } from 'react'
+import React, { useState , useEffect } from 'react'
 import EmojiPicker from './EmojiPicker'
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -12,7 +12,20 @@ import "./Chat.css"
 function Chat() {
   const [inputStr, setInputStr] = useState('')
   const [showPicker, setShowPicker] = useState(false)
+  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
 
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const url = "http://localhost:8000/api/users";
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+        setUsers(data);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   const onEmojiClick = (event, emojiObject) => {
     setInputStr(prevInput => prevInput + emojiObject.emoji)
@@ -25,7 +38,6 @@ function Chat() {
 
   return (
     <>
-    
       {/* <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/> */}
 
       <div className="window-wrapper">
@@ -42,10 +54,14 @@ function Chat() {
           <div className="members-list">
             <ul className="">
               <li className="members-list-title">Members</li>
-              <li className="member-name-in-list">Cucu Ionel</li>
-              <li className="member-name-in-list">Jan Dvořák</li>
-              <li className="member-name-in-list">Clark Ken</li>
-              <li className="member-name-in-list">Ioana Marcu</li>
+              {users?.map(({ _id, username }) => {
+                return (
+                  <option className="member-name-in-list" key={_id} value={username}>
+                    {username}
+                  </option>
+                );
+              })}
+
             </ul>
           </div>
           <div className="chat-area">
