@@ -24,7 +24,7 @@ function Chat() {
       if (response.ok) {
         const data = await response.json();
         setUsers(data.members);
-        
+
       }
     };
     fetchUsers();
@@ -76,7 +76,6 @@ function Chat() {
                 Members
               </li>
               {users?.map(({ date_created, username }) => {
-
                 return (
                   <option
                     className="member-name-in-list"
@@ -115,7 +114,7 @@ function Chat() {
                   />
                 )}
               </div>
-              <Button className="send-btn" variant="secondary">
+              <Button onSubmit className="send-btn" variant="secondary">
                 Send
               </Button>
             </div>
@@ -130,25 +129,26 @@ function Chat() {
               <div className="season_tabs">
                 <div className="season_tab">
                   <ul>
-                    <li onClick={(e) => setSelectedChatroom(e.target.value)}>
-                      {chatrooms?.map(({ _id, chatroom_name }) => {
-                        return (
-                          <option
-                            className="table table-striped "
-                            key={_id}
-                            value={chatroom_name}
-                          >
-                            {chatroom_name}
-                          </option>
-                        );
-                      })}
-                    </li>
+                    <li></li>
                   </ul>
 
                   <input type="radio" id="tab-2" name="tab-group-1" />
-                  <label htmlFor="tab-2">Chatroom 1</label>
+                  <label htmlFor="tab-2"
+                    onClick={(e) => setSelectedChatroom(e.target.value)}>
+                    {chatrooms?.map(({ _id, chatroom_name }) => {
+                      return (
+                        <option
+                          className="table table-striped "
+                          key={_id}
+                          value={chatroom_name}
+                        >
+                          {chatroom_name}
+                        </option>
+                      );
+                    })}
+                  </label>
 
-                  <div className="season_content">
+                  {/* <div className="season_content">
                     <span>Chatroom 1</span>
                   </div>
                 </div>
@@ -166,14 +166,14 @@ function Chat() {
                   <label htmlFor="tab-4">chatroom 3</label>
 
                   <div className="season_content">
-                    <span>chatroom 3</span>
+                    <span>chatroom 3</span> */}
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      {/* </div> */}
 
       {/* <Row id="chat">
           <Col>
