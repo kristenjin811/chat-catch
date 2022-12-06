@@ -95,25 +95,25 @@ function Chat() {
             </div>
             <div className="chat-list"></div>
             <div className="input-area">
+              {showPicker && <EmojiPicker
+                pickerStyle={{ width: '100%' }}
+                onEmojiClick={onEmojiClick} />}
               <div className="input-wrapper">
                 <input className="text" type="text" defaultValue=""/>
                 <img
                   className="emoji-icon"
                   src="https://icons.getbootstrap.com/assets/icons/emoji-smile.svg"
                   onClick={() => setShowPicker(val => !val)} />
-                {showPicker && <EmojiPicker
-                  pickerStyle={{ width: '100%' }}
-                  onEmojiClick={onEmojiClick} />}
               </div>
-              <Button className="send-btn" variant="secondary">
-                Send
-              </Button>
+                <Button className="send-btn" variant="secondary">
+                  Send
+                </Button>
             </div>
           </div>
           <div className="right-tabs">
             <ul className="tabs-container">
               <div className="title">
-                <b>Your chatrooms</b>
+                <b>Your Chatrooms</b>
               </div>
             </ul>
             <div className="chatroom-list">
@@ -131,6 +131,11 @@ function Chat() {
                   })}
                 </li>
               </ul>
+            </div>
+            <div>
+              <Button className="logout-btn" variant="outline-secondary">
+                Logout
+              </Button>
             </div>
           </div>
         </div>
