@@ -15,7 +15,21 @@ function Chat() {
   const [users, setUsers] = useState([]);
   const [chatrooms, setChatrooms] = useState([]);
   const [selectedChatroom, setSelectedChatroom] = useState("");
+  const [getMessages, setGetMessages] = useState("");
 
+
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      const url = "http://localhost:8000/api/messages"
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+        setGetMessages(data)
+      }
+    };
+    fetchMessages();
+  }, [])
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -41,6 +55,30 @@ function Chat() {
      };
      fetchChatrooms();
    }, []);
+
+   const handleSubmit = async (event) => {
+     event.preventDefault();
+     const message = inputStr
+     const chatroom_name = selectedChatroom;
+     const username = "Frank"
+
+     const data = { username, message, chatroom_name };
+
+     const url = "http://localhost:8000/api/messages";
+     const fetchConfig = {
+       method: "POST",
+       body: JSON.stringify(data),
+       headers: {
+         "Content-Type": "application/json",
+       },
+     };
+
+     const response = await fetch(url, fetchConfig);
+     if (response.ok) {
+       setInputStr("");
+
+     }
+   };
 
 
   const onEmojiClick = (event, emojiObject) => {
@@ -93,7 +131,18 @@ function Chat() {
               <b>Current Room: </b>
               <b> {selectedChatroom}</b>
             </div>
-            <div className="chat-list"></div>
+            <div className="chat-list">
+              {getMessages?.map(({ _id, message }) => {
+                return (
+                  <option
+                    key={_id}
+                    value={message}
+                  >
+                    {message}
+                  </option>
+                );
+              })}
+            </div>
             <div className="input-area">
               <div className="input-wrapper">
                 <input
@@ -114,7 +163,11 @@ function Chat() {
                   />
                 )}
               </div>
-              <Button onSubmit className="send-btn" variant="secondary">
+              <Button
+                onClick={handleSubmit}
+                className="send-btn"
+                variant="secondary"
+              >
                 Send
               </Button>
             </div>
@@ -133,8 +186,10 @@ function Chat() {
                   </ul>
 
                   <input type="radio" id="tab-2" name="tab-group-1" />
-                  <label htmlFor="tab-2"
-                    onClick={(e) => setSelectedChatroom(e.target.value)}>
+                  <label
+                    htmlFor="tab-2"
+                    onClick={(e) => setSelectedChatroom(e.target.value)}
+                  >
                     {chatrooms?.map(({ _id, chatroom_name }) => {
                       return (
                         <option
@@ -167,12 +222,12 @@ function Chat() {
 
                   <div className="season_content">
                     <span>chatroom 3</span> */}
-                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
       {/* </div> */}
 
       {/* <Row id="chat">
@@ -203,4 +258,4 @@ function Chat() {
   );
 }
 
-export default Chat
+export default Chat;

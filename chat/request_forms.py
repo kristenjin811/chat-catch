@@ -16,3 +16,9 @@ class LoginRequest(BaseModel):
 class ChatroomCreateRequest(BaseModel):
     username: str
     chatroom_name: str
+
+
+class ChatroomMessageRequest(BaseModel):
+    username: str
+    chatroom_name: str
+    message: str

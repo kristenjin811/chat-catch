@@ -212,6 +212,7 @@ b{
 	bottom: 44px;
 	overflow-y: auto;
 	outline: none;
+	width: 429px;
 
 	& > div > .jspPane {
 			margin-left: 0 !important;

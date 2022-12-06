@@ -148,3 +148,22 @@ async def delete_chatroom(chatroom_name: str):
     db = client[MONGODB_DB_NAME]
     collection = db.chatrooms
     collection.delete_one({"chatroom_name": chatroom_name})
+
+
+async def add_message(message:str, collection):
+    client = await get_nosql_db()
+    db = client[MONGODB_DB_NAME]
+    collection = db.messages
+    collection.insert_one({"message": message})
+
+
+async def get_messages():
+    client = await get_nosql_db()
+    db = client[MONGODB_DB_NAME]
+    messages_collection = db.messages
+    rows = messages_collection.find()
+    row_list = []
+    for row in rows:
+        f_row = format_ids(row)
+        row_list.append(f_row)
+    return row_list
