@@ -14,21 +14,21 @@ function Chat() {
   const [showPicker, setShowPicker] = useState(false)
   const [users, setUsers] = useState([]);
   const [chatrooms, setChatrooms] = useState([]);
-  const [selectedChatroom, setSelectedChatroom] = useState("Choose a chatroom");
+  const [selectedChatroom, setSelectedChatroom] = useState("");
 
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const url = `http://localhost:8000/api/users/`
+      const url = `http://localhost:8000/api/chatrooms/${selectedChatroom}`
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
-        setUsers(data);
-        console.log(data);
+        setUsers(data.members);
+        
       }
     };
     fetchUsers();
-  }, [setUsers]);
+  }, [selectedChatroom]);
 
    useEffect(() => {
      const fetchChatrooms = async () => {
@@ -69,12 +69,18 @@ function Chat() {
         <div className="window-area">
           <div className="members-list">
             <ul className="">
-              <li className="members-list-title">Members</li>
-              {users?.map(({ _id, username }) => {
+              <li
+                className="members-list-title"
+                onChange={(e) => setUsers(e.target.value)}
+              >
+                Members
+              </li>
+              {users?.map(({ date_created, username }) => {
+
                 return (
                   <option
                     className="member-name-in-list"
-                    key={_id}
+                    key={date_created}
                     value={username}
                   >
                     {username}
@@ -85,7 +91,8 @@ function Chat() {
           </div>
           <div className="chat-area">
             <div className="chat-area-title">
-              <b>{selectedChatroom}</b>
+              <b>Current Room: </b>
+              <b> {selectedChatroom}</b>
             </div>
             <div className="chat-list"></div>
             <div className="input-area">
@@ -122,25 +129,21 @@ function Chat() {
             <div className="chatroom-list">
               <div className="season_tabs">
                 <div className="season_tab">
-
-
-                        <ul>
-                          <li
-                            onClick={(e) => setSelectedChatroom(e.target.value)}
+                  <ul>
+                    <li onClick={(e) => setSelectedChatroom(e.target.value)}>
+                      {chatrooms?.map(({ _id, chatroom_name }) => {
+                        return (
+                          <option
+                            className="table table-striped "
+                            key={_id}
+                            value={chatroom_name}
                           >
-                            {chatrooms?.map(({ _id, chatroom_name }) => {
-                              return (
-                                <option
-                                  className="table table-striped "
-                                  key={_id}
-                                  value={chatroom_name}
-                                >
-                                  {chatroom_name}
-                                </option>
-                              );
-                            })}
-                          </li>
-                        </ul>
+                            {chatroom_name}
+                          </option>
+                        );
+                      })}
+                    </li>
+                  </ul>
 
                   <input type="radio" id="tab-2" name="tab-group-1" />
                   <label htmlFor="tab-2">Chatroom 1</label>
