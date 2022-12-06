@@ -97,7 +97,7 @@ class ConnectionManager:
         print("Accepted!")
         self.active_connections.append(websocket)
 
-    async def disconnect(self, websocket: WebSocket, chatroom_name: str):
+    async def disconnect(self, websocket: WebSocket):
         self.active_connections.remove(websocket)
 
     async def send_personal_message(self, message: str, websocket: WebSocket):

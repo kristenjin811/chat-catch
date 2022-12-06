@@ -65,24 +65,36 @@ const Chatpage = () => {
     );
 }
 
-const Messages = ({selectedChatroomName, messages, user}) => {
-    // const [ws, setWs] = useState(null)
+
+const Messages = ({selectedChatroomName, user}) => {
+    const [ws, setWs] = useState(null)
     const [message, setMessage] = useState("");
+    const [messages, setMessages] = useState([]);
 
     async function addMessage(event){
         event.preventDefault();
         // ws.send({"username": user, "message": message})
     }
 
-    // useEffect(() => {
-    //     async function connectToWebSocket() {
-    //         if (ws === null || ws.readyState === WebSocket.CLOSED) {
-    //             const socketURL = "ws://localhost:8000/ws/" + selectedChatroomName + "/" + user;
-    //             setWs(new WebSocket(socketURL));
-    //         }
-    //     };
-    //     connectToWebSocket();
-    // }, [])
+    useEffect(() => {
+        async function connectToWebSocket() {
+            if (!ws || ws?.readyState === WebSocket.CLOSED) {
+                const websocket = new WebSocket(`ws://localhost:8000/ws/${selectedChatroomName}/${user}`);
+
+                websocket.onopen = () => {
+                    websocket.send('Connected to client!');
+                }
+
+                websocket.onmessage = function(event) {
+                    console.log("got a message")
+                };
+
+                // websocket.onclose = () => {setTimeout(connectToWebSocket, 1000)}
+                setWs(websocket);
+            }
+        };
+        connectToWebSocket();
+    }, [selectedChatroomName, user, ws])
 
     return (
         <div>
