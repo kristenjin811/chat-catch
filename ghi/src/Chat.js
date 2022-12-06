@@ -1,93 +1,106 @@
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import React, { useState , useEffect } from 'react'
-import EmojiPicker from './EmojiPicker'
-import Button from 'react-bootstrap/Button';
-import ListGroup from 'react-bootstrap/ListGroup';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import UserList from './UsersList'
-import "./Chat.css"
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import React, { useState, useEffect } from "react";
+import EmojiPicker from "./EmojiPicker";
+import Button from "react-bootstrap/Button";
+import ListGroup from "react-bootstrap/ListGroup";
+import "bootstrap/dist/css/bootstrap.min.css";
+import UserList from "./UsersList";
+import "./Chat.css";
+import Picker from "@emoji-mart/react";
+import data from "@emoji-mart/data";
 
 function Chat() {
-  const [inputStr, setInputStr] = useState('')
-  const [showPicker, setShowPicker] = useState(false)
+  const [inputStr, setInputStr] = useState("");
+  const [showPicker, setShowPicker] = useState("");
+  const [emojiObj, setEmojiObj] = useState("");
   const [users, setUsers] = useState([]);
   const [chatrooms, setChatrooms] = useState([]);
   const [selectedChatroom, setSelectedChatroom] = useState("");
   const [getMessages, setGetMessages] = useState("");
-
-
+  const [submitted, setSubmitted] = useState(false);
+  const [emojiStr, setEmojiStr] = useState("");
 
   useEffect(() => {
     const fetchMessages = async () => {
-      const url = "http://localhost:8000/api/messages"
+      const url = "http://localhost:8000/api/messages";
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
-        setGetMessages(data)
+        setGetMessages(data);
       }
     };
     fetchMessages();
-  }, [])
+  }, [setGetMessages]);
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const url = `http://localhost:8000/api/chatrooms/${selectedChatroom}`
+      const url = `http://localhost:8000/api/chatrooms/${selectedChatroom}`;
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
         setUsers(data.members);
-
       }
     };
     fetchUsers();
   }, [selectedChatroom]);
 
-   useEffect(() => {
-     const fetchChatrooms = async () => {
-       const url = "http://localhost:8000/api/chatrooms";
-       const response = await fetch(url);
-       if (response.ok) {
-         const data = await response.json();
-         setChatrooms(data);
-       }
-     };
-     fetchChatrooms();
-   }, []);
+  useEffect(() => {
+    const fetchChatrooms = async () => {
+      const url = "http://localhost:8000/api/chatrooms";
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+        setChatrooms(data);
+      }
+    };
+    fetchChatrooms();
+  }, []);
 
-   const handleSubmit = async (event) => {
-     event.preventDefault();
-     const message = inputStr
-     const chatroom_name = selectedChatroom;
-     const username = "Frank"
+  //  setEmoji(result)[]
+  // const apple = emoji.native;
+  // setResult(apple);
 
-     const data = { username, message, chatroom_name };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const message = inputStr + " " +  emojiStr;
+    //  const emoji = emoji.native;
+    const chatroom_name = selectedChatroom;
+    const username = "Frank";
 
-     const url = "http://localhost:8000/api/messages";
-     const fetchConfig = {
-       method: "POST",
-       body: JSON.stringify(data),
-       headers: {
-         "Content-Type": "application/json",
-       },
-     };
+    const data = { username, message, chatroom_name };
 
-     const response = await fetch(url, fetchConfig);
-     if (response.ok) {
-       setInputStr("");
+    const url = "http://localhost:8000/api/messages";
+    const fetchConfig = {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
 
-     }
-   };
-
-
-  const onEmojiClick = (event, emojiObject) => {
-    setInputStr(prevInput => prevInput + emojiObject.emoji)
-    setShowPicker(false)
-
+    const response = await fetch(url, fetchConfig);
+    console.log("response::", response);
+    if (response.ok) {
+      setInputStr("");
+      setSubmitted(true);
+      setEmojiStr("")
+    }
   };
 
+  // const onEmojiClick = (event, emoji) => {
+  //   // setEmoji(emoji.native)
+  //   console.log("helloooo", emoji.native);
+  //   // setShowPicker(false)
+  // };
 
+  const selectedEmoji = emojiObj.native;
+  useEffect(() => {
+        setEmojiStr(selectedEmoji)
+
+    });
+  // console.log("result::", emojiStr)
 
 
   return (
@@ -132,36 +145,51 @@ function Chat() {
               <b> {selectedChatroom}</b>
             </div>
             <div className="chat-list">
-              {/* {getMessages?.map(({ _id, message }) => {
-                return (
-                  <option
-                    key={_id}
-                    value={message}
-                  >
-                    {message}
-                  </option>
-                );
-              })} */}
+              {getMessages.length === 0
+                ? getMessages
+                : getMessages.map(({ _id, message }) => {
+                    return (
+                      <option key={_id} value={message}>
+                        {message}
+                      </option>
+                    );
+                  })}
             </div>
-            <div className="input-area">
-              <div className="input-wrapper">
-                <input className="text" type="text" defaultValue=""/>
-                <img
-                  className="emoji-icon"
-                  src="https://icons.getbootstrap.com/assets/icons/emoji-smile.svg"
-                  onClick={() => setShowPicker(val => !val)} />
-                {showPicker && <EmojiPicker
-                  pickerStyle={{ width: '100%' }}
-                  onEmojiClick={onEmojiClick} />}
+            <form>
+              <div className="input-area">
+                <div className="input-wrapper">
+                  <input
+                    onChange={(e) => setInputStr(e.target.value)}
+                    className="text"
+                    type="text"
+                    value={inputStr}
+                  />
+                  <img
+                    className="emoji-icon"
+                    src="https://icons.getbootstrap.com/assets/icons/emoji-smile.svg"
+                    onClick={() => setShowPicker((val) => !val)}
+                  />
+                  {showPicker && (
+                    // <EmojiPicker
+                    //   pickerStyle={{ width: "100%" }}
+                    //   onChange={(event) => onEmojiClick(event.target.value)}
+                    // onEmojiClick={setEmoji}
+                    // />
+                    <Picker data={data} onEmojiSelect={setEmojiObj} />
+                  )}
+                  {console.log("PLEASE HELP ME", data)}
+                </div>
+                <Button
+                  onClick={handleSubmit}
+                  type="submit"
+                  className="send-btn"
+                  variant="secondary"
+                >
+                  {" "}
+                  Send{" "}
+                </Button>
               </div>
-              <Button
-                onClick={handleSubmit}
-                className="send-btn"
-                variant="secondary"
-              >
-                Send
-              </Button>
-            </div>
+            </form>
           </div>
           <div className="right-tabs">
             <ul className="tabs-container">
@@ -223,12 +251,11 @@ function Chat() {
 }
 
 export default Chat;
-{
-  chatrooms?.map(({ _id, chatroom_name }) => {
-    return (
-      <option className="table table-striped " key={_id} value={chatroom_name}>
-        {chatroom_name}
-      </option>
-    );
-  });
-}
+// { chatrooms?.map(({ _id, chatroom_name }) => {
+//     return (
+//       <option className="table table-striped " key={_id} value={chatroom_name}>
+//         {chatroom_name}
+//       </option>
+//     );
+//   });
+// }
