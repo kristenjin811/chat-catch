@@ -145,23 +145,14 @@ function Chat() {
             </div>
             <div className="input-area">
               <div className="input-wrapper">
-                <input
-                  onChange={(e) => setInputStr(e.target.value)}
-                  className="text"
-                  type="text"
-                  defaultValue=""
-                />
+                <input className="text" type="text" defaultValue=""/>
                 <img
                   className="emoji-icon"
                   src="https://icons.getbootstrap.com/assets/icons/emoji-smile.svg"
-                  onSelect={() => setShowPicker((val) => !val)}
-                />
-                {showPicker && (
-                  <EmojiPicker
-                    pickerStyle={{ width: "100%" }}
-                    onEmojiClick={onEmojiClick}
-                  />
-                )}
+                  onClick={() => setShowPicker(val => !val)} />
+                {showPicker && <EmojiPicker
+                  pickerStyle={{ width: '100%' }}
+                  onEmojiClick={onEmojiClick} />}
               </div>
               <Button
                 onClick={handleSubmit}
@@ -182,28 +173,25 @@ function Chat() {
               <div className="season_tabs">
                 <div className="season_tab">
                   <ul>
-                    <li></li>
+                    <li onClick={(e) => setSelectedChatroom(e.target.value)}>
+                      {chatrooms?.map(({ _id, chatroom_name }) => {
+                        return (
+                          <option
+                            className="table table-striped "
+                            key={_id}
+                            value={chatroom_name}
+                          >
+                            {chatroom_name}
+                          </option>
+                        );
+                      })}
+                    </li>
                   </ul>
 
                   <input type="radio" id="tab-2" name="tab-group-1" />
-                  <label
-                    htmlFor="tab-2"
-                    onClick={(e) => setSelectedChatroom(e.target.value)}
-                  >
-                    {chatrooms?.map(({ _id, chatroom_name }) => {
-                      return (
-                        <option
-                          className="table table-striped "
-                          key={_id}
-                          value={chatroom_name}
-                        >
-                          {chatroom_name}
-                        </option>
-                      );
-                    })}
-                  </label>
+                  <label htmlFor="tab-2">Chatroom 1</label>
 
-                  {/* <div className="season_content">
+                  <div className="season_content">
                     <span>Chatroom 1</span>
                   </div>
                 </div>
@@ -221,7 +209,8 @@ function Chat() {
                   <label htmlFor="tab-4">chatroom 3</label>
 
                   <div className="season_content">
-                    <span>chatroom 3</span> */}
+                    <span>chatroom 3</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -229,31 +218,6 @@ function Chat() {
         </div>
       </div>
       {/* </div> */}
-
-      {/* <Row id="chat">
-          <Col>
-            <div className="current-chatroom-name">Chatroom Name</div>
-            <div className="chat-box">chat box</div>
-          </Col>
-        </Row>
-        <Row id="text-area">
-          <Col>
-            <div className="picker-container">
-              <input
-                className="input-style"
-                value={inputStr}
-                onChange={e => setInputStr(e.target.value)} />
-              <img
-                className="emoji-icon"
-                src="https://icons.getbootstrap.com/assets/icons/emoji-smile.svg"
-                onClick={() => setShowPicker(val => !val)} />
-              {showPicker && <EmojiPicker
-                pickerStyle={{ width: '100%' }}
-                onEmojiClick={onEmojiClick} />}
-              <Button className="send-button" variant="dark">Send</Button>
-            </div>
-          </Col>
-        </Row> */}
     </>
   );
 }

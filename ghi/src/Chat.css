@@ -498,6 +498,7 @@ ul.tabs-container{
 }
 .chatroom-list{
 	margin-bottom: 0px;
+	margin-top: 4px;
 }
 
 
@@ -505,4 +506,16 @@ ul.tabs-container{
 	background: #5f768d;
   color: rgb(210, 210, 210);
   margin: 5px;
+}
+.chatroom-name-list{
+  list-style: none;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 10px 15px 10px 25px;
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.5);
+  margin-bottom: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+  border-radius: 3px;
+	margin-left: 0px;
 }
