@@ -29,30 +29,30 @@
 #             <label>Message: <input type="text" id="messageText" autocomplete="off"/></label>
 #             <button>Send</button>
 #         </form>
-        # <ul id='messages'>
-        # </ul>
-        # <script>
-        # var ws = null;
-        #     function connect(event) {
-        #         var itemId = document.getElementById("itemId")
-        #         var chatroom = document.getElementById("chatroom")
-        #         ws = new WebSocket("ws://localhost:8000/items/" + itemId.value + "/ws?chatroom=" + chatroom.value);
-        #         ws.onmessage = function(event) {
-        #             var messages = document.getElementById('messages')
-        #             var message = document.createElement('li')
-        #             var content = document.createTextNode(event.data)
-        #             message.appendChild(content)
-        #             messages.appendChild(message)
-        #         };
-        #         event.preventDefault()
-        #     }
-        #     function sendMessage(event) {
-        #         var input = document.getElementById("messageText")
-        #         ws.send(input.value)
-        #         input.value = ''
-        #         event.preventDefault()
-        #     }
-        # </script>
+# <ul id='messages'>
+# </ul>
+# <script>
+# var ws = null;
+#     function connect(event) {
+#         var itemId = document.getElementById("itemId")
+#         var chatroom = document.getElementById("chatroom")
+#         ws = new WebSocket("ws://localhost:8000/items/" + itemId.value + "/ws?chatroom=" + chatroom.value);
+#         ws.onmessage = function(event) {
+#             var messages = document.getElementById('messages')
+#             var message = document.createElement('li')
+#             var content = document.createTextNode(event.data)
+#             message.appendChild(content)
+#             messages.appendChild(message)
+#         };
+#         event.preventDefault()
+#     }
+#     function sendMessage(event) {
+#         var input = document.getElementById("messageText")
+#         ws.send(input.value)
+#         input.value = ''
+#         event.preventDefault()
+#     }
+# </script>
 #     </body>
 # </html>
 # """
@@ -99,20 +99,17 @@ from starlette.websockets import WebSocketState
 from websocket_manager import ConnectionManager
 from controllers.chatrooms import (
     get_chatroom,
-    remove_user_from_chatroom,
-    add_user_to_chatroom,
-    upload_message_to_chatroom
+    # remove_user_from_chatroom,
+    # add_user_to_chatroom,
+    upload_message_to_chatroom,
 )
-from mongodb import (
-    connect_to_mongo,
-    close_mongo_connection,
-    get_nosql_db
-)
+from mongodb import connect_to_mongo, close_mongo_connection, get_nosql_db
 from config import MONGODB_DB_NAME
 import pymongo
 import logging
 import json
 from api import router as api_router
+
 # # from authenticator import authenticator
 # from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -131,7 +128,8 @@ logger = logging.getLogger(__name__)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[os.environ.get("CORS_HOST", "http://localhost:3000")],
+    # allow_origins=[os.environ.get("CORS_HOST", "http://localhost:3000")],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -190,8 +188,8 @@ manager = ConnectionManager
 async def websocket_endpoint(websocket: WebSocket, chatroom_name, user_name):
     try:
         # add user
-        await manager.connect(websocket, chatroom_name)
-        await add_user_to_chatroom(user_name, chatroom_name)
+        await manager.connect(websocket)
+        # await add_user_to_chatroom(user_name, chatroom_name)
         chatroom = await get_chatroom(chatroom_name)
         data = {
             "content": f"{user_name} has entered the chat",
@@ -219,25 +217,27 @@ async def websocket_endpoint(websocket: WebSocket, chatroom_name, user_name):
                     logger.info(f"DATA RECEIVED: {data}")
                     await manager.broadcast(f"{data}")
             else:
-                logger.warning(f"Websocket state:{websocket.application_state},reconnecting...")# noqa
-                await manager.connect(websocket, chatroom_name)
+                logger.warning(
+                    f"Websocket state:{websocket.application_state},reconnecting..."
+                )  # noqa
+                await manager.connect(websocket)
     except Exception as e:
-        template = "An exception of type {0} occurred, Arguments:\n{1!r}"
-        message = template.format(type(e).__name__, e.args)
-        logger.error(message)
-        # remove user
-        logger.warning("Disconnecting Websocket")
-        await remove_user_from_chatroom(
-          None, chatroom_name,
-          username=user_name
-          )
-        chatroom = await get_chatroom(chatroom_name)
-        data = {
-            "content": f"{user_name} has left the chat",
-            "user": {"username": user_name},
-            "chatroom_name": chatroom_name,
-            "type": "dismissal",
-            "new_chatroom_obj": chatroom,
-        }
-        await manager.broadcast(f"{json.dumps(data, default=str)}")
-        await manager.disconnect(websocket, chatroom_name)
+        pass
+        # template = "An exception of type {0} occurred, Arguments:\n{1!r}"
+        # message = template.format(type(e).__name__, e.args)
+        # logger.error(message)
+        # # remove user
+        # logger.warning("Disconnecting Websocket")
+        # await remove_user_from_chatroom(
+        #     None, chatroom_name, username=user_name
+        # )
+        # # chatroom = await get_chatroom(chatroom_name)
+        # data = {
+        #     "content": f"{user_name} has left the chat",
+        #     # "user": {"username": user_name},
+        #     # "chatroom_name": chatroom_name,
+        #     # "type": "dismissal",
+        #     # "new_chatroom_obj": chatroom,
+        # }
+        # await manager.broadcast(f"{json.dumps(data, default=str)}")
+        # await manager.disconnect(websocket, chatroom_name)
