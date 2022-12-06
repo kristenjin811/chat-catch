@@ -132,7 +132,7 @@ function Chat() {
               <b> {selectedChatroom}</b>
             </div>
             <div className="chat-list">
-              {getMessages?.map(({ _id, message }) => {
+              {/* {getMessages?.map(({ _id, message }) => {
                 return (
                   <option
                     key={_id}
@@ -141,7 +141,7 @@ function Chat() {
                     {message}
                   </option>
                 );
-              })}
+              })} */}
             </div>
             <div className="input-area">
               <div className="input-wrapper">
@@ -259,3 +259,12 @@ function Chat() {
 }
 
 export default Chat;
+{
+  chatrooms?.map(({ _id, chatroom_name }) => {
+    return (
+      <option className="table table-striped " key={_id} value={chatroom_name}>
+        {chatroom_name}
+      </option>
+    );
+  });
+}
