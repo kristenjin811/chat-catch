@@ -16,17 +16,19 @@ function Chat() {
   const [chatrooms, setChatrooms] = useState([]);
   const [selectedChatroom, setSelectedChatroom] = useState("Choose a chatroom");
 
+
   useEffect(() => {
     const fetchUsers = async () => {
-      const url = "http://localhost:8000/api/users";
+      const url = `http://localhost:8000/api/users/`
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
         setUsers(data);
+        console.log(data);
       }
     };
     fetchUsers();
-  }, []);
+  }, [setUsers]);
 
    useEffect(() => {
      const fetchChatrooms = async () => {
@@ -89,7 +91,6 @@ function Chat() {
             <div className="input-area">
               <div className="input-wrapper">
                 <input
-                  value={inputStr}
                   onChange={(e) => setInputStr(e.target.value)}
                   className="text"
                   type="text"
@@ -98,7 +99,7 @@ function Chat() {
                 <img
                   className="emoji-icon"
                   src="https://icons.getbootstrap.com/assets/icons/emoji-smile.svg"
-                  onClick={() => setShowPicker((val) => !val)}
+                  onSelect={() => setShowPicker((val) => !val)}
                 />
                 {showPicker && (
                   <EmojiPicker
@@ -120,10 +121,9 @@ function Chat() {
             </ul>
             <div className="chatroom-list">
               <div className="season_tabs">
-                <div class="season_tab">
-                  <table>
-                    <thead>
-                      <tr>
+                <div className="season_tab">
+
+
                         <ul>
                           <li
                             onClick={(e) => setSelectedChatroom(e.target.value)}
@@ -141,9 +141,7 @@ function Chat() {
                             })}
                           </li>
                         </ul>
-                      </tr>
-                    </thead>
-                  </table>
+
                   <input type="radio" id="tab-2" name="tab-group-1" />
                   <label htmlFor="tab-2">Chatroom 1</label>
 
@@ -152,19 +150,19 @@ function Chat() {
                   </div>
                 </div>
 
-                <div class="season_tab">
-                  <input onClick type="radio" id="tab-3" name="tab-group-1" />
+                <div className="season_tab">
+                  <input type="radio" id="tab-3" name="tab-group-1" />
                   <label htmlFor="tab-3">Chatroom 2</label>
 
-                  <div class="season_content">
+                  <div className="season_content">
                     <span>Chatroom 2</span>
                   </div>
                 </div>
-                <div class="season_tab">
+                <div className="season_tab">
                   <input type="radio" id="tab-4" name="tab-group-1" />
                   <label htmlFor="tab-4">chatroom 3</label>
 
-                  <div class="season_content">
+                  <div className="season_content">
                     <span>chatroom 3</span>
                   </div>
                 </div>
