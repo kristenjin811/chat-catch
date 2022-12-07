@@ -7,6 +7,7 @@
   border-width: 1px;
   border-style: solid;
 }
+
 .chat-area {
   width: 900px;
 }
@@ -185,7 +186,6 @@ b{
         color: #f57e7d;
     }
 }
-
 .chat-area{
 	border-top: 1px solid #cfdae1;
 	position: absolute;
@@ -275,6 +275,7 @@ b{
 	border-radius: 5px;
 	float: left;
 	position: absolute;
+	height: 54px;
 }
 .input-wrapper{
 	background: #fff;
@@ -472,7 +473,7 @@ ul.tabs-container{
 }
 .logout-btn {
 	cursor: pointer;
-	margin-top: 260px;
-	margin-left: 48px;
-	size: 30px;
+	margin-left: 50px;
+	position: absolute;
+	bottom: -12px;
 }

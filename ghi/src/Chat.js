@@ -1,12 +1,8 @@
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import React, { useState , useEffect } from 'react'
+import { Link } from 'react-router-dom';
 import EmojiPicker from './EmojiPicker'
 import Button from 'react-bootstrap/Button';
-import ListGroup from 'react-bootstrap/ListGroup';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import UserList from './UsersList'
 import "./Chat.css"
 
 function Chat() {
@@ -58,7 +54,7 @@ function Chat() {
       <div className="window-wrapper">
         <div className="window-title">
           <div className="app-title">
-            <p>Chat Catch</p>
+            <div>Chat Catch</div>
           </div>
           <div className="expand">
             <i className="fa fa-expand"></i>
@@ -131,11 +127,13 @@ function Chat() {
                   })}
                 </li>
               </ul>
-            </div>
-            <div>
+            <Link to="/">
               <Button className="logout-btn" variant="outline-secondary">
                 Logout
               </Button>
+            </Link>
+            </div>
+            <div>
             </div>
           </div>
         </div>

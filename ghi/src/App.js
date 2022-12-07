@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react';
 import Chat from './Chat'
 import UserList from './UsersList'
+import Login from './Login'
+import Register from './Register'
 import {
   BrowserRouter,
   Routes,
@@ -15,7 +17,9 @@ function App() {
      <BrowserRouter>
       <div className="container">
         <Routes>
-          <Route path="/" element={<Chat />} />
+          <Route path="/" element={<Login />} />
+          <Route path="register/" element={<Register />} />
+          <Route path="chats/" element={<Chat />} />
           <Route path="users" element={<UserList />} />
         </Routes>
       </div>
