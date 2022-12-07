@@ -1,70 +1,73 @@
 from pydantic import BaseModel
 from typing import Optional
-import pymongo
 import os
 from pymongo.errors import DuplicateKeyError
-from config import MONGODB_DB_NAME
-from mongodb import get_nosql_db
-from pymongo import MongoClient
-from fastapi import (
-    Depends,
-)
+from queries.client import Queries
 
 
 
-
-class Account(BaseModel):
-    id: str
-    email: str
-    hashed_password: str
-
-
-class AccountIn(BaseModel):
-    email: str
-    password: str
-
-
-class AccountOut(BaseModel):
-    id: str
-    email: str
 
 
 class DuplicateAccountError(ValueError):
     pass
 
 
-class AccountRepository:
-    async def get_one(self, email: str) -> Optional[Account]:
-        client = await get_nosql_db()
-        db = client[MONGODB_DB_NAME]
+class AccountIn(BaseModel):
+    email: str
+    password: str
+    full_name: str
 
-        print("db ACCOUNT QUERIES.PY :::::::::", db)
+class AccountOut(BaseModel):
+    id: str
+    email: str
+    full_name: str
 
 
-        result = db.accounts.find_one({"email": email})
-        if result:
-            result["id"] = str(result["_id"])
-        return Account(**result)
+class AccountOutWithPassword(BaseModel):
+    hashed_password: str
 
-    async def create(self, account: AccountIn, hashed_password: str) -> Account:
+
+
+
+
+class AccountQueries(Queries):
+    DB_NAME = "accounts"
+    COLLECTION = "accounts"
+
+
+    def get(self, email: str):
+
+
+        # print("db ACCOUNT QUERIES.PY :::::::::", db)
+
+
+        user = self.collection.find_one({"email": email})
+        user["id"] = str(user["id"])
+        return AccountOutWithPassword(**user)
+        # if result:
+        #     result["id"] = str(result["_id"])
+        # return Account(**result)
+
+    def create(self, info: AccountIn, hashed_password: str):
+        # -> Account
         print("This is queries create   ::::::::::::::::::::::::::")
-        client: MongoClient = Depends(get_nosql_db)
-        print("client ACCOUNT QUERIES.PY:::::::::::::::::::::::::::::::::::", client)
 
-        db = await client[MONGODB_DB_NAME]
+        # print("client ACCOUNT QUERIES.PY:::::::::::::::::::::::::::::::::::", client)
 
 
-        print("db ACCOUNT QUERIES.PY::::::::::::::::",db)
 
-        props = account.dict()
+
+        # print("db ACCOUNT QUERIES.PY::::::::::::::::",db)
+
+        props = info.dict()
 
         props["hashed_password"] = hashed_password
 
         props.pop("password")
         try:
 
-            db.accounts.insert_one(props)
+            self.collection.insert_one(props)
         except DuplicateKeyError:
             raise DuplicateAccountError()
         props["id"] = str(props["_id"])
-        return Account(**props)
+        return AccountOutWithPassword(**props)

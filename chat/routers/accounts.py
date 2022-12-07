@@ -14,7 +14,7 @@ from pydantic import BaseModel
 from queries.accounts import (
     AccountIn,
     AccountOut,
-    AccountRepository,
+    AccountQueries,
     DuplicateAccountError,
 )
 
@@ -35,18 +35,18 @@ class HttpError(BaseModel):
 router = APIRouter()
 
 
-@router.post("/accounts", response_model=AccountToken | HttpError)
+@router.post("/api/accounts", response_model=AccountToken | HttpError)
 async def create_account(
-    
+
     info: AccountIn,
     request: Request,
     response: Response,
-    repo: AccountRepository = Depends(),
+    accounts: AccountQueries = Depends(),
     ):
     print("info::::::::", info)
     print("request::::::::", request)
     print("response::::::::", response)
-    print("repo::::::::", repo)
+    print("repo::::::::", accounts)
     hashed_password = authenticator.hash_password(info.password)
     print("hashed_password:::::::", hashed_password)
     # try:
@@ -56,11 +56,17 @@ async def create_account(
     #         status_code=status.HTTP_400_BAD_REQUEST,
     #         detail="Error, email already in use",
     #     )
-    account = repo.create(info, hashed_password)
+    try:
+        account = accounts.create(info, hashed_password)
+    except DuplicateAccountError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Cannot create an account with those credentials",
+        )
     print("account router::::::::::", account)
     form = AccountForm(username=info.email, password=info.password)
     print("form:::::::::::::", form)
-    token = await authenticator.login(response, request, form, repo)
+    token = await authenticator.login(response, request, form, accounts)
     print("token::::::::::::", token)
     return AccountToken(account=account, **token.dict())
 
