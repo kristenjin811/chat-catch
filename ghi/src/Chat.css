@@ -7,6 +7,7 @@
   border-width: 1px;
   border-style: solid;
 }
+
 .chat-area {
   width: 900px;
 }
@@ -16,15 +17,10 @@
 }
 .emoji-icon {
   cursor: pointer;
-	padding-top: 9px;
+	padding-top: 12px;
 	padding-left: 9px;
 	position: right;
 }
-.send-btn{
-	margin-left: 9px;
-	position: absolute;
-}
-
 
 /*
   HTML implementation of a Hip Chat redesign based on Jan Dvořák Dribbble shot.
@@ -103,6 +99,7 @@ b{
 	text-align: center;
 	font-weight: bold;
 	color: white;
+	margin-top: 10px;
 }
 .expand{
 	position: absolute;
@@ -283,9 +280,9 @@ b{
 	border-radius: 5px;
 	float: left;
 	width: 340px;
+	height: 40px;
 }
 .input-area .input-wrapper input{
-	height: 30px;
 	line-height: 10px;
 	border: 0;
 	margin: 0;
@@ -444,58 +441,6 @@ ul.tabs-container{
 	width: 7px;
 }
 
-
-.season_tabs {
-  position: relative;
-  min-height: 60px;
-  clear: both;
-  margin: 25px 0;
-	margin-top: 3px;
-}
-.season_tab {
-  float: left;
-  clear: both;
-  width: 288px;
-}
-.season_tab label {
-	background: #eee;
-	padding: 0px;
-	border: 0px solid #ccc;
-	margin-left: 0px;
-	margin-top: 0px;
-	font-size: 13px;
-	vertical-align: middle;
-	top: 0px;
-	left: 1px;
-	width: 264px;
-	height: 28px;
-	display: table-cell;
-}
-.season_tab [type=radio] {
-  display: none;
-	margin: 0px;
-}
-.season_content {
-  position: absolute;
-  top: 0;
-  left: 286px;
-  background: white;
-  right: 0;
-  bottom: 0;
-  padding: 0px;
-  border: 1px solid #ccc;
- }
-.season_content span {
-  animation: 0.5s ease-out 0s 1 slideInFromTop;
-}
-[type=radio]:checked ~ label {
-  background: white;
-  border-bottom: 2px solid #8bc34a;
-  z-index: 2;
-}
-[type=radio]:checked ~ label ~ .season_content {
-  z-index: 1;
-}
 .chatroom-list{
 	margin-bottom: 0px;
 	margin-top: 4px;
@@ -519,3 +464,18 @@ ul.tabs-container{
   border-radius: 3px;
 	margin-left: 0px;
 }
+.title{
+	text-align: center;
+
+}
+.logout-btn {
+	cursor: pointer;
+	margin-left: 50px;
+	position: absolute;
+	bottom: -12px;
+}
+.send-btn {
+	margin-left: 350px;
+	margin-top: -30px;
+}
+

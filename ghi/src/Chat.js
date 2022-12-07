@@ -63,6 +63,17 @@ function Chat() {
     };
     fetchChatrooms();
   }, []);
+  useEffect(() => {
+     const fetchChatrooms = async () => {
+       const url = "http://localhost:8000/api/chatrooms";
+       const response = await fetch(url);
+       if (response.ok) {
+         const data = await response.json();
+         setChatrooms(data);
+       }
+     };
+     fetchChatrooms();
+   }, []);
 
   //  setEmoji(result)[]
   // const apple = emoji.native;
@@ -74,7 +85,13 @@ function Chat() {
     //  const emoji = emoji.native;
     const chatroom_name = selectedChatroom;
     const username = "Frank";
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const message = inputStr
+    const chatroom_name = selectedChatroom;
+    const username = "Frank"
 
+    const data = { username, message, chatroom_name };
     const data = { username, message, chatroom_name };
 
     const url = "http://localhost:8000/api/messages";
@@ -85,6 +102,14 @@ function Chat() {
         "Content-Type": "application/json",
       },
 
+    };
+    const url = "http://localhost:8000/api/messages";
+    const fetchConfig = {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
     };
 
 
@@ -100,6 +125,12 @@ function Chat() {
       }
 
     }
+     }
+   };
+
+  const onEmojiClick = (event, emojiObject) => {
+    setInputStr(prevInput => prevInput + emojiObject.emoji)
+    setShowPicker(false)
 
   };
 
@@ -137,12 +168,11 @@ function Chat() {
 
   return (
     <>
-      {/* <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/> */}
-
       <div className="window-wrapper">
+
         <div className="window-title">
           <div className="app-title">
-            <p>Chat Catch</p>
+            <div>Chat Catch</div>
           </div>
           <div className="expand">
             <i className="fa fa-expand"></i>
@@ -155,15 +185,15 @@ function Chat() {
               <li
                 className="members-list-title"
                 onChange={(e) => setUsers(e.target.value)}
-              >
+                >
                 Members
               </li>
               {users?.map(({ date_created, username }) => {
                 return (
                   <option
-                    className="member-name-in-list"
-                    key={date_created}
-                    value={username}
+                  className="member-name-in-list"
+                  key={date_created}
+                  value={username}
                   >
                     {username}
                   </option>
@@ -224,10 +254,11 @@ function Chat() {
               </div>
             </form>
           </div>
+
           <div className="right-tabs">
             <ul className="tabs-container">
               <div className="title">
-                <b>Your chatrooms</b>
+                <b>Your Chatrooms</b>
               </div>
             </ul>
             <div className="chatroom-list">
@@ -275,9 +306,9 @@ function Chat() {
                 </div>
               </div>
             </div>
+            <div>
           </div>
         </div>
-      {/* </div> */}
       {/* </div> */}
     </>
   );
