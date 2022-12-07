@@ -1,7 +1,7 @@
 from fastapi import (
     Depends,
-    HTTPException,
-    status,
+    # HTTPException,
+    # status,
     Response,
     APIRouter,
     Request,
@@ -43,6 +43,7 @@ async def create_account(
     response: Response,
     accounts: AccountQueries = Depends(),
     ):
+
     print("info::::::::", info)
     print("request::::::::", request)
     print("response::::::::", response)

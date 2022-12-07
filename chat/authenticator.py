@@ -19,7 +19,7 @@ class MyAuthenticator(Authenticator):
         self,
         accounts: AccountQueries = Depends(),
     ):
-        print("22222222222222222222222222222222222222222222222222:::::::::::::::::::::::::::::::::::::::")
+        print("222222222222222:::::::::::::::::::::::::::::::::::::::")
         return accounts
 
     async def get_hashed_password(self, account: AccountOutWithPassword):
