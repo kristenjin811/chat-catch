@@ -67,3 +67,8 @@ I found an emoji library which can be imported to our application. It's called e
 ## Dec 4, 2022
 Today I worked on CSS. The front-end of a chat app is actually much more complicated than I thought. i used part of a CSS for chat app from codepen.io. I learned that I still need to make a lot of changes and refinements to it so that it suits our application. The front end is not completely done.
 The css reference is at https://codepen.io/CucuIonel/pen/yLaLGL?editors=100
+
+
+## Dec 6, 2022
+Today I worked on creating more react pages for our project. Fixed the send button and emoji-picker. I will focus on adjusting the chat page from tomorrow.
+We also spend a while merging commits.
