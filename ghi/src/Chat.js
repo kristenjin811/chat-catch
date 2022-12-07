@@ -1,15 +1,12 @@
 
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import React, { useState, useEffect } from "react";
-import EmojiPicker from "./EmojiPicker";
 import Button from "react-bootstrap/Button";
-import ListGroup from "react-bootstrap/ListGroup";
 import "bootstrap/dist/css/bootstrap.min.css";
 import UserList from "./UsersList";
 import "./Chat.css";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
+import {Link} from 'react-router-dom';
 
 function Chat() {
   const [inputStr, setInputStr] = useState("");
@@ -51,18 +48,6 @@ function Chat() {
     fetchUsers();
   }, [selectedChatroom]);
 
-  useEffect((event) => {
-    const fetchChatrooms = async () => {
-      const url = "http://localhost:8000/api/chatrooms";
-      const response = await fetch(url);
-      if (response.ok) {
-        const data = await response.json();
-
-        setChatrooms(data);
-      }
-    };
-    fetchChatrooms();
-  }, []);
   useEffect(() => {
      const fetchChatrooms = async () => {
        const url = "http://localhost:8000/api/chatrooms";
@@ -73,7 +58,7 @@ function Chat() {
        }
      };
      fetchChatrooms();
-   }, []);
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -90,7 +75,6 @@ function Chat() {
       },
     };
 
-
     const response = await fetch(url, fetchConfig);
     console.log("response::", response);
     if (response.ok) {
@@ -101,7 +85,6 @@ function Chat() {
       if(submitted == true) {
         setSubmitted(false);
       }
-
     }
   };
 
@@ -121,11 +104,9 @@ function Chat() {
   },[selectedEmoji]);
 
 
-
   return (
     <div>
       <div className="window-wrapper">
-
         <div className="window-title">
           <div className="app-title">
             <div>Chat Catch</div>
@@ -134,7 +115,6 @@ function Chat() {
             <i className="fa fa-expand"></i>
           </div>
         </div>
-
         <div className="window-area">
           <div className="members-list">
             <ul className="">
@@ -166,8 +146,8 @@ function Chat() {
               {getMessages.length === 0
                 ? getMessages
                 : getMessages.map(({ _id, message }) => {
-                    return (
-                      <option key={_id} value={message}>
+                  return (
+                    <option key={_id} value={message}>
                         {message}
                       </option>
                     );
@@ -175,38 +155,31 @@ function Chat() {
             </div>
             <form>
               <div className="input-area">
+                {showPicker && (
+                  <Picker data={data} onEmojiSelect={setEmojiObj} />
+                )}
                 <div className="input-wrapper">
                   <input
                     onChange={(e) => setInputStr(e.target.value)}
                     className="text"
                     type="text"
                     value={inputStr}
-                  />
+                    />
                   <img
                     className="emoji-icon"
                     src="https://icons.getbootstrap.com/assets/icons/emoji-smile.svg"
                     onClick={() => setShowPicker((val) => !val)}
-                  />
-                  {showPicker && (
-                    // <EmojiPicker
-                    //   pickerStyle={{ width: "100%" }}
-                    //   onChange={(event) => onEmojiClick(event.target.value)}
-                    // onEmojiClick={setEmoji}
-                    // />
-                    <Picker data={data} onEmojiSelect={setEmojiObj} />
-                  )}
-
+                    />
+                  <Button
+                    onClick={handleSubmit}
+                    type="submit"
+                    className="send-btn"
+                    variant="secondary"
+                  >
+                    {" "}
+                    Send{" "}
+                  </Button>
                 </div>
-                <Button
-                  onClick={handleSubmit}
-
-                  type="submit"
-                  className="send-btn"
-                  variant="secondary"
-                >
-                  {" "}
-                  Send{" "}
-                </Button>
               </div>
             </form>
           </div>
@@ -218,26 +191,30 @@ function Chat() {
               </div>
             </ul>
             <div className="chatroom-list">
-                  <ul>
-                    <li onClick={(e) => setSelectedChatroom(e.target.value)}>
-                      {chatrooms?.map(({ _id, chatroom_name }) => {
-                        return (
-                          <option
-                            className="table table-striped "
-                            key={_id}
-                            value={chatroom_name}
-                          >
-                            {chatroom_name}
-                          </option>
-                        );
-                      })};
-                    </li>
-                  </ul>
-                </div>
-              </div>
+              <ul>
+                <li onClick={(e) => setSelectedChatroom(e.target.value)}>
+                  {chatrooms?.map(({ _id, chatroom_name }) => {
+                    return (
+                      <a
+                        key={_id}
+                        value={chatroom_name}
+                      ><option className="chatroom-name-list">
+                        {chatroom_name}</option>
+                      </a>
+                    );
+                  })}
+                </li>
+              </ul>
             </div>
+            <Link to="/">
+              <Button className="logout-btn" variant="outline-secondary">
+                Logout
+              </Button>
+            </Link>
           </div>
         </div>
+      </div>
+    </div>
 
   );
 }
