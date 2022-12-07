@@ -18,15 +18,19 @@ from queries.accounts import (
     DuplicateAccountError,
 )
 
+
 class AccountForm(BaseModel):
     username: str
     password: str
 
+
 class AccountToken(Token):
     account: AccountOut
 
+
 class HttpError(BaseModel):
     detail: str
+
 
 router = APIRouter()
 
@@ -36,7 +40,7 @@ async def create_account(
     info: AccountIn,
     request: Request,
     response: Response,
-    accounts: AccountQueries= Depends(),
+    accounts: AccountQueries = Depends(),
 ):
     hashed_password = authenticator.hash_password(info.password)
     try:
