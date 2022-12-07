@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
 import UserList from "./UsersList";
@@ -17,6 +17,11 @@ function Chat() {
   const [getMessages, setGetMessages] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [emojiStr, setEmojiStr] = useState(null);
+  const messagesEndRef = useRef(null)
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView();
+  }, [getMessages]);
 
   // useEffect(() => {
   //   const fetchMessages = async () => {
@@ -163,15 +168,14 @@ function Chat() {
                       </option>
                     );
                   })}
+            <div ref={messagesEndRef}>
             </div>
+            </div>
+
             <form>
               <div className="input-area">
                 {showPicker && (
-                  <Picker
-                    onClickOutside
-                    data={data}
-                    onEmojiSelect={setEmojiObj}
-                  />
+                  <Picker data={data} onEmojiSelect={setEmojiObj} />
                 )}
                 <div className="input-wrapper">
                   <input
