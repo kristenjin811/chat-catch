@@ -31,8 +31,8 @@ async def upload_message_to_chatroom(data):
     db = client[MONGODB_DB_NAME]
     try:
         chatroom = await get_chatroom(message_data["chatroom_name"])
-        user = await get_user_db(message_data["user"]["username"])
-        message_data["user"] = user
+        # user = await get_user_db(message_data["user"]["username"])
+        # message_data["user"] = user
         message_data.pop("chatroom_name", None)
         collection = db.chatrooms
         collection.update_one(

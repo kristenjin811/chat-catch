@@ -21,7 +21,7 @@ from config import MONGODB_DB_NAME
 from mongodb import get_nosql_db
 from pymongo import MongoClient
 from request_forms import ChatroomCreateRequest, ChatroomMessageRequest
-
+import json
 # from models import ChatroomIn, ChatroomOut
 # from jwtdown_fastapi.authentication import Token
 
@@ -86,34 +86,34 @@ async def delete_chatroom_db(chatroom_name: str):
         return (e)
     return True
 
-# @router.put("/chatrooms")
+@router.put("/chatrooms/{chatroom_name}")
+async def create_message(
+    request: ChatroomMessageRequest,
+):
+    data = {
+        "username": request.username,
+        "chatroom_name": request.chatroom_name,
+        "content": request.message,
+    }
+    res = await upload_message_to_chatroom(f"{json.dumps(data, default=str)}")
+    return res
+
+# @router.post("/messages")
 # async def create_message(
 #     request: ChatroomMessageRequest,
 #     client: MongoClient = Depends(get_nosql_db),
 # ):
 #     db = client[MONGODB_DB_NAME]
 #     collection = db.messages
-#     res = await upload_message_to_chatroom(
-#         request.message, request.chatroom_name, collection
+#     res= await add_message(
+#         request.message, collection
 #     )
 #     return res
 
-@router.post("/messages")
-async def create_message(
-    request: ChatroomMessageRequest,
-    client: MongoClient = Depends(get_nosql_db),
-):
-    db = client[MONGODB_DB_NAME]
-    collection = db.messages
-    res= await add_message(
-        request.message, collection
-    )
-    return res
-
-@router.get("/messages")
-async def get_um(
-    client: MongoClient = Depends(get_nosql_db)
-    # current_user: User = Depends(get_current_active_user),
-):
-    messages = await get_messages()
-    return messages
+# @router.get("/messages")
+# async def get_um(
+#     client: MongoClient = Depends(get_nosql_db)
+#     # current_user: User = Depends(get_current_active_user),
+# ):
+#     messages = await get_messages()
+#     return messages

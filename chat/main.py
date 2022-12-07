@@ -99,7 +99,7 @@ async def websocket_endpoint(websocket: WebSocket, chatroom_name, user_name):
     try:
         # add user
         await manager.connect(websocket, chatroom_name)
-        await add_user_to_chatroom(user_name, chatroom_name)
+        # await add_user_to_chatroom(user_name, chatroom_name)
         chatroom = await get_chatroom(chatroom_name)
         data = {
             "content": f"{user_name} has entered the chat",
