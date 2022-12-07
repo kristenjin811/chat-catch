@@ -77,12 +77,12 @@ const Messages = ({selectedChatroomName, user}) => {
     }
 
     useEffect(() => {
-        async function connectToWebSocket() {
+        const connectToWebSocket = () => {
             if (!ws || ws?.readyState === WebSocket.CLOSED) {
                 const websocket = new WebSocket(`ws://localhost:8000/ws/${selectedChatroomName}/${user}`);
 
                 websocket.onopen = () => {
-                    websocket.send('Connected to client!');
+                    websocket.send("{'message': 'Connected to client!'}");
                 }
 
                 websocket.onmessage = function(event) {

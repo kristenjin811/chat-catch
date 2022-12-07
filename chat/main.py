@@ -94,11 +94,14 @@ async def websocket_endpoint(
     try:
         await manager.connect(websocket)
         while True:
+            print("line 97")
             if websocket.application_state == WebSocketState.CONNECTED:
                 data = await websocket.receive_text()
-                message_data = json.loads(data)
-                print(f"PLZ WORK: {message_data}")
+                # message_data = json.loads(data)
+                print("line 100", data)
+                # print(f"PLZ WORK: {message_data}")
                 await upload_message_to_chatroom(data)
+                print("line 104")
                 logger.info(f"DATA RECEIVED: {data}")
                 await manager.broadcast(f"{data}")
             else:
@@ -107,7 +110,8 @@ async def websocket_endpoint(
                 )  # noqa
                 await manager.connect(websocket)
     except Exception as e:
-        pass
+        print("line 112", e)
+
         # template = "An exception of type {0} occurred, Arguments:\n{1!r}"
         # message = template.format(type(e).__name__, e.args)
         # logger.error(message)
