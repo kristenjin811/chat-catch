@@ -1,28 +1,34 @@
+
 import os
-from jwtdown_fastapi.authentication import Authenticator
 from fastapi import Depends
-from queries.accounts import AccountQueries, AccountOut, AccountOutWithPassword
+from jwtdown_fastapi.authentication import Authenticator
+from queries.accounts import AccountRepository, AccountOut, Account
 
 
 class MyAuthenticator(Authenticator):
     async def get_account_data(
         self,
-        username: str,
-        accounts: AccountQueries,
+        email: str,
+        accounts: AccountRepository,
     ):
-        return accounts.get(username)
+        print("GET ACCOUNT DATA AUTHEN.PY:::::::::::::::::::::::")
+        print("ACOUNTSSSS::::::::::::::::::::::::::::::::", accounts)
+        return accounts.get_one(email)
 
     def get_account_getter(
         self,
-        accounts: AccountQueries = Depends(),
+        accounts: AccountRepository = Depends(),
     ):
+        print("222222222222222:::::::::::::::::::::::::::::::::::::::")
         return accounts
 
-    def get_hashed_password(self, account: AccountOutWithPassword):
-        return account.hashed_password
+    async def get_hashed_password(self, account: Account):
+        print("GET HASHED PASSED::::::::::::::::::::::::::::::", account)
+        return await account.hashed_password
 
-    def get_account_data_for_cookie(self, account: AccountOut):
-        return account.username, AccountOut(**account.dict())
+    def get_account_data_for_cookie(self, account: Account):
+        print("444444444444444444444444:::::::::::::::::::::::::::::::")
+        return account.email, AccountOut(**account.dict())
 
 
 authenticator = MyAuthenticator(os.environ["SIGNING_KEY"])

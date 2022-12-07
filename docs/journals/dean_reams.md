@@ -1,9 +1,45 @@
+12/6/22
+Today, I worked on:
+
+- 
+
+12/5/22
+Today, I worked on:
+
+- After wenqi provided the front-end appearance of the
+web app I started to try and implement the components that
+we want the functionality to work. It's been a challenge.
+I did get members to populate based off chat-rooms, did get
+messages to to populate to with emojis to a database.
+
+12/4/22
+Today, I worked on:
+
+- trying to figure out websocket communication I think
+that i'm not going to completely understand how to
+make a connection with a websocket server. I wish
+this wasn't so hard.
+
+12/3/22
+Today, I worked on:
+
+- creating react components that will request things from
+or to the backend, along with trying to see how to
+implement websocket communication.
+
 12/2/22
+Today, I worked on:
+
+- working on the getting endpoints back up and running
+
+along with a little research about websocket's which has not been
+implemented nor is it seem clear how to use it. I do plan on using
+the weekend to try and figure out how to implement things
 
 12/1/22
 Today, I worked on:
 
--continuing to reimplement code
+- continuing to reimplement code
 
 After the restructuring of the code base, it did take a bit of
 work to get everything back up to a working state. Now it is a bit
