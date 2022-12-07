@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -164,7 +163,7 @@ function Chat() {
             <form>
               <div className="input-area">
                 {showPicker && (
-                  <Picker onClickOutside data={data} onEmojiSelect={setEmojiObj} />
+                  <Picker data={data} onEmojiSelect={setEmojiObj} />
                 )}
                 <div className="input-wrapper">
                   <input
