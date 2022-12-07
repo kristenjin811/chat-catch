@@ -13,14 +13,14 @@ import data from "@emoji-mart/data";
 
 function Chat() {
   const [inputStr, setInputStr] = useState("");
-  const [showPicker, setShowPicker] = useState("");
+  const [showPicker, setShowPicker] = useState(false);
   const [emojiObj, setEmojiObj] = useState("");
   const [users, setUsers] = useState([]);
   const [chatrooms, setChatrooms] = useState([]);
   const [selectedChatroom, setSelectedChatroom] = useState("");
   const [getMessages, setGetMessages] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [emojiStr, setEmojiStr] = useState("");
+  const [emojiStr, setEmojiStr] = useState(null);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -28,11 +28,13 @@ function Chat() {
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
+        // console.log(data);
         setGetMessages(data);
       }
     };
     fetchMessages();
-  }, [setGetMessages]);
+  }, [getMessages]);
+  // , [getMessages]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -40,18 +42,22 @@ function Chat() {
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
+        // console.log(data.messages);
         setUsers(data.members);
+        // setGetMessages(data.messages)
+
       }
     };
     fetchUsers();
-  }, [selectedChatroom]);
+  }, [selectedChatroom, getMessages]);
 
-  useEffect(() => {
+  useEffect((event) => {
     const fetchChatrooms = async () => {
       const url = "http://localhost:8000/api/chatrooms";
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
+
         setChatrooms(data);
       }
     };
@@ -64,7 +70,7 @@ function Chat() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const message = inputStr + " " +  emojiStr;
+    const message = inputStr
     //  const emoji = emoji.native;
     const chatroom_name = selectedChatroom;
     const username = "Frank";
@@ -78,15 +84,20 @@ function Chat() {
       headers: {
         "Content-Type": "application/json",
       },
+
     };
+
 
     const response = await fetch(url, fetchConfig);
     console.log("response::", response);
     if (response.ok) {
       setInputStr("");
       setSubmitted(true);
-      setEmojiStr("")
+      setEmojiStr("");
+      setShowPicker(false)
+
     }
+
   };
 
   // const onEmojiClick = (event, emoji) => {
@@ -98,8 +109,18 @@ function Chat() {
   const selectedEmoji = emojiObj.native;
   useEffect(() => {
         setEmojiStr(selectedEmoji)
+       if (selectedEmoji){
+         setInputStr(inputStr + selectedEmoji);
 
-    });
+       }
+      //  setInputStr(inputStr + " " + emojiStr);
+
+        //  setInputStr(inputStr + emojiStr);
+        //  inputStr = inputStr + emojiStr;
+
+      //  setInputStr(inputStr + " " + emojiStr);
+
+  },[selectedEmoji]);
   // console.log("result::", emojiStr)
 
 
@@ -177,7 +198,7 @@ function Chat() {
                     // />
                     <Picker data={data} onEmojiSelect={setEmojiObj} />
                   )}
-                  {console.log("PLEASE HELP ME", data)}
+                  {/* {console.log("PLEASE HELP ME", data)} */}
                 </div>
                 <Button
                   onClick={handleSubmit}
@@ -216,15 +237,15 @@ function Chat() {
                     </li>
                   </ul>
 
-                  <input type="radio" id="tab-2" name="tab-group-1" />
+                  {/* <input type="radio" id="tab-2" name="tab-group-1" />
                   <label htmlFor="tab-2">Chatroom 1</label>
 
                   <div className="season_content">
                     <span>Chatroom 1</span>
-                  </div>
+                  </div> */}
                 </div>
 
-                <div className="season_tab">
+                {/* <div className="season_tab">
                   <input type="radio" id="tab-3" name="tab-group-1" />
                   <label htmlFor="tab-3">Chatroom 2</label>
 
@@ -238,13 +259,13 @@ function Chat() {
 
                   <div className="season_content">
                     <span>chatroom 3</span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      {/* </div> */}
       {/* </div> */}
     </>
   );
