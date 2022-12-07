@@ -11,7 +11,21 @@ function Chat() {
   const [users, setUsers] = useState([]);
   const [chatrooms, setChatrooms] = useState([]);
   const [selectedChatroom, setSelectedChatroom] = useState("");
+  const [getMessages, setGetMessages] = useState("");
 
+
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      const url = "http://localhost:8000/api/messages"
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+        setGetMessages(data)
+      }
+    };
+    fetchMessages();
+  }, [])
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -20,6 +34,7 @@ function Chat() {
       if (response.ok) {
         const data = await response.json();
         setUsers(data.members);
+
       }
     };
     fetchUsers();
@@ -36,6 +51,30 @@ function Chat() {
      };
      fetchChatrooms();
    }, []);
+
+   const handleSubmit = async (event) => {
+     event.preventDefault();
+     const message = inputStr
+     const chatroom_name = selectedChatroom;
+     const username = "Frank"
+
+     const data = { username, message, chatroom_name };
+
+     const url = "http://localhost:8000/api/messages";
+     const fetchConfig = {
+       method: "POST",
+       body: JSON.stringify(data),
+       headers: {
+         "Content-Type": "application/json",
+       },
+     };
+
+     const response = await fetch(url, fetchConfig);
+     if (response.ok) {
+       setInputStr("");
+
+     }
+   };
 
 
   const onEmojiClick = (event, emojiObject) => {
@@ -71,7 +110,6 @@ function Chat() {
                 Members
               </li>
               {users?.map(({ date_created, username }) => {
-
                 return (
                   <option
                     className="member-name-in-list"
@@ -89,7 +127,18 @@ function Chat() {
               <b>Current Room: </b>
               <b> {selectedChatroom}</b>
             </div>
-            <div className="chat-list"></div>
+            <div className="chat-list">
+              {/* {getMessages?.map(({ _id, message }) => {
+                return (
+                  <option
+                    key={_id}
+                    value={message}
+                  >
+                    {message}
+                  </option>
+                );
+              })} */}
+            </div>
             <div className="input-area">
               {showPicker && <EmojiPicker
                 pickerStyle={{ width: '100%' }}
@@ -134,12 +183,40 @@ function Chat() {
             </Link>
             </div>
             <div>
+              <div className="season_tabs">
+                <div className="season_tab">
+                  <ul>
+                    <li onClick={(e) => setSelectedChatroom(e.target.value)}>
+                      {chatrooms?.map(({ _id, chatroom_name }) => {
+                        return (
+                          <option
+                            className="table table-striped "
+                            key={_id}
+                            value={chatroom_name}
+                          >
+                            {chatroom_name}
+                          </option>
+                        );
+                      })}
+                    </li>
+                  </ul>
+              </div>
             </div>
           </div>
         </div>
+      </div>
       </div>
     </>
   );
 }
 
-export default Chat
+export default Chat;
+{
+  chatrooms?.map(({ _id, chatroom_name }) => {
+    return (
+      <option className="table table-striped " key={_id} value={chatroom_name}>
+        {chatroom_name}
+      </option>
+    );
+  });
+}
