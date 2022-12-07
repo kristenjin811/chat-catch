@@ -118,10 +118,6 @@ function Chat() {
               })}
             </ul>
           </div>
-
-          {showPicker && <EmojiPicker
-            pickerStyle={{ size: '100%' }}
-            onEmojiClick={onEmojiClick} />}
           <div className="chat-area">
             <div className="chat-area-title">
               <b>Current Room: </b>
@@ -139,7 +135,11 @@ function Chat() {
                   );
                 })} */}
             </div>
+
             <div className="input-area">
+            {showPicker && <EmojiPicker
+              pickerStyle={{ size: '100%' }}
+              onEmojiClick={onEmojiClick} />}
               <div className="input-wrapper">
                 <input className="text" type="text" defaultValue=""/>
                 <img
