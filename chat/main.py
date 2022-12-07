@@ -25,10 +25,14 @@ from api import router as api_router
 # from fastapi.responses import HTMLResponse
 # from fastapi.middleware.cors import CORSMiddleware
 # import os
+from authenticator import authenticator
+from routers import accounts
 
 
 app = FastAPI()
 app.include_router(api_router, prefix="/api")
+app.include_router(authenticator.router)
+app.include_router(accounts.router)
 logger = logging.getLogger(__name__)
 # app.include_router(users.router)
 # app.include_router(authenticator.router)
