@@ -156,7 +156,7 @@ function Chat() {
             <form>
               <div className="input-area">
                 {showPicker && (
-                  <Picker data={data} onEmojiSelect={setEmojiObj} />
+                  <Picker onClickOutside data={data} onEmojiSelect={setEmojiObj} />
                 )}
                 <div className="input-wrapper">
                   <input

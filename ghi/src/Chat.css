@@ -206,10 +206,11 @@ b{
 	left: 0;
 	top: 35px;
 	right: 0;
-	bottom: 44px;
+	bottom: 54px;
 	overflow-y: auto;
 	outline: none;
 	width: 429px;
+	padding: 10px;
 
 	& > div > .jspPane {
 			margin-left: 0 !important;
@@ -283,7 +284,7 @@ b{
 	height: 40px;
 }
 .input-area .input-wrapper input{
-	line-height: 10px;
+	line-height: 0px;
 	border: 0;
 	margin: 0;
 	padding: 0 10px;
@@ -478,4 +479,6 @@ ul.tabs-container{
 	margin-left: 350px;
 	margin-top: -30px;
 }
-
+.text {
+	margin-bottom: 7px;
+}
