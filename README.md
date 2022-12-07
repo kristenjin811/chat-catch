@@ -8,7 +8,16 @@
   <img width="auto" height="auto" src="images/OverviewCC.png">
 </p>
 
-# Module3 Project Gamma
+## Login page
+<p align="center">
+  <img width="auto" height="auto" src="images/login_page.png">
+</p>
+
+## Logout page
+<p align="center">
+  <img width="auto" height="auto" src="images/logout_page.png">
+</p>
+
 
 ## Getting started
 
@@ -139,7 +148,7 @@ tasks for this week.
     ```
 
 
-5. List of chatrooms
+### List of chatrooms
 
 * Endpoint path: /chatrooms
 * Endpoint method: GET
@@ -161,7 +170,7 @@ tasks for this week.
     }
     ```
 
-6. Show selected chatroom
+### Show selected chatroom
 
 * Endpoint path: /chatroom
 * Endpoint method: GET
@@ -183,7 +192,7 @@ tasks for this week.
     }
     ```
 
-7.Send a Message
+### Send a Message
 
 * Endpoint path: /chatroom
 * Endpoint method: PUT
@@ -207,7 +216,7 @@ tasks for this week.
 * Endpoint method: DELETE
 
 
-9. edit a message - put
+### edit a message - put
 
 * Endpoint path: /messages/int:pk/
 * Endpoint method: PUT
@@ -243,7 +252,7 @@ tasks for this week.
     ```
 
 
-10. adding a member to a chatroom - put
+### adding a member to a chatroom - put
 
 * Endpoint path: /members/int:pk/
 * Endpoint method: PUT
@@ -272,7 +281,7 @@ tasks for this week.
     ```
 
 
-11. accepting a membership for chatroom- put
+### accepting a membership for chatroom- put
 
 * Endpoint path: /membership/int:pk/
 * Endpoint method: PUT
@@ -302,7 +311,7 @@ tasks for this week.
     ```
 
 
-12. deleting a member of a chatroom  - delete
+### deleting a member of a chatroom  - delete
 
 * Endpoint path: /members/:memberId
 * Endpoint method: DELETE
@@ -324,7 +333,7 @@ tasks for this week.
     ```
 
 
-13. declining a chatroom membership - put
+### declining a chatroom membership - put
 Endpoint Path: /users/<int:pk>/
 Endpoint Method: PUT
 Headers:
@@ -342,8 +351,7 @@ Response Shape:
     }
     ```
 
-
-14. create a chatroom - post
+### create a chatroom - post
 Endpoint path: /chatrooms
 Endpoint method: POST
 Headers:
@@ -363,7 +371,7 @@ response Shape:
     }
     ```
 
-15. delete a chatroom - delete
+### delete a chatroom - delete
 Endpoint path: /chatrooms/<int:pk>
 Endpount Method: DELETE
 Headers:
@@ -374,7 +382,7 @@ Response shape (JSON):
     true
     ```
 
-16. reactions - put
+### reactions - put
 Endpoint path: /chatrooms/<int:pk>/messages/<int:pk>
 Endpount Method: PUT
 Headers:
@@ -477,38 +485,13 @@ deployment, but it just consists of these steps:
   * PUBLIC_URL : this is your gitlab pages URL
   * SAMPLE_SERVICE_API_HOST: enter "blank" for now
 
-#### Your GitLab pages URL
+#### GitLab pages URL
 
-You can't find this in GitLab until after you've done a deploy
-but you can figure it out yourself from your GitLab project URL.
+https://chatty-cathys.gitlab.io/chat-catch
 
-If this is your project URL
-
-https://gitlab.com/GROUP_NAME/PROJECT_NAME
-
-then your GitLab pages URL will be
-
-https://GROUP_NAME.gitlab.io/PROJECT_NAME
-
-### Create render.com account and application
-
-* create account on render.com
-* one person create a group and invite all other members
-* create a new "Web Service"
-  * authenticate with GitLab and choose your project
-  * Enter fields:
-    * Name: name of your service
-    * Root Directory: the directory of your service in your git repo.
-      For this example use "sample_service".
-    * Environment: Docker
-    * Plan Type: Free
-  * click the "Create Web Service" button to create it
-  * the build will succeed and it will look like the server is running,
-    most likely, in 6-10 minutes, it will fail.
-  * click "Manual Deploy" -> "Deploy latest commit" and the service
-    should deploy successfully.
 
 ### Update GitLab CI/CD variables
+
 
 Copy the service URL for your new render.com service and then paste
 that into the value for the SAMPLE_SERVICE_API_HOST CI/CD variable
@@ -516,6 +499,4 @@ in GitLab.
 
 ### Deploy it
 
-Merge a change into main to kick off the initial deploy. Once the build pipeline
-finishes you should be able to see an "under construction" page on your GitLab
-pages site.
+https://chat-catch.onrender.com
