@@ -115,7 +115,7 @@ function Chat() {
        if (selectedEmoji){
          setInputStr(inputStr + selectedEmoji);
          let added = true
-         emojiObj = null;
+        //  emojiObj = null;
          console.log("did this add:::::", added)
          if (added){
 
