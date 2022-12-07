@@ -73,7 +73,6 @@ The css reference is at https://codepen.io/CucuIonel/pen/yLaLGL?editors=100
 Today I worked on creating more react pages for our project. Fixed the send button and emoji-picker. I will focus on adjusting the chat page from tomorrow.
 We also spend a while merging commits.
 
+
 ## DEc 7, 2022
 Today I continued to work on the front-end pages. I added an automatic scroll function to the chat list, so the page will automatically scroll down to the latest message inside a chatroom.
-
-

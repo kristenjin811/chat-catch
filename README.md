@@ -30,11 +30,6 @@ Chat Catch - have conversations with like-minded people worldwide.
 * [API design](./docs/apis.md)
 * [GHI](./docs/ghi.md)
 
-### Wireframes
-<p align="center">
-  <img width="auto" height="auto" src="images/WireFrameCC.png">
-</p>
-
 
 ## Functionality
 1. user login
