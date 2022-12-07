@@ -1,4 +1,4 @@
-import Container from "react-bootstrap/Container";
+
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import React, { useState, useEffect } from "react";
@@ -75,34 +75,12 @@ function Chat() {
      fetchChatrooms();
    }, []);
 
-  //  setEmoji(result)[]
-  // const apple = emoji.native;
-  // setResult(apple);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     const message = inputStr
-    //  const emoji = emoji.native;
     const chatroom_name = selectedChatroom;
     const username = "Frank";
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const message = inputStr
-    const chatroom_name = selectedChatroom;
-    const username = "Frank"
-
     const data = { username, message, chatroom_name };
-    const data = { username, message, chatroom_name };
-
-    const url = "http://localhost:8000/api/messages";
-    const fetchConfig = {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-
-    };
     const url = "http://localhost:8000/api/messages";
     const fetchConfig = {
       method: "POST",
@@ -125,20 +103,7 @@ function Chat() {
       }
 
     }
-     }
-   };
-
-  const onEmojiClick = (event, emojiObject) => {
-    setInputStr(prevInput => prevInput + emojiObject.emoji)
-    setShowPicker(false)
-
   };
-
-  // const onEmojiClick = (event, emoji) => {
-  //   // setEmoji(emoji.native)
-  //   console.log("helloooo", emoji.native);
-  //   // setShowPicker(false)
-  // };
 
   let selectedEmoji = emojiObj.native;
   useEffect(() => {
@@ -153,21 +118,12 @@ function Chat() {
          }
          added = false
        }
-
-
-      //  setInputStr(inputStr + " " + emojiStr);
-
-        //  setInputStr(inputStr + emojiStr);
-        //  inputStr = inputStr + emojiStr;
-
-      //  setInputStr(inputStr + " " + emojiStr);
-
   },[selectedEmoji]);
-  // console.log("result::", emojiStr)
+
 
 
   return (
-    <>
+    <div>
       <div className="window-wrapper">
 
         <div className="window-title">
@@ -198,7 +154,7 @@ function Chat() {
                     {username}
                   </option>
                 );
-              })}
+              })};
             </ul>
           </div>
           <div className="chat-area">
@@ -239,7 +195,7 @@ function Chat() {
                     // />
                     <Picker data={data} onEmojiSelect={setEmojiObj} />
                   )}
-                  {/* {console.log("PLEASE HELP ME", data)} */}
+
                 </div>
                 <Button
                   onClick={handleSubmit}
@@ -262,8 +218,6 @@ function Chat() {
               </div>
             </ul>
             <div className="chatroom-list">
-              <div className="season_tabs">
-                <div className="season_tab">
                   <ul>
                     <li onClick={(e) => setSelectedChatroom(e.target.value)}>
                       {chatrooms?.map(({ _id, chatroom_name }) => {
@@ -276,50 +230,16 @@ function Chat() {
                             {chatroom_name}
                           </option>
                         );
-                      })}
+                      })};
                     </li>
                   </ul>
-
-                  {/* <input type="radio" id="tab-2" name="tab-group-1" />
-                  <label htmlFor="tab-2">Chatroom 1</label>
-
-                  <div className="season_content">
-                    <span>Chatroom 1</span>
-                  </div> */}
-                </div>
-
-                {/* <div className="season_tab">
-                  <input type="radio" id="tab-3" name="tab-group-1" />
-                  <label htmlFor="tab-3">Chatroom 2</label>
-
-                  <div className="season_content">
-                    <span>Chatroom 2</span>
-                  </div>
-                </div>
-                <div className="season_tab">
-                  <input type="radio" id="tab-4" name="tab-group-1" />
-                  <label htmlFor="tab-4">chatroom 3</label>
-
-                  <div className="season_content">
-                    <span>chatroom 3</span>
-                  </div> */}
                 </div>
               </div>
             </div>
-            <div>
           </div>
         </div>
-      {/* </div> */}
-    </>
+
   );
 }
 
 export default Chat;
-// { chatrooms?.map(({ _id, chatroom_name }) => {
-//     return (
-//       <option className="table table-striped " key={_id} value={chatroom_name}>
-//         {chatroom_name}
-//       </option>
-//     );
-//   });
-// }
