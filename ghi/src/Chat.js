@@ -33,7 +33,7 @@ function Chat() {
       }
     };
     fetchMessages();
-  }, [getMessages]);
+  }, [submitted]);
   // , [getMessages]);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ function Chat() {
       }
     };
     fetchUsers();
-  }, [selectedChatroom, getMessages]);
+  }, [selectedChatroom]);
 
   useEffect((event) => {
     const fetchChatrooms = async () => {
@@ -94,7 +94,10 @@ function Chat() {
       setInputStr("");
       setSubmitted(true);
       setEmojiStr("");
-      setShowPicker(false)
+      setShowPicker(false);
+      if(submitted == true) {
+        setSubmitted(false);
+      }
 
     }
 
@@ -106,13 +109,21 @@ function Chat() {
   //   // setShowPicker(false)
   // };
 
-  const selectedEmoji = emojiObj.native;
+  let selectedEmoji = emojiObj.native;
   useEffect(() => {
         setEmojiStr(selectedEmoji)
        if (selectedEmoji){
          setInputStr(inputStr + selectedEmoji);
+         let added = true
+         emojiObj = null;
+         console.log("did this add:::::", added)
+         if (added){
 
+         }
+         added = false
        }
+
+
       //  setInputStr(inputStr + " " + emojiStr);
 
         //  setInputStr(inputStr + emojiStr);
@@ -202,6 +213,7 @@ function Chat() {
                 </div>
                 <Button
                   onClick={handleSubmit}
+
                   type="submit"
                   className="send-btn"
                   variant="secondary"
