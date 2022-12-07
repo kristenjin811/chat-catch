@@ -42,7 +42,7 @@ class AccountQueries(Queries):
 
 
         user = self.collection.find_one({"email": email})
-        user["id"] = str(user["id"])
+        user["id"] = str(user["_id"])
         return AccountOutWithPassword(**user)
         # if result:
         #     result["id"] = str(result["_id"])
