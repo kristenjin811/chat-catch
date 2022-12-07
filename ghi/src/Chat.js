@@ -120,7 +120,7 @@ function Chat() {
           </div>
 
           {showPicker && <EmojiPicker
-            pickerStyle={{ size: '50%' }}
+            pickerStyle={{ size: '100%' }}
             onEmojiClick={onEmojiClick} />}
           <div className="chat-area">
             <div className="chat-area-title">
@@ -131,13 +131,13 @@ function Chat() {
               {/* {getMessages?.map(({ _id, message }) => {
                 return (
                   <option
-                    key={_id}
-                    value={message}
+                  key={_id}
+                  value={message}
                   >
-                    {message}
+                  {message}
                   </option>
-                );
-              })} */}
+                  );
+                })} */}
             </div>
             <div className="input-area">
               <div className="input-wrapper">
