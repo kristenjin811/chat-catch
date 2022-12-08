@@ -44,96 +44,107 @@ function Chat() {
         console.log("---2 Fetched Chatrooms")
     }
 
-    const fetchDataFromSelectedChatroom = async (selectedChatroom) => {
-        console.log("---3 Fetching Data From Selected Chatroom")
-        const url = `http://localhost:8000/api/chatrooms/${selectedChatroom}`;
-        const response = await fetch(url);
-        if (response.ok) {
-            const data = await response.json();
-            console.log(data.messages);
-            setUsers(data.members);
-            setGetMessages(data.messages)
-            console.log("---4 Fetched Data From Selected Chatroom")
+    // const fetchDataFromSelectedChatroom = async (selectedChatroom) => {
+    //     console.log("---3 Fetching Data From Selected Chatroom")
+    //     const url = `http://localhost:8000/api/chatrooms/${selectedChatroom}`;
+    //     const response = await fetch(url);
+    //     if (response.ok) {
+    //         const data = await response.json();
+    //         console.log(data.messages);
+    //         setUsers(data.members);
+    //         setGetMessages(data.messages)
+    //         console.log("---4 Fetched Data From Selected Chatroom")
+    //     }
+    // };
+
+
+    const connectToWebSocket = (selectedChatroom) => {
+        console.log("---Checking Websocket State")
+        if (!ws || ws?.readyState === WebSocket.CLOSED) {
+            console.log("---Creating New Websocket")
+            const websocket = new WebSocket(`ws://localhost:8000/ws/${selectedChatroom}/${activeUser}`);
+            websocket.onopen = () => {
+                console.log('---Websocket connected to client!');
+            };
+            websocket.onmessage = (event) => {
+                console.log("---On Message")
+                let message = JSON.parse(event.data);
+                if (message.hasOwnProperty("type") &&
+                    (message.type === "dismissal" ||
+                    message.type === "entrance")
+                    ) {
+                        const room = message.chatroom_name
+                        const members = message.new_chatroom_obj.members
+                        const messages = message.new_chatroom_obj.messages
+                        setSelectedChatroom(room)
+                        setUsers(members);
+                        setGetMessages(messages)
+                } else {
+                    let messageBody = {
+                        content: message["content"],
+                        username: message["username"],
+                    };
+                    let messagesArray = getMessages
+                    messagesArray.push(messageBody)
+                    setGetMessages([messagesArray])
+                }
+            };
+            websocket.onclose = () => {
+                console.log("---On Close")
+
+            }
+            websocket.onerror = (error) => {
+                console.log("---On Error", error.message)
+                websocket.close()
+            }
+            setWs(websocket);
+            console.log("---Set ws to equal Websocket")
         }
     };
 
-    // if (selectedChatroom && !getMessages) {
-    //     fetchDataFromSelectedChatroom();
-    //     console.log("---4 Fetched Data From Selected Chatroom")
-    // }
-
-  useEffect(() => {
-      const connectToWebSocket = () => {
-          console.log("---Checking Websocket State")
-            if (!ws || ws?.readyState === WebSocket.CLOSED) {
-                console.log("---Creating New Websocket")
-                const websocket = new WebSocket(`ws://localhost:8000/ws/${selectedChatroom}/${activeUser}`);
-
-                websocket.onopen = () => {
-                    console.log('---Websocket connected to client!');
-                }
-
-                websocket.onmessage = function(event) {
-                    console.log("---On Message")
-                    let incomingMessage = JSON.parse(event.data);
-                    // if (incoming_message.hasOwnProperty("type") &&
-                    //     (incoming_message.type === "dismissal" ||
-                    //     incoming_message.type === "entrance")
-                    //     ) {
-                    //         setSelectedChatroom(incoming_message.new_room_obj)
-                    //         setUser
-                    //     }
-                    let messageBody = {
-                      content: incomingMessage["content"],
-                      username: incomingMessage["username"],
-                    };
-                    getMessages.push(messageBody)
-                };
-                setWs(websocket);
-                console.log("---Set ws to equal Websocket")
-            }
-        };
-        if (selectedChatroom) {
-        connectToWebSocket();
-        }
-    }, [selectedChatroom, activeUser, ws])
 
     const handleClick = async (event) => {
-        setGetMessages("")
-        setUsers([])
-        setSelectedChatroom(event.target.value)
-        fetchDataFromSelectedChatroom(event.target.value)
+        if (ws) {
+            ws.close();
+            setWs(null);
+        }
+        const chatroom = event.target.value
+        connectToWebSocket(chatroom)
+        // setGetMessages("")
+        // setUsers([])
+        // setSelectedChatroom(chatroom)
+        // fetchDataFromSelectedChatroom(chatroom)
     }
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const message = inputStr
-    const chatroom_name = selectedChatroom;
-    const username = activeUser;
-    const data = {
-        'username': username,
-        'chatroom_name': chatroom_name,
-        'message': message,
-    };
-    const url = `http://localhost:8000/api/chatrooms/${selectedChatroom}`;
-    const fetchConfig = {
-      method: "PUT",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    const response = await fetch(url, fetchConfig);
-    console.log("response::", response);
-    if (response.ok) {
-      setInputStr("");
-      setSubmitted(true);
-      setEmojiStr("");
-      setShowPicker(false);
-      if(submitted == true) {
-        setSubmitted(false);
-      }
-    }
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const message = inputStr
+        const chatroom_name = selectedChatroom;
+        const username = activeUser;
+        const data = {
+            'username': username,
+            'chatroom_name': chatroom_name,
+            'message': message,
+        };
+        ws.send(JSON.stringify(data))
+    // const url = `http://localhost:8000/api/chatrooms/${selectedChatroom}`;
+    // const fetchConfig = {
+    //   method: "PUT",
+    //   body: JSON.stringify(data),
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // };
+    // const response = await fetch(url, fetchConfig);
+    // console.log("response::", response);
+    // if (response.ok) {
+        setInputStr("");
+        setSubmitted(true);
+        setEmojiStr("");
+        setShowPicker(false);
+        if(submitted == true) {
+            setSubmitted(false);
+        }
   };
 
   let selectedEmoji = emojiObj.native;
