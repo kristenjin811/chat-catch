@@ -98,14 +98,14 @@ async def websocket_endpoint(websocket: WebSocket, chatroom_name, user_name):
         # add user
         await manager.connect(websocket)
         # await add_user_to_chatroom(user_name, chatroom_name)
-        # chatroom = await get_chatroom(chatroom_name)
+        chatroom = await get_chatroom(chatroom_name)
         data = json.dumps(
             {
                 "content": f"{user_name} has entered the chat",
                 "user_name": user_name,
                 "chatroom_name": chatroom_name,
                 "type": "entrance",
-                # "new_chatroom_obj": chatroom,
+                "new_chatroom_obj": chatroom,
             },
             default=str,
         )
@@ -145,14 +145,14 @@ async def websocket_endpoint(websocket: WebSocket, chatroom_name, user_name):
         #   None, chatroom_name,
         #   username=user_name
         #   )
-        # chatroom = await get_chatroom(chatroom_name)
+        chatroom = await get_chatroom(chatroom_name)
         data = json.dumps(
             {
                 "content": f"{user_name} has left the chat",
                 "user_name": user_name,
                 "chatroom_name": chatroom_name,
                 "type": "dismissal",
-                # "new_chatroom_obj": chatroom,
+                "new_chatroom_obj": chatroom,
             },
             default=str,
         )
