@@ -163,7 +163,7 @@ function Chat() {
                 ? getMessages
                 : getMessages.map(({ username, content }, index) => {
                   return (
-                    <option key={index}>
+                    <option className="chat-text" key={index}>
                         {`${username}: ${content}`}
                       </option>
                     );
@@ -179,8 +179,8 @@ function Chat() {
                 )}
                 <div className="input-wrapper">
                   <input
+                    className="text-input"
                     onChange={(e) => setInputStr(e.target.value)}
-                    className="text"
                     type="text"
                     value={inputStr}
                   />
