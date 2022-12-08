@@ -119,9 +119,9 @@ function Chat() {
         const chatroom_name = selectedChatroom;
         const username = activeUser;
         const data = {
-            'username': username,
+            'user_name': username,
             'chatroom_name': chatroom_name,
-            'message': message,
+            'content': message,
         };
         ws.send(JSON.stringify(data))
     // const url = `http://localhost:8000/api/chatrooms/${selectedChatroom}`;
