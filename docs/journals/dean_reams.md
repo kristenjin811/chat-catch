@@ -1,7 +1,22 @@
+12/7/22
+Today, I worked on:
+
+- was up really late trying to get auth working.
+
+ran into alot of errors, luckily a sier was able to help
+when class had started and I was able to get it working.
+I wish it could have been done solo but sometimes these
+thngs are really hard.
+
 12/6/22
 Today, I worked on:
 
-- 
+- get a bit more functionality from the front end to the chat
+page Wenqi made.
+
+Was a bit tuff today a few things seem to slow me up.. but with
+the help of the team we were able to get a cleaner front end look
+a direction towards trying to get auth working.
 
 12/5/22
 Today, I worked on:
