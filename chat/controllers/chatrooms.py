@@ -31,8 +31,8 @@ async def upload_message_to_chatroom(data):
     db = client[MONGODB_DB_NAME]
     try:
         chatroom = await get_chatroom(message_data["chatroom_name"])
-        user = await get_user_db(message_data["user"]["username"])
-        message_data["user"] = user
+        # user = await get_user_db(message_data["username"])
+        # message_data["username"] = user
         message_data.pop("chatroom_name", None)
         collection = db.chatrooms
         collection.update_one(
@@ -102,7 +102,7 @@ async def add_user_to_chatroom(username: str, chatroom_name: str):
             logger.info(f"adding{user['username']} to members")
             collection.update_one(
                 {"_id": ObjectId(chatroom["_id"])},
-                {"$push": {"members": user}}
+                {"$push": {"members": user}},
             )
             return True
         else:
@@ -116,9 +116,7 @@ async def add_user_to_chatroom(username: str, chatroom_name: str):
 # update chatroom document in chatrooms collection by removing username of
 # user document from chatroom documents list of members
 async def remove_user_from_chatroom(
-    user: User,
-    chatroom_name: str,
-    username=None
+    user: User, chatroom_name: str, username=None
 ):
     client = await get_nosql_db()
     db = client[MONGODB_DB_NAME]
@@ -129,10 +127,12 @@ async def remove_user_from_chatroom(
         collection = db.chatrooms
         username_list = [m["username"] for m in chatroom["members"]]
         if user["username"] in username_list:
-            logger.info(f"Removing{user['username']} from {chatroom_name} members")# noqa
+            logger.info(
+                f"Removing{user['username']} from {chatroom_name} members"
+            )  # noqa
             collection.update_one(
                 {"_id": ObjectId(chatroom["_id"])},
-                {"$pull": {"members": {"username": user["username"]}}}
+                {"$pull": {"members": {"username": user["username"]}}},
             )
             return True
         else:
@@ -150,7 +150,14 @@ async def delete_chatroom(chatroom_name: str):
     collection.delete_one({"chatroom_name": chatroom_name})
 
 
-async def add_message(message:str, collection):
+# async def add_message(message:str, collection):
+#     client = await get_nosql_db()
+#     db = client[MONGODB_DB_NAME]
+#     collection = db.messages
+#     collection.insert_one({"message": message})
+
+
+async def add_message(message: str, collection):
     client = await get_nosql_db()
     db = client[MONGODB_DB_NAME]
     collection = db.messages

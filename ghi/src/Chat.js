@@ -18,20 +18,52 @@ function Chat() {
   const [getMessages, setGetMessages] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [emojiStr, setEmojiStr] = useState(null);
+  const [activeUser, setActiveUser] = useState("Bob")
+  const [ws, setWs] = useState(null)
 
-  useEffect(() => {
-    const fetchMessages = async () => {
-      const url = "http://localhost:8000/api/messages";
-      const response = await fetch(url);
-      if (response.ok) {
-        const data = await response.json();
-        // console.log(data);
-        setGetMessages(data);
-      }
-    };
-    fetchMessages();
-  }, [submitted]);
-  // , [getMessages]);
+//   useEffect(() => {
+//     const fetchMessages = async () => {
+//       const url = "http://localhost:8000/api/messages";
+//       const response = await fetch(url);
+//       if (response.ok) {
+//         const data = await response.json();
+//         // console.log(data);
+//         setGetMessages(data);
+//       }
+//     };
+//     fetchMessages();
+//   }, [submitted]);
+//   // , [getMessages]);
+
+    useEffect(() => {
+        const connectToWebSocket = () => {
+            if (!ws || ws?.readyState === WebSocket.CLOSED) {
+                const websocket = new WebSocket(`ws://localhost:8000/ws/${selectedChatroom}/${activeUser}`);
+
+                websocket.onopen = () => {
+                    console.log('Websocket connected to client!');
+                }
+
+                websocket.onmessage = function(event) {
+                    let incomingMessage = JSON.parse(event.data);
+                    // if (incoming_message.hasOwnProperty("type") &&
+                    //     (incoming_message.type === "dismissal" ||
+                    //     incoming_message.type === "entrance")
+                    //     ) {
+                    //         setSelectedChatroom(incoming_message.new_room_obj)
+                    //         setUser
+                    //     }
+                    let messageBody = {
+                      content: incomingMessage["content"],
+                      username: incomingMessage["username"],
+                    };
+                    getMessages.push(messageBody)
+                };
+                setWs(websocket);
+            }
+        };
+        connectToWebSocket();
+    }, [selectedChatroom, activeUser, ws])
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -39,10 +71,10 @@ function Chat() {
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
-        // console.log(data.messages);
+        // console.log(data);
+        console.log(data.messages);
         setUsers(data.members);
-        // setGetMessages(data.messages)
-
+        setGetMessages(data.messages)
       }
     };
     fetchUsers();
@@ -64,17 +96,20 @@ function Chat() {
     event.preventDefault();
     const message = inputStr
     const chatroom_name = selectedChatroom;
-    const username = "Frank";
-    const data = { username, message, chatroom_name };
-    const url = "http://localhost:8000/api/messages";
+    const username = activeUser;
+    const data = {
+        'username': username,
+        'chatroom_name': chatroom_name,
+        'message': message,
+    };
+    const url = `http://localhost:8000/api/chatrooms/${selectedChatroom}`;
     const fetchConfig = {
-      method: "POST",
+      method: "PUT",
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
       },
     };
-
     const response = await fetch(url, fetchConfig);
     console.log("response::", response);
     if (response.ok) {
@@ -143,13 +178,13 @@ function Chat() {
               <b> {selectedChatroom}</b>
             </div>
             <div className="chat-list">
-              {getMessages.length === 0
+              {!getMessages
                 ? getMessages
-                : getMessages.map(({ _id, message }) => {
+                : getMessages.map(({ content, username }, index) => {
                   return (
-                    <option key={_id} value={message}>
-                        {message}
-                      </option>
+                    <option key={index}>
+                        {`${username}:${content}`}
+                    </option>
                     );
                   })}
             </div>

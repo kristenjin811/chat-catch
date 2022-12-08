@@ -9,18 +9,15 @@ from controllers.chatrooms import (
     get_chatroom,
     remove_user_from_chatroom,
     add_user_to_chatroom,
-    upload_message_to_chatroom
+    upload_message_to_chatroom,
 )
-from mongodb import (
-    connect_to_mongo,
-    close_mongo_connection,
-    get_nosql_db
-)
+from mongodb import connect_to_mongo, close_mongo_connection, get_nosql_db
 from config import MONGODB_DB_NAME
 import pymongo
 import logging
 import json
 from api import router as api_router
+
 # # from authenticator import authenticator
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -39,7 +36,8 @@ logger = logging.getLogger(__name__)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[os.environ.get("CORS_HOST", "http://localhost:3000")],
+    allow_origins=["*"],
+    # [os.environ.get("CORS_HOST", "http://localhost:3000")],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -85,7 +83,7 @@ async def shutdown_event():
     await close_mongo_connection()
 
 
-manager = ConnectionManager
+manager = ConnectionManager()
 
 
 # @app.get("/")
@@ -98,21 +96,25 @@ manager = ConnectionManager
 async def websocket_endpoint(websocket: WebSocket, chatroom_name, user_name):
     try:
         # add user
-        await manager.connect(websocket, chatroom_name)
-        await add_user_to_chatroom(user_name, chatroom_name)
-        chatroom = await get_chatroom(chatroom_name)
-        data = {
-            "content": f"{user_name} has entered the chat",
-            "user": {"username": user_name},
-            "chatroom_name": chatroom_name,
-            "type": "entrance",
-            "new_chatroom_obj": chatroom,
-        }
-        await manager.broadcast(f"{json.dumps(data, default=str)}")
+        await manager.connect(websocket)
+        # await add_user_to_chatroom(user_name, chatroom_name)
+        # chatroom = await get_chatroom(chatroom_name)
+        data = json.dumps(
+            {
+                "content": f"{user_name} has entered the chat",
+                "user_name": user_name,
+                "chatroom_name": chatroom_name,
+                "type": "entrance",
+                # "new_chatroom_obj": chatroom,
+            },
+            default=str,
+        )
+        await manager.broadcast(data)
         # wait for messages
         while True:
             if websocket.application_state == WebSocketState.CONNECTED:
                 data = await websocket.receive_text()
+                print("---Receiving Text")
                 message_data = json.loads(data)
                 if (
                     "type" in message_data
@@ -120,32 +122,39 @@ async def websocket_endpoint(websocket: WebSocket, chatroom_name, user_name):
                 ):
                     logger.warning(message_data["content"])
                     logger.info("Disconnecting from Websocket")
-                    await manager.disconnect(websocket, chatroom_name)
+                    await manager.disconnect(websocket)
                     break
                 else:
+                    print("---Attempting to Upload Message To Chatroom")
                     await upload_message_to_chatroom(data)
+                    print("---Successful Upload!")
                     logger.info(f"DATA RECEIVED: {data}")
                     await manager.broadcast(f"{data}")
             else:
-                logger.warning(f"Websocket state:{websocket.application_state},reconnecting...")# noqa
-                await manager.connect(websocket, chatroom_name)
+                logger.warning(
+                    f"Websocket state:{websocket.application_state},reconnecting..."
+                )  # noqa
+                await manager.connect(websocket)
     except Exception as e:
         template = "An exception of type {0} occurred, Arguments:\n{1!r}"
         message = template.format(type(e).__name__, e.args)
         logger.error(message)
         # remove user
         logger.warning("Disconnecting Websocket")
-        await remove_user_from_chatroom(
-          None, chatroom_name,
-          username=user_name
-          )
-        chatroom = await get_chatroom(chatroom_name)
-        data = {
-            "content": f"{user_name} has left the chat",
-            "user": {"username": user_name},
-            "chatroom_name": chatroom_name,
-            "type": "dismissal",
-            "new_chatroom_obj": chatroom,
-        }
-        await manager.broadcast(f"{json.dumps(data, default=str)}")
-        await manager.disconnect(websocket, chatroom_name)
+        # await remove_user_from_chatroom(
+        #   None, chatroom_name,
+        #   username=user_name
+        #   )
+        # chatroom = await get_chatroom(chatroom_name)
+        data = json.dumps(
+            {
+                "content": f"{user_name} has left the chat",
+                "user_name": user_name,
+                "chatroom_name": chatroom_name,
+                "type": "dismissal",
+                # "new_chatroom_obj": chatroom,
+            },
+            default=str,
+        )
+        await manager.broadcast(data)
+        await manager.disconnect(websocket)
