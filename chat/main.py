@@ -94,12 +94,6 @@ manager = ConnectionManager()
 
 @app.websocket("/ws/{chatroom_name}/{user_name}")
 async def websocket_endpoint(websocket: WebSocket, chatroom_name, user_name):
-    print(
-        "---Websocket, chatroom name, user name",
-        websocket,
-        chatroom_name,
-        user_name,
-    )
     await manager.connect(websocket)
     try:
         # add user

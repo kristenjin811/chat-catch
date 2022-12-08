@@ -98,4 +98,5 @@ class ConnectionManager:
     async def broadcast(self, message: str):
         print("---Broadcasting Message")
         for connection in self.active_connections:
+            # print(dict(connection))
             await connection.send_text(message)

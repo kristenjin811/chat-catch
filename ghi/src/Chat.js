@@ -15,7 +15,7 @@ function Chat() {
     const [users, setUsers] = useState([]);
     const [chatrooms, setChatrooms] = useState();
     const [selectedChatroom, setSelectedChatroom] = useState("");
-    const [getMessages, setGetMessages] = useState("");
+    const [getMessages, setGetMessages] = useState([]);
     const [submitted, setSubmitted] = useState(false);
     const [emojiStr, setEmojiStr] = useState(null);
     const [activeUser, setActiveUser] = useState("Bob")
@@ -44,65 +44,74 @@ function Chat() {
         console.log("---2 Fetched Chatrooms")
     }
 
-
-    const connectToWebSocket = (selectedChatroom) => {
-        console.log("---Checking Websocket State")
-        if (!ws || ws?.readyState === WebSocket.CLOSED) {
-            console.log("---Creating New Websocket")
-            const websocket = new WebSocket(`ws://localhost:8000/ws/${selectedChatroom}/${activeUser}`);
-            websocket.onopen = () => {
-                console.log('---Websocket connected to client!');
-            };
-            websocket.onmessage = (event) => {
-                console.log("---On Message")
-                let message = JSON.parse(event.data);
-                const room = message.chatroom_name
-                const username = message.user_name
-                const content = message.content
-                let messageBody = {
-                    "username": username,
-                    "content": content,
-                };
-                if (message.hasOwnProperty("type") &&
-                (message.type === "dismissal" ||
-                message.type === "entrance")
-                ) {
-                    const messages = message.new_chatroom_obj.messages
-                    const members = message.new_chatroom_obj.members
-                    console.log("message shape?", message)
-                    console.log("message attributes room, members, messages", room, members, messages)
-                    setSelectedChatroom(room)
-                    setUsers(members);
-                    setGetMessages(messages, messageBody)
-                } else {
-                    let messagesArray = [...getMessages, messageBody]
-                    messagesArray.push(messageBody)
-                    setGetMessages(messagesArray)
-                }
-            };
-            websocket.onclose = () => {
-                console.log("---On Close")
-
-            };
-            websocket.onerror = (error) => {
-                console.log("---On Error", error.message)
-                websocket.close()
-            };
-            setWs(websocket);
-            console.log("---Set ws to equal Websocket")
-        };
-        return;
-    };
-
-
-    const handleClick = async (event) => {
+    // const checkWebsocket = () => {
+    //     const { ws } = ws
+    // }
+    const handleClick = (event) => {
+        // if (ws) {
+        //     console.log("line 100 --- just before setting websocket to null")
+        //     setWs(null)
+        // }
+        // console.log("line 103---about to call connect inside handle click")
         const chatroom = event.target.value
+        // checkWebsocket(chatroom)
         connectToWebSocket(chatroom)
+        // console.log("line 107 what is ws now?", ws)
         // setGetMessages("")
         // setUsers([])
         // setSelectedChatroom(chatroom)
         // fetchDataFromSelectedChatroom(chatroom)
     }
+
+    const connectToWebSocket = (selectedChatroom) => {
+        console.log("---Checking Websocket State")
+        console.log("ws:", ws)
+        //if websocket is in array?
+
+        // if (!ws) {
+            // console.log("---Creating New Websocket")
+        const websocket = new WebSocket(`ws://localhost:8000/ws/${selectedChatroom}/${activeUser}`);
+        websocket.onopen = () => {
+            console.log('---Websocket connected to client!');
+        };
+        websocket.onmessage = (event) => {
+            // console.log("---On Message")
+            let message = JSON.parse(event.data);
+            const room = message.chatroom_name
+            const username = message.user_name
+            const content = message.content
+            let messageBody = {
+                "username": username,
+                "content": content,
+            };
+            if (message.hasOwnProperty("type") &&
+            (message.type === "dismissal" ||
+            message.type === "entrance")
+            ) {
+                const messages = message.new_chatroom_obj.messages
+                const members = message.new_chatroom_obj.members
+                console.log("message shape?", message)
+                // console.log("message attributes room, members, messages", room, members, messages)
+                setSelectedChatroom(room)
+                setUsers(members);
+                setGetMessages([...messages, messageBody])
+            } else {
+                setGetMessages(current => [...current, messageBody]);
+            }
+        };
+        websocket.onclose = () => {
+            console.log("---On Close")
+
+        };
+        websocket.onerror = (error) => {
+            console.log("---On Error", error.message)
+            websocket.close()
+        };
+        setWs(websocket);
+        console.log("---Set ws to equal Websocket")
+    }
+
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -191,7 +200,7 @@ function Chat() {
               <b> {selectedChatroom}</b>
             </div>
             <div className="chat-list">
-              {!getMessages
+              {getMessages.length === 0
                 ? getMessages
                 : getMessages.map(({ content, username }, index) => {
                   return (
