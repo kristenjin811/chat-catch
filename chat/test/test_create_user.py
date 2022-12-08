@@ -1,29 +1,27 @@
-# from fastapi.testclient import TestClient
-# from main import app
-# from queries.users import UserQueries
+from fastapi.testclient import TestClient
+from main import app
+from queries.accounts import  AccountQueries, AccountOutWithPassword
 
-# client = TestClient(app)
+client = TestClient(app)
 
-# TestUser = {
-#     "username": "username",
-#     "email": "user@email.com",
-#     "password": "password",
-#     "first_name": "string",
-#     "last_name": "string",
-# }
+TestUser = {
+    "email": "user@email.com",
+    "password": "password",
+    "full_name": "full_name"
+}
 
 # TestUserCreated = {
 #     "created": True
 # }
 
 
-# def test_create_account():
-#     class TestUserQuery:
-#         def create_account(self):
-#             pass
+def test_create_account():
+    class TestUserQuery:
+        def create_account(self):
+            pass
 
-#     app.dependency_overrides[UserQueries] = TestUserQuery
-#     response = client.post("/api/users/", json=TestUser)
-#     assert response.status_code == 200
-#     assert response.json() == TestUserCreated
-#     app.dependency_overrides = {}
+    app.dependency_overrides[ AccountQueries,] = TestUserQuery
+    response = client.post("/api/accounts/", json=TestUser)
+    assert response.status_code == 200
+    assert response.json() == AccountOutWithPassword
+    app.dependency_overrides = {}
