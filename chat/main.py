@@ -118,9 +118,10 @@ async def websocket_endpoint(websocket: WebSocket, chatroom_name, user_name):
         await manager.broadcast(data)
         # wait for messages
         while True:
+            print("main 121 --- top of forever loop")
             if websocket.application_state == WebSocketState.CONNECTED:
+                print("main 123 ---inside if")
                 data = await websocket.receive_text()
-                print("---Receiving Text")
                 message_data = json.loads(data)
                 if (
                     "type" in message_data
@@ -131,22 +132,23 @@ async def websocket_endpoint(websocket: WebSocket, chatroom_name, user_name):
                     await manager.disconnect(websocket)
                     break
                 else:
-                    print("---Attempting to Upload Message To Chatroom")
                     await upload_message_to_chatroom(data)
-                    print("---Successful Upload!")
                     logger.info(f"DATA RECEIVED: {data}")
-                    await manager.broadcast(f"{data}")
+                    await manager.broadcast(data)
+                    print("main.py line 139 --- bottom of forever loop")
             else:
+                print("main 142 ---inside else")
                 logger.warning(
                     f"Websocket state:{websocket.application_state},reconnecting..."
                 )  # noqa
                 await manager.connect(websocket)
+                print("main 147 --- second attempt to connect")
     except Exception as e:
-        template = "An exception of type {0} occurred, Arguments:\n{1!r}"
-        message = template.format(type(e).__name__, e.args)
-        logger.error(message)
+        # template = "An exception of type {0} occurred, Arguments:\n{1!r}"
+        # message = template.format(type(e).__name__, e.args)
+        # logger.error(message)
         # remove user
-        logger.warning("Disconnecting Websocket")
+        # logger.warning("Disconnecting Websocket")
         # await remove_user_from_chatroom(
         #   None, chatroom_name,
         #   username=user_name
@@ -162,5 +164,6 @@ async def websocket_endpoint(websocket: WebSocket, chatroom_name, user_name):
             },
             default=str,
         )
+        print("we have been dismissed!")
         await manager.broadcast(data)
         await manager.disconnect(websocket)

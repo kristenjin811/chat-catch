@@ -44,19 +44,6 @@ function Chat() {
         console.log("---2 Fetched Chatrooms")
     }
 
-    // const fetchDataFromSelectedChatroom = async (selectedChatroom) => {
-    //     console.log("---3 Fetching Data From Selected Chatroom")
-    //     const url = `http://localhost:8000/api/chatrooms/${selectedChatroom}`;
-    //     const response = await fetch(url);
-    //     if (response.ok) {
-    //         const data = await response.json();
-    //         console.log(data.messages);
-    //         setUsers(data.members);
-    //         setGetMessages(data.messages)
-    //         console.log("---4 Fetched Data From Selected Chatroom")
-    //     }
-    // };
-
 
     const connectToWebSocket = (selectedChatroom) => {
         console.log("---Checking Websocket State")
@@ -69,45 +56,46 @@ function Chat() {
             websocket.onmessage = (event) => {
                 console.log("---On Message")
                 let message = JSON.parse(event.data);
+                const room = message.chatroom_name
+                const username = message.user_name
+                const content = message.content
+                let messageBody = {
+                    "username": username,
+                    "content": content,
+                };
                 if (message.hasOwnProperty("type") &&
-                    (message.type === "dismissal" ||
-                    message.type === "entrance")
-                    ) {
-                        const room = message.chatroom_name
-                        const members = message.new_chatroom_obj.members
-                        const messages = message.new_chatroom_obj.messages
-                        setSelectedChatroom(room)
-                        setUsers(members);
-                        setGetMessages(messages)
+                (message.type === "dismissal" ||
+                message.type === "entrance")
+                ) {
+                    const messages = message.new_chatroom_obj.messages
+                    const members = message.new_chatroom_obj.members
+                    console.log("message shape?", message)
+                    console.log("message attributes room, members, messages", room, members, messages)
+                    setSelectedChatroom(room)
+                    setUsers(members);
+                    setGetMessages(messages, messageBody)
                 } else {
-                    let messageBody = {
-                        content: message["content"],
-                        username: message["username"],
-                    };
-                    let messagesArray = getMessages
+                    let messagesArray = [...getMessages, messageBody]
                     messagesArray.push(messageBody)
-                    setGetMessages([messagesArray])
+                    setGetMessages(messagesArray)
                 }
             };
             websocket.onclose = () => {
                 console.log("---On Close")
 
-            }
+            };
             websocket.onerror = (error) => {
                 console.log("---On Error", error.message)
                 websocket.close()
-            }
+            };
             setWs(websocket);
             console.log("---Set ws to equal Websocket")
-        }
+        };
+        return;
     };
 
 
     const handleClick = async (event) => {
-        if (ws) {
-            ws.close();
-            setWs(null);
-        }
         const chatroom = event.target.value
         connectToWebSocket(chatroom)
         // setGetMessages("")
@@ -142,7 +130,7 @@ function Chat() {
         setSubmitted(true);
         setEmojiStr("");
         setShowPicker(false);
-        if(submitted == true) {
+        if(submitted === true) {
             setSubmitted(false);
         }
   };
@@ -160,7 +148,7 @@ function Chat() {
          }
          added = false
        }
-  },[selectedEmoji]);
+  },[selectedEmoji, inputStr]);
 
 
 
