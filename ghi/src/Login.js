@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import './Login.css';
 import {Link} from 'react-router-dom';
+import { useToken } from "./GetToken";
 
 
-export default function Login(props) {
+export default function Login() {
+  const [token, login] = useToken();
+
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
       e.preventDefault();
+      await login(email, pass);
       console.log(email);
   }
 
@@ -16,10 +20,10 @@ export default function Login(props) {
     <>
       <div className="window-wrapper">
         <p>Chat Catch</p>
-        <div class="login-form">
+        <div className="login-form">
           <form onSubmit={handleSubmit}>
             <label htmlFor="email">email</label>
-            <input className="input" value={email} onChange={(e) => setEmail(e.target.value)}type="email" placeholder="youremail@gmail.com" id="email" name="email" />
+            <input className="input" value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="youremail@gmail.com" id="email" name="email" />
             <label htmlFor="password">password</label>
             <input className="input" value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="password" />
             <button type="submit" className="btn btn-dark btn-block btn-large">Log In</button>

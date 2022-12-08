@@ -10,21 +10,32 @@ import {
 } from "react-router-dom";
 
 import "./App.css"
+import { AuthProvider, useToken } from './GetToken'
+
+
+function GetToken() {
+    // Get token from JWT cookie (if already logged in)
+    useToken();
+    return null
+}
+
 
 function App() {
 
   return (
-     <BrowserRouter>
-      <div className="container">
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="register/" element={<Register />} />
-          <Route path="chats/" element={<Chat />} />
-          <Route path="users" element={<UserList />} />
-        </Routes>
-      </div>
-    </BrowserRouter>
-
+    <AuthProvider>
+      <BrowserRouter>
+      <GetToken />
+        <div className="container">
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="register/" element={<Register />} />
+            <Route path="chats/" element={<Chat />} />
+            <Route path="users" element={<UserList />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </AuthProvider>
   )
 }
 

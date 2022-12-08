@@ -6,8 +6,11 @@ import "./Chat.css";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 import { Link } from "react-router-dom";
+import { useAuthContext } from "./GetToken";
+
 
 function Chat() {
+  const { token } = useAuthContext();
   const [inputStr, setInputStr] = useState("");
   const [showPicker, setShowPicker] = useState(false);
   const [emojiObj, setEmojiObj] = useState("");

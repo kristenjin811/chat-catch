@@ -57,5 +57,22 @@ I think it has something to do with mongodb connection.
 We were able to solve this issue with the help of Andrew. The connection named in config.py is wrong. It should be pointing to DATABASE_URL inside docker-compose.yaml. So it should look like this:
 ```MONGODB_URL = os.environ.get("DATABASE_URL")```
 
-Goal: To import emoji api, and css.
-I was successfully connected to emoji library using Emoji-Mart on the front-end.
+
+## Dec 3, 2022
+Goal: To import emoji api
+
+I found an emoji library which can be imported to our application. It's called emoji-mart on npm. I was able to added it into the text area. But I have a blocker, which is to have the emoji selected show in the text box.
+
+
+## Dec 4, 2022
+Today I worked on CSS. The front-end of a chat app is actually much more complicated than I thought. i used part of a CSS for chat app from codepen.io. I learned that I still need to make a lot of changes and refinements to it so that it suits our application. The front end is not completely done.
+The css reference is at https://codepen.io/CucuIonel/pen/yLaLGL?editors=100
+
+
+## Dec 6, 2022
+Today I worked on creating more react pages for our project. Fixed the send button and emoji-picker. I will focus on adjusting the chat page from tomorrow.
+We also spend a while merging commits.
+
+
+## DEc 7, 2022
+Today I continued to work on the front-end pages. I added an automatic scroll function to the chat list, so the page will automatically scroll down to the latest message inside a chatroom.
