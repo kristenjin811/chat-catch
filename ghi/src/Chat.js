@@ -9,42 +9,72 @@ import data from "@emoji-mart/data";
 import {Link} from 'react-router-dom';
 
 function Chat() {
-  const [inputStr, setInputStr] = useState("");
-  const [showPicker, setShowPicker] = useState(false);
-  const [emojiObj, setEmojiObj] = useState("");
-  const [users, setUsers] = useState([]);
-  const [chatrooms, setChatrooms] = useState([]);
-  const [selectedChatroom, setSelectedChatroom] = useState("");
-  const [getMessages, setGetMessages] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [emojiStr, setEmojiStr] = useState(null);
-  const [activeUser, setActiveUser] = useState("Bob")
-  const [ws, setWs] = useState(null)
+    const [inputStr, setInputStr] = useState("");
+    const [showPicker, setShowPicker] = useState(false);
+    const [emojiObj, setEmojiObj] = useState("");
+    const [users, setUsers] = useState([]);
+    const [chatrooms, setChatrooms] = useState();
+    const [selectedChatroom, setSelectedChatroom] = useState("");
+    const [getMessages, setGetMessages] = useState("");
+    const [submitted, setSubmitted] = useState(false);
+    const [emojiStr, setEmojiStr] = useState(null);
+    const [activeUser, setActiveUser] = useState("Bob")
+    const [ws, setWs] = useState(null)
+  // executes all component functions and calls first, then executes useEffects in order.
+  /*
+  ORDER:
+  1. get chatrooms
+  2. select chatroom
+  3. fetch data from selected chatroom
+  4. open websocket
+  5.
+  */
 
-//   useEffect(() => {
-//     const fetchMessages = async () => {
-//       const url = "http://localhost:8000/api/messages";
-//       const response = await fetch(url);
-//       if (response.ok) {
-//         const data = await response.json();
-//         // console.log(data);
-//         setGetMessages(data);
-//       }
-//     };
-//     fetchMessages();
-//   }, [submitted]);
-//   // , [getMessages]);
+    const fetchChatrooms = async () => {
+        console.log("---1 fetching Chatrooms")
+        const url = "http://localhost:8000/api/chatrooms";
+        const response = await fetch(url);
+        if (response.ok) {
+            const data = await response.json();
+            setChatrooms(data);
+        }
+        };
+    if (!chatrooms) {
+        fetchChatrooms()
+        console.log("---2 Fetched Chatrooms")
+    }
 
-    useEffect(() => {
-        const connectToWebSocket = () => {
+    const fetchDataFromSelectedChatroom = async (selectedChatroom) => {
+        console.log("---3 Fetching Data From Selected Chatroom")
+        const url = `http://localhost:8000/api/chatrooms/${selectedChatroom}`;
+        const response = await fetch(url);
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data.messages);
+            setUsers(data.members);
+            setGetMessages(data.messages)
+            console.log("---4 Fetched Data From Selected Chatroom")
+        }
+    };
+
+    // if (selectedChatroom && !getMessages) {
+    //     fetchDataFromSelectedChatroom();
+    //     console.log("---4 Fetched Data From Selected Chatroom")
+    // }
+
+  useEffect(() => {
+      const connectToWebSocket = () => {
+          console.log("---Checking Websocket State")
             if (!ws || ws?.readyState === WebSocket.CLOSED) {
+                console.log("---Creating New Websocket")
                 const websocket = new WebSocket(`ws://localhost:8000/ws/${selectedChatroom}/${activeUser}`);
 
                 websocket.onopen = () => {
-                    console.log('Websocket connected to client!');
+                    console.log('---Websocket connected to client!');
                 }
 
                 websocket.onmessage = function(event) {
+                    console.log("---On Message")
                     let incomingMessage = JSON.parse(event.data);
                     // if (incoming_message.hasOwnProperty("type") &&
                     //     (incoming_message.type === "dismissal" ||
@@ -60,37 +90,20 @@ function Chat() {
                     getMessages.push(messageBody)
                 };
                 setWs(websocket);
+                console.log("---Set ws to equal Websocket")
             }
         };
+        if (selectedChatroom) {
         connectToWebSocket();
+        }
     }, [selectedChatroom, activeUser, ws])
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const url = `http://localhost:8000/api/chatrooms/${selectedChatroom}`;
-      const response = await fetch(url);
-      if (response.ok) {
-        const data = await response.json();
-        // console.log(data);
-        console.log(data.messages);
-        setUsers(data.members);
-        setGetMessages(data.messages)
-      }
-    };
-    fetchUsers();
-  }, [selectedChatroom]);
-
-  useEffect(() => {
-     const fetchChatrooms = async () => {
-       const url = "http://localhost:8000/api/chatrooms";
-       const response = await fetch(url);
-       if (response.ok) {
-         const data = await response.json();
-         setChatrooms(data);
-       }
-     };
-     fetchChatrooms();
-  }, []);
+    const handleClick = async (event) => {
+        setGetMessages("")
+        setUsers([])
+        setSelectedChatroom(event.target.value)
+        fetchDataFromSelectedChatroom(event.target.value)
+    }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -137,6 +150,7 @@ function Chat() {
          added = false
        }
   },[selectedEmoji]);
+
 
 
   return (
@@ -227,15 +241,17 @@ function Chat() {
             </ul>
             <div className="chatroom-list">
               <ul>
-                <li onClick={(e) => setSelectedChatroom(e.target.value)}>
+                <li onClick={handleClick}>
                   {chatrooms?.map(({ _id, chatroom_name }) => {
                     return (
                       <a
                         key={_id}
                         value={chatroom_name}
+
                       ><option className="chatroom-name-list">
                         {chatroom_name}</option>
                       </a>
+
                     );
                   })}
                 </li>
