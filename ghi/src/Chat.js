@@ -237,7 +237,7 @@ function Chat() {
     const [selectedChatroom, setSelectedChatroom] = useState("");
     const [getMessages, setGetMessages] = useState([]);
     const [submitted, setSubmitted] = useState(false);
-    const [emojiStr, setEmojiStr] = useState(null);
+    // const [emojiStr, setEmojiStr] = useState(null);
     const [activeUser, setActiveUser] = useState("")
     const [ws, setWs] = useState(null)
   // executes all component functions and calls first, then executes useEffects in order.
@@ -325,7 +325,7 @@ function Chat() {
 
     let selectedEmoji = emojiObj.native;
     useEffect(() => {
-            setEmojiStr(selectedEmoji)
+
         if (selectedEmoji){
             setInputStr(inputStr + selectedEmoji);
             let added = true
