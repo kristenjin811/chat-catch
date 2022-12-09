@@ -13,7 +13,7 @@ from utils import format_ids
 
 async def get_user_db(name) -> UserInDB:
     client = await get_nosql_db()
-    db = await client[MONGODB_DB_NAME]
+    db = client[MONGODB_DB_NAME]
     users_collection = db.users
     row = users_collection.find_one({"username": name})
     if row is not None:
