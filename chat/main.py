@@ -1,14 +1,12 @@
 from fastapi import (
     FastAPI,
     WebSocket,
-    # WebSocketDisconnect
 )
 from starlette.websockets import WebSocketState
 from websocket_manager import ConnectionManager
 from controllers.chatrooms import (
     get_chatroom,
     remove_user_from_chatroom,
-    add_user_to_chatroom,
     upload_message_to_chatroom
 )
 from mongodb import (
@@ -21,10 +19,9 @@ import pymongo
 import logging
 import json
 from api import router as api_router
-# # from authenticator import authenticator
-# from fastapi.responses import HTMLResponse
+
 from fastapi.middleware.cors import CORSMiddleware
-# import os
+
 from authenticator import authenticator
 from routers import accounts
 import os
@@ -34,11 +31,6 @@ app.include_router(api_router, prefix="/api")
 app.include_router(authenticator.router)
 app.include_router(accounts.router)
 logger = logging.getLogger(__name__)
-# app.include_router(users.router)
-# app.include_router(messages.router)
-# app.include_router(auth.auth.router)
-# app.include_router(websocket.router)
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -47,6 +39,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.on_event("startup")
 async def startup_event():
@@ -88,12 +81,6 @@ async def shutdown_event():
 
 
 manager = ConnectionManager
-
-
-# @app.get("/")
-# def homepage():
-#     with open("index.html") as f:
-#         return HTMLResponse(f.read())
 
 
 @app.websocket("/ws/{chatroom_name}/{user_name}")

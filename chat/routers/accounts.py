@@ -18,15 +18,19 @@ from queries.accounts import (
     DuplicateAccountError,
 )
 
+
 class AccountForm(BaseModel):
     username: str
     password: str
 
+
 class AccountToken(Token):
     account: AccountOut
 
+
 class HttpError(BaseModel):
     detail: str
+
 
 router = APIRouter()
 
@@ -48,7 +52,11 @@ async def create_account(
             detail="Cannot create an account with those credentials",
         )
 
-    form = AccountForm(username=info.email, password=info.password, full_name=info.full_name)
+    form = AccountForm(
+        username=info.email,
+        password=info.password,
+        full_name=info.full_name
+    )
     token = await authenticator.login(response, request, form, accounts)
 
     return AccountToken(account=account, **token.dict())
@@ -74,16 +82,3 @@ async def get_token(
             "type": "Bearer",
             "account": account,
         }
-
-
-
-# @router.get("/api/accounts/{email}", response_model=[AccountOut])
-# def get_one_account(
-#   email: str,
-#   response: Response,
-#   repo: AccountQueries = Depends(),
-# ) -> AccountOut:
-#   account = repo.get_one(email)
-#   if account is None:
-#     response.status_code = 404
-#   return account
