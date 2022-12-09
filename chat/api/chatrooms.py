@@ -12,11 +12,11 @@ from controllers.chatrooms import (
     get_chatroom,
     delete_chatroom,
     upload_message_to_chatroom,
-    upload_message_to_chatroom,
-    add_message,
-    get_messages,
+    # add_message,
+    # get_messages,
 )
 from utils import format_ids
+import json
 
 # from controllers.users import get_user_db
 from config import MONGODB_DB_NAME
@@ -176,12 +176,12 @@ async def create_message(
 #     return res
 
 
-@router.post("/chatrooms")
-async def create_message(
-    request: ChatroomMessageRequest,
-    client: MongoClient = Depends(get_nosql_db),
-):
-    db = client[MONGODB_DB_NAME]
-    collection = db.messages
-    res = await upload_message_to_chatroom(request.message, collection)
-    return res
+# @router.post("/chatrooms")
+# async def create_message(
+#     request: ChatroomMessageRequest,
+#     client: MongoClient = Depends(get_nosql_db),
+# ):
+#     db = client[MONGODB_DB_NAME]
+#     collection = db.messages
+#     res = await upload_message_to_chatroom(request.message, collection)
+#     return res

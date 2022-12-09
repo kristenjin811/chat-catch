@@ -13,9 +13,9 @@ import json
 from api import router as api_router
 
 # # from authenticator import authenticator
-from fastapi.responses import HTMLResponse
+# from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
-import os
+# import os
 from authenticator import authenticator
 from routers import accounts
 
@@ -129,6 +129,6 @@ async def websocket_endpoint(websocket: WebSocket, user_name, chatroom_name):
                 await manager.connect(websocket, user_name, chatroom_name)
                 print("main 147 --- second attempt to connect")
     except Exception as e:
-        print("we have been dismissed!")
+        print("we have been dismissed!", e)
         if websocket.application_state == WebSocketState.CONNECTED:
             await manager.disconnect(user_name, chatroom_name)
