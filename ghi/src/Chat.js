@@ -61,8 +61,9 @@ function Chat() {
             (message.type === "dismissal" ||
             message.type === "entrance")
             ) {
-                const messages = message.new_chatroom_obj.messages
-                const members = message.new_chatroom_obj.members
+                const chatroom = message.new_chatroom_obj;
+                const messages = chatroom.messages;
+                const members = chatroom.members;
                 setSelectedChatroom(room)
                 setUsers(members);
                 setGetMessages([...messages, messageBody])
@@ -109,11 +110,10 @@ function Chat() {
             setInputStr(inputStr + selectedEmoji);
             let added = true
             //  emojiObj = null;
-            console.log("did this add:::::", added)
+            // console.log("did this add:::::", added)
             if (added){
-
+                added = false
             }
-            added = false
         }
     },[selectedEmoji, inputStr]);
 

@@ -109,6 +109,6 @@ class ConnectionManager:
         self, message: str, user_name: str, chatroom_name: str
     ):
         for user_name in self.active_connections:
-            if chatroom_name in user_name:
+            if chatroom_name in self.active_connections[user_name]:
                 ws = self.active_connections[user_name][chatroom_name]
                 await ws.send_text(message)
