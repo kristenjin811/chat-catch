@@ -84,7 +84,7 @@ class ConnectionManager:
         self.active_connections = {}
 
     async def connect(
-        self, websocket: WebSocket, chatroom_name: str, user_name: str
+        self, websocket: WebSocket, user_name: str, chatroom_name: str
     ):
         await websocket.accept()
         print("---Accepted Connection!")
@@ -92,7 +92,7 @@ class ConnectionManager:
             self.active_connections[user_name] = {}
         self.active_connections[user_name][chatroom_name] = websocket
 
-    async def disconnect(self, chatroom_name: str, user_name: str):
+    async def disconnect(self, user_name: str, chatroom_name: str):
         print("---Disconnecting websocket")
         if (
             user_name in self.active_connections

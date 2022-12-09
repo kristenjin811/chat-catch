@@ -86,9 +86,9 @@ manager = ConnectionManager()
 #         return HTMLResponse(f.read())
 
 
-@app.websocket("/ws/{chatroom_name}/{user_name}")
-async def websocket_endpoint(websocket: WebSocket, chatroom_name, user_name):
-    await manager.connect(websocket, chatroom_name, user_name)
+@app.websocket("/ws/{user_name}/{chatroom_name}")
+async def websocket_endpoint(websocket: WebSocket, user_name, chatroom_name):
+    await manager.connect(websocket, user_name, chatroom_name)
     try:
         chatroom = await get_chatroom(chatroom_name)
         data = json.dumps(
@@ -101,13 +101,13 @@ async def websocket_endpoint(websocket: WebSocket, chatroom_name, user_name):
             },
             default=str,
         )
-        await manager.broadcast(data, chatroom_name, user_name)
+        await manager.broadcast(data, user_name, chatroom_name)
         while True:
             if websocket.application_state == WebSocketState.CONNECTED:
                 try:
                     data = await websocket.receive_text()
                 except WebSocketDisconnect as e:
-                    await manager.disconnect(chatroom_name, user_name)
+                    await manager.disconnect(user_name, chatroom_name)
                     print("tried to receive_text and excepted....", e)
                 message_data = json.loads(data)
                 if (
@@ -116,17 +116,19 @@ async def websocket_endpoint(websocket: WebSocket, chatroom_name, user_name):
                 ):
                     logger.warning(message_data["content"])
                     logger.info("Disconnecting from Websocket")
-                    await manager.disconnect(chatroom_name, user_name)
+                    await manager.disconnect(user_name, chatroom_name)
                     break
                 else:
                     await upload_message_to_chatroom(data)
                     logger.info(f"DATA RECEIVED: {data}")
-                    await manager.broadcast(data, chatroom_name, user_name)
+                    await manager.broadcast(data, user_name, chatroom_name)
             else:
-                logger.warning(f"{websocket.application_state},reconnecting...")
-                await manager.connect(websocket, chatroom_name, user_name)
+                logger.warning(
+                    f"{websocket.application_state},reconnecting..."
+                )
+                await manager.connect(websocket, user_name, chatroom_name)
                 print("main 147 --- second attempt to connect")
     except Exception as e:
         print("we have been dismissed!")
         if websocket.application_state == WebSocketState.CONNECTED:
-            await manager.disconnect(chatroom_name, user_name)
+            await manager.disconnect(user_name, chatroom_name)
