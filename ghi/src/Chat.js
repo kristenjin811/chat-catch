@@ -54,7 +54,7 @@ function Chat() {
             const username = message.user_name
             const content = message.content
             let messageBody = {
-                "username": username,
+                "user_name": username,
                 "content": content,
             };
             if (message.hasOwnProperty("type") &&
@@ -160,10 +160,10 @@ function Chat() {
                 <div className="chat-list">
                 {getMessages.length === 0
                     ? getMessages
-                    : getMessages.map(({ content, username }, index) => {
+                    : getMessages.map(({ content, user_name }, index) => {
                     return (
                         <option key={index}>
-                            {`${username}:${content}`}
+                            {`${user_name}:${content}`}
                         </option>
                         );
                     })}
