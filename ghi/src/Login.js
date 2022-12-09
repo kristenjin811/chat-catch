@@ -23,7 +23,7 @@ export default function Login(props) {
             <input className="input" value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="password" />
             <button type="submit" className="btn btn-dark btn-block btn-large">Log In</button>
           </form>
-          <a className="register" onClick={() => props.onFormSwitch('register')}>Register</a>
+          <a href="!#" className="register" onClick={() => props.onFormSwitch('register')}>Register</a>
         </div>
       </div>
     </>

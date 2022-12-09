@@ -401,10 +401,11 @@ function Chat() {
                         value={inputStr}
                         />
                     <img
+                        alt=""
                         className="emoji-icon"
                         src="https://icons.getbootstrap.com/assets/icons/emoji-smile.svg"
                         onClick={() => setShowPicker((val) => !val)}
-                        />
+                    />
                     <Button
                         onClick={handleSubmit}
                         type="submit"
@@ -431,14 +432,14 @@ function Chat() {
                     <li onClick={handleClick}>
                     {chatrooms?.map(({ _id, chatroom_name }) => {
                         return (
-                        <a
-                            key={_id}
-                            value={chatroom_name}
+                            <a
+                                href="!#"
+                                key={_id}
+                                value={chatroom_name}
 
-                        ><option className="chatroom-name-list">
-                            {chatroom_name}</option>
-                        </a>
-
+                            ><option className="chatroom-name-list">
+                                {chatroom_name}</option>
+                            </a>
                         );
                     })}
                     </li>
