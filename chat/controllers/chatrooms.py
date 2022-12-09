@@ -150,7 +150,7 @@ async def delete_chatroom(chatroom_name: str):
     collection.delete_one({"chatroom_name": chatroom_name})
 
 
-async def add_message(message:str, collection):
+async def add_message(message: str, collection):
     client = await get_nosql_db()
     db = client[MONGODB_DB_NAME]
     collection = db.messages

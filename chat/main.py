@@ -8,7 +8,6 @@ from websocket_manager import ConnectionManager
 from controllers.chatrooms import (
     get_chatroom,
     remove_user_from_chatroom,
-    add_user_to_chatroom,
     upload_message_to_chatroom
 )
 from mongodb import (
@@ -47,6 +46,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.on_event("startup")
 async def startup_event():

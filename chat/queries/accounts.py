@@ -12,6 +12,7 @@ class AccountIn(BaseModel):
     password: str
     full_name: str
 
+
 class AccountOut(BaseModel):
     id: str
     email: str
