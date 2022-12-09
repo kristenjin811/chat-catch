@@ -74,5 +74,16 @@ Today I worked on creating more react pages for our project. Fixed the send butt
 We also spend a while merging commits.
 
 
-## DEc 7, 2022
+## Dec 7, 2022
 Today I continued to work on the front-end pages. I added an automatic scroll function to the chat list, so the page will automatically scroll down to the latest message inside a chatroom.
+
+
+## Dec 8, 2022
+Today I worked on the authentication. We created a new signing key with openssl, and put that in render environment. We followed all the steps in learn to create front-end authentication but we still struggled to make it work. After many hours, we figured out that we need the username and password to keep their name in authentication for it to work. Now we got authentication work in both front-end and the back-end.
+We still need to make the chat page to be protected by the token so only logged in users is able to see the chat page.
+
+
+## Dec 9, 2022
+Authentication is fully done!!! I was able to fix the page to be protected by token. Now, user has to login to see their chat page.
+I also pair programmed with my team to add a create-chatroom feature to the chat page.
+

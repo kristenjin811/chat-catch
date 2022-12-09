@@ -466,13 +466,6 @@ ul.tabs-container{
 }
 .title{
 	text-align: center;
-
-}
-.logout-btn {
-	cursor: pointer;
-	margin-left: 50px;
-	position: absolute;
-	bottom: -12px;
 }
 .send-btn {
 	margin-left: 350px;
@@ -482,4 +475,17 @@ ul.tabs-container{
 	font-size: 14px;
 	margin-bottom: 10px;
 }
-
+.logout-btn {
+	cursor: pointer;
+	margin-left: 50px;
+	position: absolute;
+	bottom: -12px;
+}
+.reminder-message {
+	text-align: center;
+	margin-top: 60px;
+	font-size: 14px;
+}
+.login-here {
+	color: black;
+}

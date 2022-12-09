@@ -18,7 +18,6 @@ export default function Register() {
     setPass("");
     setName("");
   };
-  console.log("heyyy")
   async function handleSubmit(e) {
     e.preventDefault();
     const successful = await signup(email, name, pass);
