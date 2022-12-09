@@ -1,193 +1,247 @@
-import {useState, useEffect} from 'react'
+import React, { useState, useEffect } from "react";
+import Button from "react-bootstrap/Button";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./Chat.css";
+import Picker from "@emoji-mart/react";
+import data from "@emoji-mart/data";
+import {Link} from 'react-router-dom';
 
-const Chatpage = () => {
-    const [chatrooms, setChatrooms] = useState([]);
-    const [selectedChatroom, setSelectedChatroom] = useState(null); //what is the datatype?
-    const [user, setUser] = useState("jared");
+function Chat() {
+    const [inputStr, setInputStr] = useState("");
+    const [showPicker, setShowPicker] = useState(false);
+    const [emojiObj, setEmojiObj] = useState("");
+    const [users, setUsers] = useState([]);
+    const [chatrooms, setChatrooms] = useState();
+    const [selectedChatroom, setSelectedChatroom] = useState("");
+    const [getMessages, setGetMessages] = useState([]);
+    const [submitted, setSubmitted] = useState(false);
+    const [emojiStr, setEmojiStr] = useState(null);
+    const [activeUser, setActiveUser] = useState("")
+    const [ws, setWs] = useState(null)
+  // executes all component functions and calls first, then executes useEffects in order.
 
-    const selectChatroom = (selectedChatroomName) => {
-        const selectedChatroomObj = chatrooms.find(
-            (chatroom) => chatroom.chatroom_name === selectedChatroomName,
-        );
-        setSelectedChatroom(selectedChatroomObj);
+    const fetchChatrooms = async () => {
+        console.log("---1 fetching Chatrooms")
+        const url = "http://localhost:8000/api/chatrooms";
+        const response = await fetch(url);
+        if (response.ok) {
+            const data = await response.json();
+            setChatrooms(data);
+        }
+        };
+    if (!chatrooms) {
+        fetchChatrooms()
+        console.log("---2 Fetched Chatrooms")
     }
 
-    useEffect(() => {
-        const fetchChatrooms = async () => {
-            const url = "http://localhost:8000/api/chatrooms";
-            const response = await fetch(url);
-            if (response.ok) {
-                const data = await response.json();
-                setChatrooms(data);
+    const handleClick = (event) => {
+        const chatroom = event.target.value
+        console.log("------chatroom_name", chatroom)
+        connectToWebSocket(chatroom)
+    }
+
+    const connectToWebSocket = (selectedChatroom) => {
+        console.log("---Checking Websocket State")
+        const websocket = new WebSocket(`ws://localhost:8000/ws/${activeUser}/${selectedChatroom}`);
+        websocket.onopen = () => {
+            console.log('---Websocket connected to client!');
+        };
+        websocket.onmessage = (event) => {
+            console.log("---On Message")
+            let message = JSON.parse(event.data);
+            console.log("message:", message)
+            const room = message.chatroom_name
+            const username = message.user_name
+            const content = message.content
+            let messageBody = {
+                "user_name": username,
+                "content": content,
+            };
+            if (message.hasOwnProperty("type") && message.type === "entrance")
+             {
+                const chatroom = message.new_chatroom_obj;
+                const messages = chatroom.messages;
+                const members = chatroom.members;
+                setSelectedChatroom(room);
+                setUsers(members);
+                //how to save all new messages to
+                setGetMessages([...messages]);
+            } else {
+                // setGetMessages([...messages, messageBody]);
+                setGetMessages(current => [...current, messageBody]);
             }
         };
-        fetchChatrooms();
-    }, []);
+        websocket.onclose = () => {
+            console.log("---On Close")
+
+        };
+        websocket.onerror = (error) => {
+            console.log("---On Error", error.message)
+            websocket.close()
+        };
+        setWs(websocket);
+        console.log("---Set ws to equal Websocket")
+    }
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const message = inputStr
+        const chatroom_name = selectedChatroom;
+        const username = activeUser;
+        const data = {
+            'user_name': username,
+            'chatroom_name': chatroom_name,
+            'content': message,
+        };
+        ws.send(JSON.stringify(data))
+        setInputStr("");
+        setSubmitted(true);
+        setEmojiStr("");
+        setShowPicker(false);
+        if(submitted === true) {
+            setSubmitted(false);
+        }
+    };
+
+    let selectedEmoji = emojiObj.native;
+    useEffect(() => {
+            setEmojiStr(selectedEmoji)
+        if (selectedEmoji){
+            setInputStr(inputStr + selectedEmoji);
+            let added = true
+            //  emojiObj = null;
+            // console.log("did this add:::::", added)
+            if (added){
+                added = false
+            }
+        }
+    },[selectedEmoji, inputStr]);
+
+
 
     return (
         <div>
-            <div className="container overflow-hidden mt-5">
-                <select
-                    className="form-select"
-                    name="chatroom"
-                    id="chatroom"
-                    value=""
-                    onChange={(e) => selectChatroom(e.target.value)}
-                >
-                    <option>Select a Chatroom</option>
-                    {chatrooms?.map(({_id, chatroom_name}) => {
-                        return (
-                        <option key={_id} value={chatroom_name}>
-                            {chatroom_name}
+        <div className="window-wrapper">
+            <div className="window-title">
+            <div className="app-title">
+                <div>Chat Catch</div>
+            </div>
+            <div className="expand">
+                <i className="fa fa-expand"></i>
+            </div>
+            </div>
+            <div className="window-area">
+            <div className="members-list">
+                <ul className="">
+                <li
+                    className="members-list-title"
+                    onChange={(e) => setUsers(e.target.value)}
+                    >
+                    Members
+                </li>
+                {users?.map(({ date_created, username }) => {
+                    return (
+                    <option
+                    className="member-name-in-list"
+                    key={date_created}
+                    value={username}
+                    >
+                        {username}
+                    </option>
+                    );
+                })};
+                </ul>
+            </div>
+            <div className="chat-area">
+                <div className="chat-area-title">
+                <b>Current Room: </b>
+                <b> {selectedChatroom}</b>
+                </div>
+                <div className="chat-list">
+                {getMessages.length === 0
+                    ? getMessages
+                    : getMessages.map(({ content, user_name }, index) => {
+                    return (
+                        <option key={index}>
+                            {`${user_name}:${content}`}
                         </option>
                         );
                     })}
-                </select>
-                <label>User:
+                </div>
+                <form>
+                <div className="input-area">
+                    {showPicker && (
+                    <Picker data={data} onEmojiSelect={setEmojiObj} />
+                    )}
+                    <div className="input-wrapper">
                     <input
+                        onChange={(e) => setInputStr(e.target.value)}
+                        className="text"
                         type="text"
-                        id="user"
-                        autoComplete="off"
-                        defaultValue={user}
-                        onChange={(e) => setUser(e.target.value)}
-                    />
-                </label>
-                <h1>{selectedChatroom && `Welcome to ${selectedChatroom.chatroom_name}!`}</h1>
+                        value={inputStr}
+                        />
+                    <img
+                        className="emoji-icon"
+                        src="https://icons.getbootstrap.com/assets/icons/emoji-smile.svg"
+                        onClick={() => setShowPicker((val) => !val)}
+                        />
+                    <Button
+                        onClick={handleSubmit}
+                        type="submit"
+                        className="send-btn"
+                        variant="secondary"
+                    >
+                        {/* {" "} */}
+                        Send
+
+                    </Button>
+                    </div>
+                </div>
+                </form>
             </div>
-            { selectedChatroom && user &&
-                <Messages
-                    selectedChatroomName={selectedChatroom.chatroom_name}
-                    messages={selectedChatroom.messages}
-                    user={user}
-                />
-            }
+
+            <div className="right-tabs">
+                <ul className="tabs-container">
+                <div className="title">
+                    <b>Your Chatrooms</b>
+                </div>
+                </ul>
+                <div className="chatroom-list">
+                <ul>
+                    <li onClick={handleClick}>
+                    {chatrooms?.map(({ _id, chatroom_name }) => {
+                        return (
+                        <a
+                            key={_id}
+                            value={chatroom_name}
+
+                        ><option className="chatroom-name-list">
+                            {chatroom_name}</option>
+                        </a>
+
+                        );
+                    })}
+                    </li>
+                </ul>
+                <input
+                        onChange={(e) => setActiveUser(e.target.value)}
+                        className="text"
+                        type="text"
+                    />
+
+
+                </div>
+                <Link to="/">
+                <Button className="logout-btn" variant="outline-secondary">
+                    Logout
+                </Button>
+                </Link>
+            </div>
+            </div>
         </div>
+        </div>
+
     );
 }
 
-
-const Messages = ({selectedChatroomName, user}) => {
-    const [ws, setWs] = useState(null)
-    const [messageDraft, setMessageDraft] = useState("");
-    const [messages, setMessages] = useState([]);
-
-    // async function addMessage(event){
-    //     event.preventDefault();
-    //     // ws.send({"username": user, "message": message})
-    // }
-
-    // useEffect(() => {
-    //     const connectToWebSocket = () => {
-    //         if (!ws || ws?.readyState === WebSocket.CLOSED) {
-    //             const websocket = new WebSocket(`ws://localhost:8000/ws/${selectedChatroomName}/${user}`);
-
-    //             websocket.onopen = () => {
-    //                 // websocket.send("{'message': 'Connected to client!'}");
-    //                 console.log('Websocket connected to client!');
-    //             }
-
-    //             websocket.onmessage = function(event) {
-    //                 let incomingMessage = JSON.parse(event.data);
-    //                 // if (incoming_message.hasOwnProperty("type") &&
-    //                 //     (incoming_message.type === "dismissal" ||
-    //                 //     incoming_message.type === "entrance")
-    //                 //     ) {
-    //                 //         setSelectedChatroom(incoming_message.new_room_obj)
-    //                 //         setUser
-    //                 //     }
-    //                 let messageBody = {
-    //                   content: incomingMessage["content"],
-    //                   user: incomingMessage["user"],
-    //                 };
-    //                 getMessages.push(messageBody)
-
-
-    //             };
-
-                // websocket.onclose = () => {setTimeout(connectToWebSocket, 1000)}
-                setWs(websocket);
-            }
-        };
-        connectToWebSocket();
-    }, [selectedChatroomName, user, ws])
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const username = user
-        const input = messageDraft
-        if (input.length > 0) {
-            const message_obj = {
-                content: input,
-                username: username,
-                chatroom_name: selectedChatroomName,
-            };
-            if (ws !== null) {
-                ws.send(JSON.stringify(message_obj));
-                setMessageDraft("") //scroll to bottom
-            } else {
-                connectToWebSocket();
-                ws.send(JSON.stringify(message_obj));
-                setMessageDraft("") //scroll to bottom;
-            }
-        }
-    }
-
-    return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <hr />
-                <label>
-                    Message:
-                    <input
-                        type="text"
-                        id="messageText"
-                        autoComplete="off"
-                        defaultValue={messageDraft}
-                        onChange={(e) => setMessageDraft(e.target.value)}
-                    />
-                </label>
-                <button type="submit">Send</button>
-            </form>
-            <ul>
-                {messages.map(({ username, content }, index) => {
-                    return (<li key={index}>{`${username}: ${content}`}</li>)}
-                )}
-            </ul>
-        </div>
-    )
-}
-
-export default Chatpage;
-
-
-
-// const requestOptions = {
-//     method: 'PUT',
-//     headers: { 'Content-Type': 'application/json' },
-//     body: JSON.stringify(event)
-// }
-// const url = "http://localhost:8000/api/chatrooms/" + chatroomName;
-// const response = await fetch(url, requestOptions)
-// if (response.ok) {
-//     console.log("we successfully added a message to the chatroom")
-// }
-
-// function connect(chatroom, chatroomName, user){
-//     // const webscktURL = "ws://localhost:8000/ws/" + chatroomName + "/" + user;
-//     // let websckt = null;
-//     if (chatroom !== null && ws === null) {
-//         let websckt = checkWebSocket(chatroomName, user);
-//         console.log("inside connect", websckt)
-//         websckt.onopen = () => {
-//             websckt.send("Connected to react");
-//             console.log("Connected");
-//             console.log("Connected");
-//         }
-//         websckt.onmessage = (e) => {
-//             const m = JSON.parse(e.data);
-//             setMessages([...messages, m])
-//         }
-//         setMessages(chatroom.messages)
-//         setWs(websckt)
-//     }
-// };
+export default Chat;

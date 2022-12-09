@@ -24,25 +24,25 @@ logger = logging.getLogger(__name__)
 # update chatroom by appending new message
 # to messages list in chatroom document.
 async def upload_message_to_chatroom(data):
-    return f"im in upload_message_to_chatroom: ${data}"
-    # message_data = json.loads(data)
-    # print("json.loads works!")
-    # client = await get_nosql_db()
-    # db = client[MONGODB_DB_NAME]
-    # try:
-    #     chatroom = await get_chatroom(data["chatroom_name"])
-    #     # user = await get_user_db(message_data["username"])
-    #     # message_data["username"] = user
-    #     data.pop("chatroom_name", None)
-    #     collection = db.chatrooms
-    #     collection.update_one(
-    #         {"_id": ObjectId(chatroom["_id"])},
-    #         {"$push": {"messages": message_data}},
-    #     )
-    #     return True
-    # except Exception as e:
-    #     logger.error(f"error adding message to DB: {type(e)}{e}")
-    # return False
+    message_data = json.loads(data)
+    client = await get_nosql_db()
+    db = client[MONGODB_DB_NAME]
+    try:
+        chatroom_name = message_data["chatroom_name"]
+        chatroom = await get_chatroom(chatroom_name)
+        message_body = {
+            "user_name": message_data["user_name"],
+            "content": message_data["content"],
+        }
+        collection = db.chatrooms
+        collection.update_one(
+            {"_id": ObjectId(chatroom["_id"])},
+            {"$push": {"messages": message_body}},
+        )
+        return True
+    except Exception as e:
+        logger.error(f"error adding message to DB: {type(e)}{e}")
+        return False
 
 
 # insert created chatroom document into the
