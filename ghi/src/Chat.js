@@ -5,9 +5,9 @@ import UserList from "./UsersList";
 import "./Chat.css";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "./GetToken";
-
+import {useToken} from "./GetToken"
 
 function Chat() {
   const { token } = useAuthContext();
@@ -97,6 +97,15 @@ function Chat() {
       }
     }
   };
+
+  const navigate = useNavigate();
+  const [, , logout] = useToken();
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    logout();
+    navigate("/");
+  }
+
 
   let selectedEmoji = emojiObj.native;
   useEffect(() => {
@@ -228,7 +237,7 @@ function Chat() {
               </ul>
             </div>
             <Link to="/">
-              <Button className="logout-btn" variant="outline-secondary">
+              <Button onClick={handleLogout} className="logout-btn" variant="outline-secondary">
                 Logout
               </Button>
             </Link>
