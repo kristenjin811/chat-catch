@@ -498,3 +498,7 @@ ul.tabs-container{
 	position: absolute;
 	bottom: -12px;
 }
+.members-list {
+	overflow-y: scroll;
+	height:495px;
+}
