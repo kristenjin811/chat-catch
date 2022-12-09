@@ -279,15 +279,14 @@ function Chat() {
                 "content": content,
             };
             if (message.hasOwnProperty("type") &&
-            (message.type === "dismissal" ||
-            message.type === "entrance")
+            (message.type === "entrance")
             ) {
                 const chatroom = message.new_chatroom_obj;
                 const messages = chatroom.messages;
                 const members = chatroom.members;
                 setSelectedChatroom(room)
                 setUsers(members);
-                setGetMessages([...messages, messageBody])
+                setGetMessages([...messages])
             } else {
                 setGetMessages(current => [...current, messageBody]);
             }
