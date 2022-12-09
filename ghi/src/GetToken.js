@@ -7,7 +7,7 @@ export function getToken() {
 }
 
 export async function getTokenInternal() {
-  const url = `${process.env.REACT_APP_CHAT_API_HOST}/api/accounts/me/token/`;
+  const url = `${process.env.REACT_APP_CHAT_API_HOST}/token`;
   try {
     const response = await fetch(url, {
       credentials: "include",
@@ -75,7 +75,7 @@ export function useToken() {
 
   async function logout() {
     if (token) {
-      const url = `${process.env.REACT_APP_CHAT_API_HOST}/api/token/refresh/logout/`;
+      const url = `${process.env.REACT_APP_CHAT_API_HOST}/token`;
       await fetch(url, { method: "delete", credentials: "include" });
       internalToken = null;
       setToken(null);
@@ -83,18 +83,17 @@ export function useToken() {
     }
   }
 
-  async function login(email, pass) {
-    const url = `${process.env.REACT_APP_CHAT_API_HOST}/login/`;
+  async function login(username, password) {
+    const url = `${process.env.REACT_APP_CHAT_API_HOST}/token`;
     const form = new FormData();
-    form.append("email", email);
-    form.append("pass", pass);
+    form.append("username", username);
+    form.append("password", password);
     const response = await fetch(url, {
       method: "post",
       credentials: "include",
       body: form,
     });
     if (response.ok) {
-      console.log("We made it")
       const token = await getTokenInternal();
       setToken(token);
       return;
@@ -103,47 +102,24 @@ export function useToken() {
     return handleErrorMessage(error);
   }
 
-  async function signup(username, password, email, firstName, lastName) {
+  async function signup(username, password, email) {
     const url = `${process.env.REACT_APP_CHAT_API_HOST}/api/accounts/`;
     const response = await fetch(url, {
       method: "post",
       body: JSON.stringify({
         username,
-        password,
         email,
-        first_name: firstName,
-        last_name: lastName,
+        password,
       }),
       headers: {
         "Content-Type": "application/json",
       },
     });
     if (response.ok) {
-      await login(username, password);
+      await login(email, password);
     }
     return false;
   }
 
-  async function update(username, password, email, firstName, lastName) {
-    const url = `${process.env.REACT_APP_CHAT_API_HOST}/api/accounts/`;
-    const response = await fetch(url, {
-      method: "patch",
-      body: JSON.stringify({
-        username,
-        password,
-        email,
-        first_name: firstName,
-        last_name: lastName,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (response.ok) {
-      await login(username, password);
-    }
-    return false;
-  }
-
-  return [token, login, logout, signup, update];
+  return [token, login, logout, signup];
 }

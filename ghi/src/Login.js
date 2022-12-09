@@ -1,19 +1,31 @@
 import React, { useState } from 'react';
 import './Login.css';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { useToken } from "./GetToken";
 
 
 export default function Login() {
-  const [token, login] = useToken();
-
+  const [, login] = useToken();
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
+  const [invalid, setInvalid] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-      e.preventDefault();
-      await login(email, pass);
-      console.log(email);
+  const clearState = () => {
+    setEmail("");
+    setPass("");
+    setInvalid("");
+  };
+
+  async function handleSubmit (e) {
+    e.preventDefault();
+    const error = await login(email, pass);
+    if (error) {
+      setInvalid(true);
+    } else {
+      clearState();
+      navigate("chats/");
+    }
   }
 
   return(
@@ -29,6 +41,15 @@ export default function Login() {
             <button type="submit" className="btn btn-dark btn-block btn-large">Log In</button>
           </form>
           <Link className="register" to="register/">Register</Link>
+          {invalid && (
+            <div
+              className="alert alert-danger mb-0 p-4 mt-4"
+              id="invalid-message"
+            >
+              You've entered an incorrect email and/or password. Please
+              try again.
+            </div>
+          )}
         </div>
       </div>
     </>

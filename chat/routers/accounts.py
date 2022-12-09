@@ -31,9 +31,6 @@ class HttpError(BaseModel):
 router = APIRouter()
 
 
-
-
-
 @router.post("/api/accounts", response_model=AccountToken | HttpError)
 async def create_account(
     info: AccountIn,
@@ -66,7 +63,6 @@ def get_accounts(
     return response
 
 
-
 @router.get("/token", response_model=AccountToken | None)
 async def get_token(
     request: Request,
@@ -79,12 +75,14 @@ async def get_token(
             "account": account,
         }
 
-# @router.get("/gathering/accounts/{email}", response_model=[Account])
+
+
+# @router.get("/api/accounts/{email}", response_model=[AccountOut])
 # def get_one_account(
 #   email: str,
 #   response: Response,
-#   repo: AccountRepository = Depends(),
-# ) -> Account:
+#   repo: AccountQueries = Depends(),
+# ) -> AccountOut:
 #   account = repo.get_one(email)
 #   if account is None:
 #     response.status_code = 404

@@ -23,19 +23,19 @@ function GetToken() {
 function App() {
 
   return (
-    <AuthProvider>
-      <BrowserRouter>
-      <GetToken />
-        <div className="container">
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="register/" element={<Register />} />
-            <Route path="chats/" element={<Chat />} />
-            <Route path="users" element={<UserList />} />
-          </Routes>
-        </div>
+    <BrowserRouter>
+      <AuthProvider>
+        <GetToken />
+          <div className="container">
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="register/" element={<Register />} />
+              <Route path="chats/" element={<Chat />} />
+              <Route path="users" element={<UserList />} />
+            </Routes>
+          </div>
+        </AuthProvider>
       </BrowserRouter>
-    </AuthProvider>
   )
 }
 
