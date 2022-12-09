@@ -68,26 +68,41 @@ const Chatpage = () => {
 
 const Messages = ({selectedChatroomName, user}) => {
     const [ws, setWs] = useState(null)
-    const [message, setMessage] = useState("");
+    const [messageDraft, setMessageDraft] = useState("");
     const [messages, setMessages] = useState([]);
 
-    async function addMessage(event){
-        event.preventDefault();
-        // ws.send({"username": user, "message": message})
-    }
+    // async function addMessage(event){
+    //     event.preventDefault();
+    //     // ws.send({"username": user, "message": message})
+    // }
 
-    useEffect(() => {
-        const connectToWebSocket = () => {
-            if (!ws || ws?.readyState === WebSocket.CLOSED) {
-                const websocket = new WebSocket(`ws://localhost:8000/ws/${selectedChatroomName}/${user}`);
+    // useEffect(() => {
+    //     const connectToWebSocket = () => {
+    //         if (!ws || ws?.readyState === WebSocket.CLOSED) {
+    //             const websocket = new WebSocket(`ws://localhost:8000/ws/${selectedChatroomName}/${user}`);
 
-                websocket.onopen = () => {
-                    websocket.send("{'message': 'Connected to client!'}");
-                }
+    //             websocket.onopen = () => {
+    //                 // websocket.send("{'message': 'Connected to client!'}");
+    //                 console.log('Websocket connected to client!');
+    //             }
 
-                websocket.onmessage = function(event) {
-                    console.log("got a message")
-                };
+    //             websocket.onmessage = function(event) {
+    //                 let incomingMessage = JSON.parse(event.data);
+    //                 // if (incoming_message.hasOwnProperty("type") &&
+    //                 //     (incoming_message.type === "dismissal" ||
+    //                 //     incoming_message.type === "entrance")
+    //                 //     ) {
+    //                 //         setSelectedChatroom(incoming_message.new_room_obj)
+    //                 //         setUser
+    //                 //     }
+    //                 let messageBody = {
+    //                   content: incomingMessage["content"],
+    //                   user: incomingMessage["user"],
+    //                 };
+    //                 getMessages.push(messageBody)
+
+
+    //             };
 
                 // websocket.onclose = () => {setTimeout(connectToWebSocket, 1000)}
                 setWs(websocket);
@@ -96,9 +111,30 @@ const Messages = ({selectedChatroomName, user}) => {
         connectToWebSocket();
     }, [selectedChatroomName, user, ws])
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const username = user
+        const input = messageDraft
+        if (input.length > 0) {
+            const message_obj = {
+                content: input,
+                username: username,
+                chatroom_name: selectedChatroomName,
+            };
+            if (ws !== null) {
+                ws.send(JSON.stringify(message_obj));
+                setMessageDraft("") //scroll to bottom
+            } else {
+                connectToWebSocket();
+                ws.send(JSON.stringify(message_obj));
+                setMessageDraft("") //scroll to bottom;
+            }
+        }
+    }
+
     return (
         <div>
-            <form onSubmit={addMessage}>
+            <form onSubmit={handleSubmit}>
                 <hr />
                 <label>
                     Message:
@@ -106,8 +142,8 @@ const Messages = ({selectedChatroomName, user}) => {
                         type="text"
                         id="messageText"
                         autoComplete="off"
-                        defaultValue={message}
-                        onChange={(e) => setMessage(e.target.value)}
+                        defaultValue={messageDraft}
+                        onChange={(e) => setMessageDraft(e.target.value)}
                     />
                 </label>
                 <button type="submit">Send</button>

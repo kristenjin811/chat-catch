@@ -86,7 +86,7 @@ manager = ConnectionManager()
 #     with open("index.html") as f:
 #         return HTMLResponse(f.read())
 
-# STREAMLINED
+# STREAMLINED - THIS WORKS FOR SURE
 @app.websocket("/ws/{chatroom_name}/{user_name}")
 async def websocket_endpoint(
     websocket: WebSocket, chatroom_name: str, user_name: str
