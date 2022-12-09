@@ -20,25 +20,16 @@ function Chat() {
   const [getMessages, setGetMessages] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [emojiStr, setEmojiStr] = useState(null);
+  const [createdRoom, setCreatedRoom] = useState("");
   const messagesEndRef = useRef(null)
+
+
+
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView();
   }, [getMessages]);
 
-  // useEffect(() => {
-  //   const fetchMessages = async () => {
-  //     const url = `http://localhost:8000/api/chatrooms/${selectedChatroom}`;
-  //     const response = await fetch(url);
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       // console.log(data);
-  //       setGetMessages(data.messages);
-  //     }
-  //   };
-  //   fetchMessages();
-  // }, [submitted]);
-  // // , [getMessages]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -64,7 +55,7 @@ function Chat() {
       }
     };
     fetchChatrooms();
-  }, []);
+  }, [submitted]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -98,6 +89,34 @@ function Chat() {
     }
   };
 
+
+  const handleCreateChatRoom = async (event) => {
+    event.preventDefault();
+    const chatroom = createdRoom;
+    const username = "Bob";
+    const data = {
+      username: username,
+      chatroom_name: chatroom,
+    };
+    const url = `http://localhost:8000/api/chatrooms/`;
+    const fetchConfig = {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const response = await fetch(url, fetchConfig);
+    if (response.ok) {
+      setCreatedRoom("")
+      setSubmitted(true);
+      if (submitted == true) {
+        setSubmitted(false);
+      }
+    }
+  };
+
   const navigate = useNavigate();
   const [, , logout] = useToken();
   const handleLogout = async (e) => {
@@ -121,6 +140,8 @@ function Chat() {
     }
   }, [selectedEmoji]);
 
+
+if (token) {
   return (
     <div>
       <div className="window-wrapper">
@@ -160,28 +181,17 @@ function Chat() {
               <b>Current Room: </b>
               <b> {selectedChatroom}</b>
             </div>
-            <div
-              className="chat-list"
-              // onChange={(e) => setGetMessages(e.target.value)}
-            >
-              {/* {getMessages?.map(({ _id, message }) => {
-                    return (
-                      <option key={_id} value={message}>
-                        {message}
-                      </option>
-                    );
-                  })} */}
+            <div className="chat-list">
               {!getMessages
                 ? getMessages
                 : getMessages.map(({ username, content }, index) => {
-                  return (
-                    <option className="chat-text" key={index}>
+                    return (
+                      <option className="chat-text" key={index}>
                         {`${username}: ${content}`}
                       </option>
                     );
                   })}
-            <div ref={messagesEndRef}>
-            </div>
+              <div ref={messagesEndRef}></div>
             </div>
 
             <form>
@@ -235,9 +245,32 @@ function Chat() {
                   })}
                 </li>
               </ul>
+              <div>
+                <form>
+                  <input
+                    className="add-chat-room"
+                    onChange={(e) => setCreatedRoom(e.target.value)}
+                    type="text"
+                    placeholder="Create Chatroom"
+                    value={createdRoom}
+                  />
+                  <Button
+                    onClick={handleCreateChatRoom}
+                    className="create-room-btn"
+                    variant="secondary"
+                  >
+                    Create
+                  </Button>
+                </form>
+              </div>
             </div>
+
             <Link to="/">
-              <Button onClick={handleLogout} className="logout-btn" variant="outline-secondary">
+              <Button
+                onClick={handleLogout}
+                className="logout-btn"
+                variant="outline-secondary"
+              >
                 Logout
               </Button>
             </Link>
@@ -246,6 +279,9 @@ function Chat() {
       </div>
     </div>
   );
+} else {
+  navigate("/");
+}
 }
 
 export default Chat;

@@ -13,6 +13,7 @@ import "./App.css"
 import { AuthProvider, useToken } from './GetToken'
 
 
+
 function GetToken() {
     // Get token from JWT cookie (if already logged in)
     useToken();
@@ -23,6 +24,7 @@ function GetToken() {
 function App() {
 
   return (
+    
     <BrowserRouter>
       <AuthProvider>
         <GetToken />
@@ -38,5 +40,6 @@ function App() {
       </BrowserRouter>
   )
 }
+
 
 export default App
