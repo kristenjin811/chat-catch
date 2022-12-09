@@ -81,7 +81,6 @@ def timestamp():
 
 class ConnectionManager:
     def __init__(self):
-        # self.active_connections: List[WebSocket] = []
         self.active_connections = {}
 
     async def connect(
@@ -109,8 +108,6 @@ class ConnectionManager:
     async def broadcast(
         self, message: str, chatroom_name: str, user_name: str
     ):
-        print("---Broadcasting Message and message variable", message)
-        print("---Broadcasting Message and chatroom_name", chatroom_name)
         if chatroom_name in self.active_connections:
             for user_name, websocket in self.active_connections[
                 chatroom_name
