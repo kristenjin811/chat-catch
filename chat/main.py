@@ -12,7 +12,8 @@ import logging
 import json
 from api import router as api_router
 from fastapi.middleware.cors import CORSMiddleware
-import os
+# import os
+
 # # from authenticator import authenticator
 # from fastapi.responses import HTMLResponse
 # from fastapi.middleware.cors import CORSMiddleware
@@ -100,6 +101,7 @@ async def websocket_endpoint(websocket: WebSocket, user_name, chatroom_name):
                 try:
                     data = await websocket.receive_text()
                 except WebSocketDisconnect as e:
+                    print("error", e)
                     await manager.disconnect(user_name, chatroom_name)
                 await upload_message_to_chatroom(data)
                 logger.info(f"DATA RECEIVED: {data}")
@@ -110,6 +112,6 @@ async def websocket_endpoint(websocket: WebSocket, user_name, chatroom_name):
                 )
                 await manager.connect(websocket, user_name, chatroom_name)
     except Exception as e:
-        print("we have been dismissed!")
+        print("we have been excepted and dismissed!", e)
         if websocket.application_state == WebSocketState.CONNECTED:
             await manager.disconnect(user_name, chatroom_name)

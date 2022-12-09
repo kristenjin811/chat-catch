@@ -1,5 +1,5 @@
 from .users import get_user_db
-from models import ChatroomInDB, User
+from models import ChatroomInDB
 
 # from pydantic import BaseModel, EmailStr
 # from fastapi import Response
@@ -23,6 +23,8 @@ logger = logging.getLogger(__name__)
 
 # update chatroom by appending new message
 # to messages list in chatroom document.
+
+
 async def upload_message_to_chatroom(data):
     message_data = json.loads(data)
     client = await get_nosql_db()
