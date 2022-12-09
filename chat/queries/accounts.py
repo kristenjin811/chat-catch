@@ -12,6 +12,7 @@ class AccountIn(BaseModel):
     password: str
     full_name: str
 
+
 class AccountOut(BaseModel):
     id: str
     email: str
@@ -25,7 +26,6 @@ class AccountOutWithPassword(AccountOut):
 class AccountQueries(Queries):
     DB_NAME = "accounts"
     COLLECTION = "accounts"
-
 
     def get(self, email: str):
         user = self.collection.find_one({"email": email})
