@@ -316,7 +316,7 @@ function Chat() {
         ws.send(JSON.stringify(data))
         setInputStr("");
         setSubmitted(true);
-        setEmojiStr("");
+        // setEmojiStr("");
         setShowPicker(false);
         if(submitted === true) {
             setSubmitted(false);

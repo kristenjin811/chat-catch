@@ -40,7 +40,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="register/" element={<Register />} />
           <Route path="chats/" element={<Chat />} />
-          <Route path="users" element={<UserList />} />
+          {/* <Route path="users" element={<UserList />} /> */}
         </Routes>
       </div>
     </BrowserRouter>
