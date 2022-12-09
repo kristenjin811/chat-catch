@@ -94,8 +94,8 @@ manager = ConnectionManager()
 
 @app.websocket("/ws/{chatroom_name}/{user_name}")
 async def websocket_endpoint(websocket: WebSocket, chatroom_name, user_name):
-    await manager.connect(websocket)
     try:
+        await manager.connect(websocket)
         # add user
         # await add_user_to_chatroom(user_name, chatroom_name)
         chatroom = await get_chatroom(chatroom_name)
@@ -123,7 +123,7 @@ async def websocket_endpoint(websocket: WebSocket, chatroom_name, user_name):
                 ):
                     logger.warning(message_data["content"])
                     logger.info("Disconnecting from Websocket")
-                    await manager.disconnect(websocket)
+                    # await manager.disconnect(websocket)
                     break
                 else:
                     await upload_message_to_chatroom(data)
