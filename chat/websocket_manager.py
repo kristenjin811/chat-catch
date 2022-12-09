@@ -89,28 +89,26 @@ class ConnectionManager:
         await websocket.accept()
         print("---Accepted Connection!")
         if chatroom_name not in self.active_connections:
-            self.active_connections[chatroom_name] = {}
-        self.active_connections[chatroom_name][user_name] = websocket
+            self.active_connections[user_name] = {}
+        self.active_connections[user_name][chatroom_name] = websocket
 
     async def disconnect(self, chatroom_name: str, user_name: str):
         print("---Disconnecting websocket")
         if (
-            chatroom_name in self.active_connections
-            and user_name in self.active_connections[chatroom_name]
+            user_name in self.active_connections
+            and chatroom_name in self.active_connections[user_name]
         ):
-            ws = self.active_connections[chatroom_name].pop(user_name)
-            # ws.close()
+            ws = self.active_connections[user_name].pop(chatroom_name)
+            ws.close()
 
     async def send_personal_message(self, message: str, websocket: WebSocket):
         print("---Sending Personal Message")
         await websocket.send_text(message)
 
     async def broadcast(
-        self, message: str, chatroom_name: str, user_name: str
+        self, message: str, user_name: str, chatroom_name: str
     ):
-        if chatroom_name in self.active_connections:
-            for user_name, websocket in self.active_connections[
-                chatroom_name
-            ].items():
-                if websocket.application_state == WebSocketState.CONNECTED:
-                    await websocket.send_text(message)
+        for user_name in self.active_connections:
+            if chatroom_name in user_name:
+                ws = self.active_connections[user_name][chatroom_name]
+                await ws.send_text(message)
