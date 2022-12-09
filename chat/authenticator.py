@@ -4,9 +4,7 @@ from jwtdown_fastapi.authentication import Authenticator
 from fastapi import Depends
 from queries.accounts import AccountQueries, AccountOut, AccountOutWithPassword
 
-class MyAuthenticator():
-    def __init__(self, signing_key: str):
-        self.signing_key = signing_key
+class MyAuthenticator(Authenticator):
 
     async def get_account_data(
         self,
@@ -31,5 +29,6 @@ class MyAuthenticator():
 
         return account.email, AccountOut(**account.dict())
 
-
+print("auth line 32", os.environ ["SIGNING_KEY"] )
 authenticator = MyAuthenticator(os.environ["SIGNING_KEY"])
+print("auth line 34")
