@@ -18,7 +18,7 @@ function Chat() {
     const [getMessages, setGetMessages] = useState([]);
     const [submitted, setSubmitted] = useState(false);
     const [emojiStr, setEmojiStr] = useState(null);
-    const [activeUser, setActiveUser] = useState("Bob")
+    const [activeUser, setActiveUser] = useState("")
     const [ws, setWs] = useState(null)
   // executes all component functions and calls first, then executes useEffects in order.
   /*
@@ -53,6 +53,12 @@ function Chat() {
         //     setWs(null)
         // }
         // console.log("line 103---about to call connect inside handle click")
+        // if ({activeUser} === "Bob") {
+        //     setActiveUser("Frank")
+        // } else {
+        //     setActiveUser("Bob")
+        // }
+
         const chatroom = event.target.value
         // checkWebsocket(chatroom)
         connectToWebSocket(chatroom)
@@ -66,7 +72,7 @@ function Chat() {
     const connectToWebSocket = (selectedChatroom) => {
         console.log("---Checking Websocket State")
         console.log("ws:", ws)
-        //if websocket is in array?
+
 
         // if (!ws) {
             // console.log("---Creating New Websocket")
@@ -75,9 +81,11 @@ function Chat() {
             console.log('---Websocket connected to client!');
         };
         websocket.onmessage = (event) => {
-            // console.log("---On Message")
+            console.log("---On Message")
             let message = JSON.parse(event.data);
+            console.log("message:", message)
             const room = message.chatroom_name
+            console.log("room", room)
             const username = message.user_name
             const content = message.content
             let messageBody = {
@@ -116,13 +124,17 @@ function Chat() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const message = inputStr
+        console.log("message", message)
         const chatroom_name = selectedChatroom;
+        console.log("chatroom_name", chatroom_name)
         const username = activeUser;
+        console.log("username", username)
         const data = {
             'user_name': username,
             'chatroom_name': chatroom_name,
             'content': message,
         };
+        console.log("data", data)
         ws.send(JSON.stringify(data))
     // const url = `http://localhost:8000/api/chatrooms/${selectedChatroom}`;
     // const fetchConfig = {
@@ -233,8 +245,9 @@ function Chat() {
                     className="send-btn"
                     variant="secondary"
                   >
-                    {" "}
-                    Send{" "}
+                    {/* {" "} */}
+                    Send
+
                   </Button>
                 </div>
               </div>
@@ -264,6 +277,13 @@ function Chat() {
                   })}
                 </li>
               </ul>
+              <input
+                    onChange={(e) => setActiveUser(e.target.value)}
+                    className="text"
+                    type="text"
+                />
+
+
             </div>
             <Link to="/">
               <Button className="logout-btn" variant="outline-secondary">

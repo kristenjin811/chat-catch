@@ -4,6 +4,7 @@ from fastapi import (
     WebSocketDisconnect,
     # Depends,
 )
+from starlette.websockets import WebSocketState
 
 # import os
 import json
@@ -80,23 +81,39 @@ def timestamp():
 
 class ConnectionManager:
     def __init__(self):
-        self.active_connections: List[WebSocket] = []
+        # self.active_connections: List[WebSocket] = []
+        self.active_connections = {}
 
-    async def connect(self, websocket: WebSocket):
+    async def connect(
+        self, websocket: WebSocket, chatroom_name: str, user_name: str
+    ):
         await websocket.accept()
         print("---Accepted Connection!")
-        self.active_connections.append(websocket)
+        if chatroom_name not in self.active_connections:
+            self.active_connections[chatroom_name] = {}
+        self.active_connections[chatroom_name][user_name] = websocket
 
-    async def disconnect(self, websocket: WebSocket):
+    async def disconnect(self, chatroom_name: str, user_name: str):
         print("---Disconnecting websocket")
-        self.active_connections.remove(websocket)
+        if (
+            chatroom_name in self.active_connections
+            and user_name in self.active_connections[chatroom_name]
+        ):
+            ws = self.active_connections[chatroom_name].pop(user_name)
+            # ws.close()
 
     async def send_personal_message(self, message: str, websocket: WebSocket):
         print("---Sending Personal Message")
         await websocket.send_text(message)
 
-    async def broadcast(self, message: str):
-        print("---Broadcasting Message")
-        for connection in self.active_connections:
-            # print(dict(connection))
-            await connection.send_text(message)
+    async def broadcast(
+        self, message: str, chatroom_name: str, user_name: str
+    ):
+        print("---Broadcasting Message and message variable", message)
+        print("---Broadcasting Message and chatroom_name", chatroom_name)
+        if chatroom_name in self.active_connections:
+            for user_name, websocket in self.active_connections[
+                chatroom_name
+            ].items():
+                if websocket.application_state == WebSocketState.CONNECTED:
+                    await websocket.send_text(message)
