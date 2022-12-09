@@ -44,39 +44,14 @@ function Chat() {
         console.log("---2 Fetched Chatrooms")
     }
 
-    // const checkWebsocket = () => {
-    //     const { ws } = ws
-    // }
     const handleClick = (event) => {
-        // if (ws) {
-        //     console.log("line 100 --- just before setting websocket to null")
-        //     setWs(null)
-        // }
-        // console.log("line 103---about to call connect inside handle click")
-        // if ({activeUser} === "Bob") {
-        //     setActiveUser("Frank")
-        // } else {
-        //     setActiveUser("Bob")
-        // }
-
         const chatroom = event.target.value
-        // checkWebsocket(chatroom)
         connectToWebSocket(chatroom)
-        // console.log("line 107 what is ws now?", ws)
-        // setGetMessages("")
-        // setUsers([])
-        // setSelectedChatroom(chatroom)
-        // fetchDataFromSelectedChatroom(chatroom)
     }
 
     const connectToWebSocket = (selectedChatroom) => {
         console.log("---Checking Websocket State")
-        console.log("ws:", ws)
-
-
-        // if (!ws) {
-            // console.log("---Creating New Websocket")
-        const websocket = new WebSocket(`ws://localhost:8000/ws/${selectedChatroom}/${activeUser}`);
+        const websocket = new WebSocket(`ws://localhost:8000/ws/${activeUser}/${selectedChatroom}`);
         websocket.onopen = () => {
             console.log('---Websocket connected to client!');
         };
@@ -85,7 +60,6 @@ function Chat() {
             let message = JSON.parse(event.data);
             console.log("message:", message)
             const room = message.chatroom_name
-            console.log("room", room)
             const username = message.user_name
             const content = message.content
             let messageBody = {
@@ -98,8 +72,6 @@ function Chat() {
             ) {
                 const messages = message.new_chatroom_obj.messages
                 const members = message.new_chatroom_obj.members
-                console.log("message shape?", message)
-                // console.log("message attributes room, members, messages", room, members, messages)
                 setSelectedChatroom(room)
                 setUsers(members);
                 setGetMessages([...messages, messageBody])
@@ -124,29 +96,14 @@ function Chat() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const message = inputStr
-        console.log("message", message)
         const chatroom_name = selectedChatroom;
-        console.log("chatroom_name", chatroom_name)
         const username = activeUser;
-        console.log("username", username)
         const data = {
             'user_name': username,
             'chatroom_name': chatroom_name,
             'content': message,
         };
-        console.log("data", data)
         ws.send(JSON.stringify(data))
-    // const url = `http://localhost:8000/api/chatrooms/${selectedChatroom}`;
-    // const fetchConfig = {
-    //   method: "PUT",
-    //   body: JSON.stringify(data),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // };
-    // const response = await fetch(url, fetchConfig);
-    // console.log("response::", response);
-    // if (response.ok) {
         setInputStr("");
         setSubmitted(true);
         setEmojiStr("");
