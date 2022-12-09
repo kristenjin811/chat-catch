@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
-import UserList from "./UsersList";
 import "./Chat.css";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
@@ -21,14 +20,6 @@ function Chat() {
     const [activeUser, setActiveUser] = useState("")
     const [ws, setWs] = useState(null)
   // executes all component functions and calls first, then executes useEffects in order.
-  /*
-  ORDER:
-  1. get chatrooms
-  2. select chatroom
-  3. fetch data from selected chatroom
-  4. open websocket
-  5.
-  */
 
     const fetchChatrooms = async () => {
         console.log("---1 fetching Chatrooms")
@@ -91,8 +82,6 @@ function Chat() {
         console.log("---Set ws to equal Websocket")
     }
 
-
-
     const handleSubmit = async (event) => {
         event.preventDefault();
         const message = inputStr
@@ -111,148 +100,148 @@ function Chat() {
         if(submitted === true) {
             setSubmitted(false);
         }
-  };
+    };
 
-  let selectedEmoji = emojiObj.native;
-  useEffect(() => {
-        setEmojiStr(selectedEmoji)
-       if (selectedEmoji){
-         setInputStr(inputStr + selectedEmoji);
-         let added = true
-        //  emojiObj = null;
-         console.log("did this add:::::", added)
-         if (added){
+    let selectedEmoji = emojiObj.native;
+    useEffect(() => {
+            setEmojiStr(selectedEmoji)
+        if (selectedEmoji){
+            setInputStr(inputStr + selectedEmoji);
+            let added = true
+            //  emojiObj = null;
+            console.log("did this add:::::", added)
+            if (added){
 
-         }
-         added = false
-       }
-  },[selectedEmoji, inputStr]);
+            }
+            added = false
+        }
+    },[selectedEmoji, inputStr]);
 
 
 
-  return (
-    <div>
-      <div className="window-wrapper">
-        <div className="window-title">
-          <div className="app-title">
-            <div>Chat Catch</div>
-          </div>
-          <div className="expand">
-            <i className="fa fa-expand"></i>
-          </div>
-        </div>
-        <div className="window-area">
-          <div className="members-list">
-            <ul className="">
-              <li
-                className="members-list-title"
-                onChange={(e) => setUsers(e.target.value)}
-                >
-                Members
-              </li>
-              {users?.map(({ date_created, username }) => {
-                return (
-                  <option
-                  className="member-name-in-list"
-                  key={date_created}
-                  value={username}
-                  >
-                    {username}
-                  </option>
-                );
-              })};
-            </ul>
-          </div>
-          <div className="chat-area">
-            <div className="chat-area-title">
-              <b>Current Room: </b>
-              <b> {selectedChatroom}</b>
+    return (
+        <div>
+        <div className="window-wrapper">
+            <div className="window-title">
+            <div className="app-title">
+                <div>Chat Catch</div>
             </div>
-            <div className="chat-list">
-              {getMessages.length === 0
-                ? getMessages
-                : getMessages.map(({ content, username }, index) => {
-                  return (
-                    <option key={index}>
-                        {`${username}:${content}`}
+            <div className="expand">
+                <i className="fa fa-expand"></i>
+            </div>
+            </div>
+            <div className="window-area">
+            <div className="members-list">
+                <ul className="">
+                <li
+                    className="members-list-title"
+                    onChange={(e) => setUsers(e.target.value)}
+                    >
+                    Members
+                </li>
+                {users?.map(({ date_created, username }) => {
+                    return (
+                    <option
+                    className="member-name-in-list"
+                    key={date_created}
+                    value={username}
+                    >
+                        {username}
                     </option>
                     );
-                  })}
+                })};
+                </ul>
             </div>
-            <form>
-              <div className="input-area">
-                {showPicker && (
-                  <Picker onClickOutside data={data} onEmojiSelect={setEmojiObj} />
-                )}
-                <div className="input-wrapper">
-                  <input
-                    onChange={(e) => setInputStr(e.target.value)}
-                    className="text"
-                    type="text"
-                    value={inputStr}
-                    />
-                  <img
-                    className="emoji-icon"
-                    src="https://icons.getbootstrap.com/assets/icons/emoji-smile.svg"
-                    onClick={() => setShowPicker((val) => !val)}
-                    />
-                  <Button
-                    onClick={handleSubmit}
-                    type="submit"
-                    className="send-btn"
-                    variant="secondary"
-                  >
-                    {/* {" "} */}
-                    Send
-
-                  </Button>
+            <div className="chat-area">
+                <div className="chat-area-title">
+                <b>Current Room: </b>
+                <b> {selectedChatroom}</b>
                 </div>
-              </div>
-            </form>
-          </div>
-
-          <div className="right-tabs">
-            <ul className="tabs-container">
-              <div className="title">
-                <b>Your Chatrooms</b>
-              </div>
-            </ul>
-            <div className="chatroom-list">
-              <ul>
-                <li onClick={handleClick}>
-                  {chatrooms?.map(({ _id, chatroom_name }) => {
+                <div className="chat-list">
+                {getMessages.length === 0
+                    ? getMessages
+                    : getMessages.map(({ content, username }, index) => {
                     return (
-                      <a
-                        key={_id}
-                        value={chatroom_name}
+                        <option key={index}>
+                            {`${username}:${content}`}
+                        </option>
+                        );
+                    })}
+                </div>
+                <form>
+                <div className="input-area">
+                    {showPicker && (
+                    <Picker onClickOutside data={data} onEmojiSelect={setEmojiObj} />
+                    )}
+                    <div className="input-wrapper">
+                    <input
+                        onChange={(e) => setInputStr(e.target.value)}
+                        className="text"
+                        type="text"
+                        value={inputStr}
+                        />
+                    <img
+                        className="emoji-icon"
+                        src="https://icons.getbootstrap.com/assets/icons/emoji-smile.svg"
+                        onClick={() => setShowPicker((val) => !val)}
+                        />
+                    <Button
+                        onClick={handleSubmit}
+                        type="submit"
+                        className="send-btn"
+                        variant="secondary"
+                    >
+                        {/* {" "} */}
+                        Send
 
-                      ><option className="chatroom-name-list">
-                        {chatroom_name}</option>
-                      </a>
-
-                    );
-                  })}
-                </li>
-              </ul>
-              <input
-                    onChange={(e) => setActiveUser(e.target.value)}
-                    className="text"
-                    type="text"
-                />
-
-
+                    </Button>
+                    </div>
+                </div>
+                </form>
             </div>
-            <Link to="/">
-              <Button className="logout-btn" variant="outline-secondary">
-                Logout
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </div>
 
-  );
+            <div className="right-tabs">
+                <ul className="tabs-container">
+                <div className="title">
+                    <b>Your Chatrooms</b>
+                </div>
+                </ul>
+                <div className="chatroom-list">
+                <ul>
+                    <li onClick={handleClick}>
+                    {chatrooms?.map(({ _id, chatroom_name }) => {
+                        return (
+                        <a
+                            key={_id}
+                            value={chatroom_name}
+
+                        ><option className="chatroom-name-list">
+                            {chatroom_name}</option>
+                        </a>
+
+                        );
+                    })}
+                    </li>
+                </ul>
+                <input
+                        onChange={(e) => setActiveUser(e.target.value)}
+                        className="text"
+                        type="text"
+                    />
+
+
+                </div>
+                <Link to="/">
+                <Button className="logout-btn" variant="outline-secondary">
+                    Logout
+                </Button>
+                </Link>
+            </div>
+            </div>
+        </div>
+        </div>
+
+    );
 }
 
 export default Chat;
