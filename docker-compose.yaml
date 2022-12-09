@@ -19,9 +19,7 @@ services:
     environment:
       ME_CONFIG_MONGODB_USERNAME: root
       ME_CONFIG_MONGODB_PASSWORD: password
-      ME_CONFIG_MONGODB_URL: "mongodb://root:password@mongo"
-      # "mongodb+srv://admin:admin@cluster0.07mvmq5.mongodb.net/?retryWrites=true&w=majority"
-      # mongodb://root:password@mongo
+      ME_CONFIG_MONGODB_URL: mongodb://root:password@mongo
     restart: always
   fastapi:
     build:

@@ -45,5 +45,34 @@ The deployment stopped when one person from our team commit their changes. We ne
 ## Dec 1, 2022
 The deployment was only successful with a specific commit. I fixed it and today it was able to automatically and successfully deploy with the latest commit. Fastapi docs was shown on render url. The frontend is showing on its public url as well. Pipline is all fixed. I still need to check if mongodb is connected when our team has routes and data ready for it.
 
+Today my group got together to merge and clean up the branches together. We merged everything useful to main to have a fresh start for everyone. I feel more confident about using git in a group now.
+
 ## Dec 2, 2022
 Goal: Today's goal was to check if MongoDB is successfully connected to our published application. When our team started working this morning, I saw that our deployment failed again. Need to fix that.
+
+I haven't seen this error message before:
+``` pymongo.errors.ServerSelectionTimeoutError: mongo:27017: [Errno -2] Name or service not known, Timeout: 30s, Topology Description: <TopologyDescription id: 638a5751e06dccaa5544c07e, topology_type: Unknown, servers: [<ServerDescription ('mongo', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('mongo:27017: [Errno -2] Name or service not known')>]>```
+I think it has something to do with mongodb connection.
+
+We were able to solve this issue with the help of Andrew. The connection named in config.py is wrong. It should be pointing to DATABASE_URL inside docker-compose.yaml. So it should look like this:
+```MONGODB_URL = os.environ.get("DATABASE_URL")```
+
+
+## Dec 3, 2022
+Goal: To import emoji api
+
+I found an emoji library which can be imported to our application. It's called emoji-mart on npm. I was able to added it into the text area. But I have a blocker, which is to have the emoji selected show in the text box.
+
+
+## Dec 4, 2022
+Today I worked on CSS. The front-end of a chat app is actually much more complicated than I thought. i used part of a CSS for chat app from codepen.io. I learned that I still need to make a lot of changes and refinements to it so that it suits our application. The front end is not completely done.
+The css reference is at https://codepen.io/CucuIonel/pen/yLaLGL?editors=100
+
+
+## Dec 6, 2022
+Today I worked on creating more react pages for our project. Fixed the send button and emoji-picker. I will focus on adjusting the chat page from tomorrow.
+We also spend a while merging commits.
+
+
+## DEc 7, 2022
+Today I continued to work on the front-end pages. I added an automatic scroll function to the chat list, so the page will automatically scroll down to the latest message inside a chatroom.
