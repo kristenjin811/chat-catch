@@ -141,7 +141,7 @@ function Chat() {
   }, [selectedEmoji]);
 
 
-if (token) {
+
   return (
     <div>
       <div className="window-wrapper">
@@ -279,9 +279,7 @@ if (token) {
       </div>
     </div>
   );
-} else {
-  navigate("/");
-}
+
 }
 
 export default Chat;
