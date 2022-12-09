@@ -29,6 +29,5 @@ class MyAuthenticator(Authenticator):
 
         return account.email, AccountOut(**account.dict())
 
-print("auth line 32", os.environ ["SIGNING_KEY"] )
+
 authenticator = MyAuthenticator(os.environ["SIGNING_KEY"])
-print("auth line 34")
