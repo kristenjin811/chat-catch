@@ -3,6 +3,6 @@ uvicorn[standard]==0.17.6
 psycopg[pool]==3.0.14
 pymongo==4.1.1
 pydantic[email]
-websockets==10.3
+websockets==10.1
 jwtdown-fastapi>=0.2.0
 pytest==7.1.3
