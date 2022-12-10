@@ -502,3 +502,11 @@ ul.tabs-container{
 	overflow-y: scroll;
 	height:495px;
 }
+.reminder-message {
+	text-align: center;
+	margin-top: 60px;
+	font-size: 14px;
+}
+.login-here {
+	color: black;
+}
