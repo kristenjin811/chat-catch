@@ -19,21 +19,17 @@ from queries.accounts import (
 )
 
 
-
 class AccountForm(BaseModel):
     username: str
     password: str
-
 
 
 class AccountToken(Token):
     account: AccountOut
 
 
-
 class HttpError(BaseModel):
     detail: str
-
 
 
 router = APIRouter()
@@ -77,8 +73,9 @@ async def create_account(
 
 @router.get("/api/accounts")
 def get_accounts(
-    request: Request, response: Response, accounts: AccountQueries = Depends(
-# )
+    request: Request,
+    response: Response,
+    accounts: AccountQueries = Depends()
 ):
     response = accounts.fetch_all_accounts()
     print(response)

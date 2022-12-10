@@ -22,8 +22,6 @@ import json
 from config import MONGODB_DB_NAME
 from mongodb import get_nosql_db
 from pymongo import MongoClient
-from request_forms import ChatroomCreateRequest, ChatroomMessageRequest
-import json
 from request_forms import (
     ChatroomCreateRequest,
     AddMessageRequest,
@@ -118,19 +116,8 @@ async def delete_chatroom_db(chatroom_name: str):
     return True
 
 
-@router.put("/chatrooms/{chatroom_name}")
-async def create_message(
-    request: ChatroomMessageRequest,
-):
-    data = {
-        "username": request.username,
-        "chatroom_name": request.chatroom_name,
-        "content": request.message,
-    }
-    res = await upload_message_to_chatroom(f"{json.dumps(data, default=str)}")
-    return res
-
 # @router.post("/messages")
+
 
 @router.put("/chatrooms/{chatroom_name}")
 async def create_message(

@@ -1,14 +1,12 @@
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi import (
     FastAPI,
     WebSocket,
+    WebSocketDisconnect,
 )
 from starlette.websockets import WebSocketState
 from websocket_manager import ConnectionManager
 from controllers.chatrooms import (
     get_chatroom,
-    upload_message_to_chatroom,
-    remove_user_from_chatroom,
     upload_message_to_chatroom
 )
 from mongodb import connect_to_mongo, close_mongo_connection, get_nosql_db
@@ -27,7 +25,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from authenticator import authenticator
 from routers import accounts
 
-import os
 
 app = FastAPI()
 app.include_router(api_router, prefix="/api")

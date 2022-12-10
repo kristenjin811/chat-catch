@@ -18,4 +18,5 @@
 #     assert chatroom["chatroom_name"] == "Test Room"
 
 #     # Assert that the chatroom has a member named "Alice"
-#     assert any(member["username"] == "Alice" for member in chatroom["members"])
+#     assert any(member["username"] ==
+# "Alice" for member in chatroom["members"])
