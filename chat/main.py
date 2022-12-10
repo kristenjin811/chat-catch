@@ -14,7 +14,7 @@ import json
 from api import router as api_router
 from fastapi.middleware.cors import CORSMiddleware
 
-# import os
+import os
 from authenticator import authenticator
 from routers import accounts
 
@@ -27,8 +27,8 @@ logger = logging.getLogger(__name__)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    # [os.environ.get("CORS_HOST", "http://localhost:3000")],
+    # allow_origins=["*"],
+    allow_origins=[os.environ.get("CORS_HOST", "REACT_APP_CHAT_API_HOST", "http://localhost:3000")],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
