@@ -24,20 +24,23 @@ function Chat() {
     const messagesEndRef = useRef(null)
   // executes all component functions and calls first, then executes useEffects in order.
 
-    const fetchChatrooms = async () => {
-        console.log("---1 fetching Chatrooms")
-        const url = "http://localhost:8000/api/chatrooms";
-        const response = await fetch(url);
-        if (response.ok) {
-            const data = await response.json();
-            setChatrooms(data);
-        }
-    };
+    useEffect(() => {
+      const fetchChatrooms = async () => {
+          console.log("---1 fetching Chatrooms")
+          const url = "http://localhost:8000/api/chatrooms";
+          const response = await fetch(url);
+          if (response.ok) {
+              const data = await response.json();
+              setChatrooms(data);
+          }
+      }
+      fetchChatrooms()
+    }, [submitted] )
 
-    if (!chatrooms) {
-        fetchChatrooms()
-        console.log("---2 Fetched Chatrooms")
-    }
+    // if (!chatrooms){
+    //     fetchChatrooms()
+    //     console.log("---2 Fetched Chatrooms")
+    // }
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView();
@@ -114,7 +117,7 @@ function Chat() {
     const handleCreateChatRoom = async (event) => {
         event.preventDefault();
         const chatroom = createdRoom;
-        const username = activeUser;
+        const username = "Bob";
         const data = {
             username: username,
             chatroom_name: chatroom,
@@ -156,7 +159,7 @@ function Chat() {
     }, [selectedEmoji]);
 
 
-    // if (token) {
+    if (token) {
         return (
             <div>
                 <div className="window-wrapper">
@@ -256,7 +259,7 @@ function Chat() {
                                     <li onClick={handleClick}>
                                         {chatrooms?.map(({ _id, chatroom_name }) => {
                                             return (
-                                                <Link key={_id} value={chatroom_name}>
+                                                <Link key={_id} value={chatroom_name} style={{textDecoration: 'none'}}>
                                                     <option className="chatroom-name-list"
                                                     >
                                                     {chatroom_name}
@@ -302,21 +305,21 @@ function Chat() {
                 </div>
             </div>
         )
-    // } else {
-    //     return (
-    //         <div className="window-wrapper">
-    //             <p>Chat Catch</p>
-    //             <div className="reminder-message">
-    //                 Sorry, you need to log in to see the chatrooms!
-    //                 <div>
-    //                     <Link className="login-here" to="/">
-    //                         Login here.
-    //                     </Link>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     )
-    // }
+    } else {
+        return (
+            <div className="window-wrapper">
+                <p>Chat Catch</p>
+                <div className="reminder-message">
+                    Sorry, you need to log in to see the chatrooms!
+                    <div>
+                        <Link className="login-here" to="/">
+                            Login here.
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 }
 
 export default Chat;

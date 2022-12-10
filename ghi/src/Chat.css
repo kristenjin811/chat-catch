@@ -459,7 +459,9 @@ ul.tabs-container{
   box-sizing: border-box;
   cursor: pointer;
   border-radius: 3px;
-	margin-left: 0px;
+  margin-left: 0px;
+  color: black;
+  font-size: 14px;
 }
 .title{
 	text-align: center;
