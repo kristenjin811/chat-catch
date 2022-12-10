@@ -1,7 +1,3 @@
-<<<<<<<<< Temporary merge branch 1
-
-=========
->>>>>>>>> Temporary merge branch 2
 import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -182,42 +178,8 @@ function Chat() {
     logout();
     navigate("/");
   }
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const message = inputStr
-        const chatroom_name = selectedChatroom;
-        const username = activeUser;
-        const data = {
-            'user_name': username,
-            'chatroom_name': chatroom_name,
-            'content': message,
-        };
-        ws.send(JSON.stringify(data))
-        setInputStr("");
-        setSubmitted(true);
-        // setEmojiStr("");
-        setShowPicker(false);
-        if(submitted === true) {
-            setSubmitted(false);
-        }
-    };
-
-    let selectedEmoji = emojiObj.native;
-    useEffect(() => {
-
-        if (selectedEmoji){
-            setInputStr(inputStr + selectedEmoji);
-            let added = true
-            //  emojiObj = null;
-            // console.log("did this add:::::", added)
-            if (added){
-                added = false
-            }
-        }
-    },[selectedEmoji, inputStr]);
 
   let selectedEmoji = emojiObj.native;
-
   useEffect(() => {
     if (selectedEmoji) {
       setInputStr(inputStr => inputStr + selectedEmoji);
@@ -229,87 +191,6 @@ function Chat() {
   }, [selectedEmoji]);
 
 
-    return (
-        <div>
-        <div className="window-wrapper">
-            <div className="window-title">
-            <div className="app-title">
-                <div>Chat Catch</div>
-            </div>
-            <div className="expand">
-                <i className="fa fa-expand"></i>
-            </div>
-            </div>
-            <div className="window-area">
-            <div className="members-list">
-                <ul className="">
-                <li
-                    className="members-list-title"
-                    onChange={(e) => setUsers(e.target.value)}
-                    >
-                    Members
-                </li>
-                {users?.map(({ date_created, username }) => {
-                    return (
-                    <option
-                    className="member-name-in-list"
-                    key={date_created}
-                    value={username}
-                    >
-                        {username}
-                    </option>
-                    );
-                })};
-                </ul>
-            </div>
-            <div className="chat-area">
-                <div className="chat-area-title">
-                <b>Current Room: </b>
-                <b> {selectedChatroom}</b>
-                </div>
-                <div className="chat-list">
-                {getMessages.length === 0
-                    ? getMessages
-                    : getMessages.map(({ content, user_name }, index) => {
-                    return (
-                        <option key={index}>
-                            {`${user_name}:${content}`}
-                        </option>
-                        );
-                    })}
-                </div>
-                <form>
-                <div className="input-area">
-                    {showPicker && (
-                    <Picker onClickOutside data={data} onEmojiSelect={setEmojiObj} />
-                    )}
-                    <div className="input-wrapper">
-                    <input
-                        onChange={(e) => setInputStr(e.target.value)}
-                        className="text"
-                        type="text"
-                        value={inputStr}
-                        />
-                    <img
-                        alt=""
-                        className="emoji-icon"
-                        src="https://icons.getbootstrap.com/assets/icons/emoji-smile.svg"
-                        onClick={() => setShowPicker((val) => !val)}
-                    />
-                    <Button
-                        onClick={handleSubmit}
-                        type="submit"
-                        className="send-btn"
-                        variant="secondary"
-                    >
-                        {/* {" "} */}
-                        Send
-
-                    </Button>
-                    </div>
-                </div>
-                </form>
-            </div>
   if (token) {
     return (
       <div>
@@ -426,8 +307,6 @@ function Chat() {
                         className="text"
                         type="text"
                     />
-
-
                 </div>
                 <Link to="/">
                 <Button className="logout-btn" variant="outline-secondary">
@@ -499,8 +378,6 @@ function Chat() {
       </div>
     </div>
   )
-
-    );
   }
 }
 
