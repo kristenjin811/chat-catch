@@ -1,4 +1,3 @@
-import React from 'react';
 import React from 'react'
 import Chat from './Chat'
 // import UserList from './UsersList'
@@ -56,17 +55,6 @@ function App() {
           </div>
         </AuthProvider>
       </BrowserRouter>
-     <BrowserRouter>
-      <div className="container">
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="register/" element={<Register />} />
-          <Route path="chats/" element={<Chat />} />
-          {/* <Route path="users" element={<UserList />} /> */}
-        </Routes>
-      </div>
-    </BrowserRouter>
-
   )
 }
 
