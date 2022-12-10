@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 app.add_middleware(
     CORSMiddleware,
     # allow_origins=["*"],
-    allow_origins=[os.environ.get("CORS_HOST", "http://localhost:3000")], # noqa
+    allow_origins=[os.environ.get("CORS_HOST", "REACT_APP_CHAT_API_HOST"), "http://localhost:3000", "https://chatty-cathys.gitlab.io"], # noqa
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
