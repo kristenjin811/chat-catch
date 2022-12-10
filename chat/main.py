@@ -5,26 +5,18 @@ from fastapi import (
 )
 from starlette.websockets import WebSocketState
 from websocket_manager import ConnectionManager
-from controllers.chatrooms import (
-    get_chatroom,
-    upload_message_to_chatroom
-)
+from controllers.chatrooms import get_chatroom, upload_message_to_chatroom
 from mongodb import connect_to_mongo, close_mongo_connection, get_nosql_db
 from config import MONGODB_DB_NAME
 import pymongo
 import logging
 import json
 from api import router as api_router
-
-# # from authenticator import authenticator
-# from fastapi.responses import HTMLResponse
-
 from fastapi.middleware.cors import CORSMiddleware
-# import os
 
+# import os
 from authenticator import authenticator
 from routers import accounts
-
 
 app = FastAPI()
 app.include_router(api_router, prefix="/api")
@@ -85,20 +77,10 @@ async def shutdown_event():
 manager = ConnectionManager()
 
 
-# @app.get("/")
-# def homepage():
-#     with open("index.html") as f:
-#         return HTMLResponse(f.read())
-manager = ConnectionManager
-
-
 @app.websocket("/ws/{user_name}/{chatroom_name}")
 async def websocket_endpoint(websocket: WebSocket, user_name, chatroom_name):
     await manager.connect(websocket, user_name, chatroom_name)
     try:
-        # add user
-        await manager.connect(websocket, chatroom_name)
-        # await add_user_to_chatroom(user_name, chatroom_name)
         chatroom = await get_chatroom(chatroom_name)
         data = json.dumps(
             {
@@ -117,27 +99,14 @@ async def websocket_endpoint(websocket: WebSocket, user_name, chatroom_name):
                     data = await websocket.receive_text()
                 except WebSocketDisconnect as e:
                     await manager.disconnect(user_name, chatroom_name)
-                    print("tried to receive_text and excepted....", e)
-                message_data = json.loads(data)
-                if (
-                    "type" in message_data
-                    and message_data["type"] == "dismissal"
-                ):
-                    logger.warning(message_data["content"])
-                    logger.info("Disconnecting from Websocket")
-                    await manager.disconnect(user_name, chatroom_name)
-                    break
-                else:
-                    print("--- 122 main, does data have user_name?", data)
-                    await upload_message_to_chatroom(data)
-                    logger.info(f"DATA RECEIVED: {data}")
-                    await manager.broadcast(data, user_name, chatroom_name)
+                await upload_message_to_chatroom(data)
+                logger.info(f"DATA RECEIVED: {data}")
+                await manager.broadcast(data, user_name, chatroom_name)
             else:
                 logger.warning(
                     f"{websocket.application_state},reconnecting..."
                 )
                 await manager.connect(websocket, user_name, chatroom_name)
-                print("main 147 --- second attempt to connect")
     except Exception as e:
         print("we have been dismissed!", e)
         if websocket.application_state == WebSocketState.CONNECTED:

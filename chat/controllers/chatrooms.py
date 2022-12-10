@@ -27,14 +27,9 @@ logger = logging.getLogger(__name__)
 
 async def upload_message_to_chatroom(data):
     message_data = json.loads(data)
-    print("message_data shape", message_data)
     client = await get_nosql_db()
     db = client[MONGODB_DB_NAME]
     try:
-        chatroom = await get_chatroom(message_data["chatroom_name"])
-        # user = await get_user_db(message_data["user"]["username"])
-        # message_data["user"] = user
-        message_data.pop("chatroom_name", None)
         chatroom_name = message_data["chatroom_name"]
         chatroom = await get_chatroom(chatroom_name)
         message_body = {
@@ -42,7 +37,6 @@ async def upload_message_to_chatroom(data):
             "content": message_data["content"],
         }
         collection = db.chatrooms
-        print("collection", collection)
         collection.update_one(
             {"_id": ObjectId(chatroom["_id"])},
             {"$push": {"messages": message_body}},
