@@ -19,20 +19,37 @@ from queries.accounts import (
 )
 
 
+
 class AccountForm(BaseModel):
     username: str
     password: str
+
 
 
 class AccountToken(Token):
     account: AccountOut
 
 
+
 class HttpError(BaseModel):
     detail: str
 
 
+
 router = APIRouter()
+
+
+@router.get("/token", response_model=AccountToken | None)
+async def get_token(
+    request: Request,
+    account: AccountOut = Depends(authenticator.try_get_current_account_data),
+) -> AccountToken | None:
+    if account and authenticator.cookie_name in request.cookies:
+        return {
+            "access_token": request.cookies[authenticator.cookie_name],
+            "type": "Bearer",
+            "account": account,
+        }
 
 
 @router.post("/api/accounts", response_model=AccountToken | HttpError)
@@ -52,11 +69,7 @@ async def create_account(
             detail="Cannot create an account with those credentials",
         )
 
-    form = AccountForm(
-        username=info.email,
-        password=info.password,
-        full_name=info.full_name
-    )
+    form = AccountForm(username=info.email, password=info.password)
     token = await authenticator.login(response, request, form, accounts)
 
     return AccountToken(account=account, **token.dict())
@@ -64,21 +77,21 @@ async def create_account(
 
 @router.get("/api/accounts")
 def get_accounts(
-    request: Request, response: Response, accounts: AccountQueries = Depends()
+    request: Request, response: Response, accounts: AccountQueries = Depends(
+# )
 ):
     response = accounts.fetch_all_accounts()
     print(response)
     return response
 
 
-@router.get("/token", response_model=AccountToken | None)
-async def get_token(
-    request: Request,
-    account: AccountOut = Depends(authenticator.try_get_current_account_data),
-) -> AccountToken | None:
-    if account and authenticator.cookie_name in request.cookies:
-        return {
-            "access_token": request.cookies[authenticator.cookie_name],
-            "type": "Bearer",
-            "account": account,
-        }
+# @router.get("/gathering/accounts/{email}", response_model=[Account])
+# def get_one_account(
+#   email: str,
+#   response: Response,
+#   repo: AccountRepository = Depends(),
+# ) -> Account:
+#   account = repo.get_one(email)
+#   if account is None:
+#     response.status_code = 404
+#   return account

@@ -50,3 +50,8 @@ the browser to present the user such as:
 -MAIN.PY (called app.py in chat-app-be) - primary file of backend
 1. defines app behavior on startup and shutdown
 2. defines app behavior in websocket endpoint(s)
+
+
+Websocket Notes:
+Needs to be a websocket on back-end and front-end
+purpose of back-end websocket =

@@ -50,6 +50,7 @@ export default function Login() {
               try again.
             </div>
           )}
+          <a href="!#" className="register" onClick={() => props.onFormSwitch('register')}>Register</a>
         </div>
       </div>
     </>
