@@ -26,7 +26,7 @@ function App() {
         <GetToken />
           <div className="container">
             <Routes>
-              <Route path="" element={<Login />} />
+              <Route path="/" element={<Login />} />
               <Route path="register/" element={<Register />} />
               <Route path="chats/" element={<Chat />} />
             </Routes>

@@ -308,7 +308,7 @@ function Chat() {
                 <div className="reminder-message">
                     Sorry, you need to log in to see the chatrooms!
                     <div>
-                        <Link className="login-here" to="">
+                        <Link className="login-here" to="/">
                             Login here.
                         </Link>
                     </div>
