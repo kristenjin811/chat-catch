@@ -38,6 +38,7 @@ export default function Register() {
               <button type="submit" className="btn btn-dark btn-block btn-large">Register</button>
             </form>
             <Link className="login" to="/">Login</Link>
+            <a href="!#" className="login" onClick={() => props.onFormSwitch('login')}>Login</a>
           </div>
       </div>
     </>

@@ -86,4 +86,3 @@ We still need to make the chat page to be protected by the token so only logged 
 ## Dec 9, 2022
 Authentication is fully done!!! I was able to fix the page to be protected by token. Now, user has to login to see their chat page.
 I also pair programmed with my team to add a create-chatroom feature to the chat page.
-
