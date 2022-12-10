@@ -37,10 +37,6 @@ function Chat() {
       fetchChatrooms()
     }, [submitted] )
 
-    // if (!chatrooms){
-    //     fetchChatrooms()
-    //     console.log("---2 Fetched Chatrooms")
-    // }
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView();
