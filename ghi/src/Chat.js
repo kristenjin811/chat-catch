@@ -53,7 +53,7 @@ function Chat() {
 
     const connectToWebSocket = (selectedChatroom) => {
         console.log("---Checking Websocket State")
-        const websocket = new WebSocket(`ws://${process.env.REACT_APP_CHAT_API_HOST}/ws/${activeUser}/${selectedChatroom}`);
+        const websocket = new WebSocket(`wss://${process.env.REACT_APP_CHAT_API_HOST}/wss/${activeUser}/${selectedChatroom}`);
         websocket.onopen = () => {
             console.log('---Websocket connected to client!');
         };
