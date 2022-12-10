@@ -98,6 +98,7 @@ async def websocket_endpoint(websocket: WebSocket, user_name, chatroom_name):
                 try:
                     data = await websocket.receive_text()
                 except WebSocketDisconnect as e:
+                    print('e:::', e)
                     await manager.disconnect(user_name, chatroom_name)
                 await upload_message_to_chatroom(data)
                 logger.info(f"DATA RECEIVED: {data}")
