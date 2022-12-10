@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Chat.css";
@@ -18,10 +18,10 @@ function Chat() {
     const [selectedChatroom, setSelectedChatroom] = useState("");
     const [getMessages, setGetMessages] = useState([]);
     const [submitted, setSubmitted] = useState(false);
-    // const [createdRoom, setCreatedRoom] = useState("");
-    const messagesEndRef = useRef(null)
+    const [createdRoom, setCreatedRoom] = useState("");
     const [activeUser, setActiveUser] = useState("")
     const [ws, setWs] = useState(null)
+    const messagesEndRef = useRef(null)
   // executes all component functions and calls first, then executes useEffects in order.
 
     const fetchChatrooms = async () => {
@@ -114,7 +114,7 @@ function Chat() {
     const handleCreateChatRoom = async (event) => {
         event.preventDefault();
         const chatroom = createdRoom;
-        const username = "Bob";
+        const username = activeUser;
         const data = {
             username: username,
             chatroom_name: chatroom,
@@ -156,7 +156,7 @@ function Chat() {
     }, [selectedEmoji]);
 
 
-    if (token) {
+    // if (token) {
         return (
             <div>
                 <div className="window-wrapper">
@@ -198,26 +198,26 @@ function Chat() {
                                 <b> {selectedChatroom}</b>
                             </div>
                             <div className="chat-list">
-                            {!getMessages
-                                ? getMessages
-                                : getMessages.map(({ username, content }, index) => {
-                                    return (
-                                        <option
-                                            className="chat-text"
-                                            key={index}
-                                        >
-                                            {`${username}: ${content}`}
-                                        </option>
-                                    );
-                                })
-                            };
-                            </div>
-                            <div ref={messagesEndRef}>
+                                    {!getMessages
+                                        ? getMessages
+                                        : getMessages.map(({ user_name, content }, index) => {
+                                            return (
+                                                <option
+                                                    className="chat-text"
+                                                    key={index}
+                                                >
+                                                    {`${user_name}: ${content}`}
+                                                </option>
+                                            )
+                                        })
+                                    }
+                                <div ref={messagesEndRef}>
+                                </div>
                             </div>
                             <form>
                                 <div className="input-area">
                                     {showPicker && (
-                                    <Picker data={data} onEmojiSelect={setEmojiObj} />
+                                        <Picker data={data} onEmojiSelect={setEmojiObj} />
                                     )}
                                     <div className="input-wrapper">
                                         <input
@@ -266,50 +266,57 @@ function Chat() {
                                         })}
                                     </li>
                                 </ul>
+                                <input
+                                    onChange={(e) => setActiveUser(e.target.value)}
+                                    className="text"
+                                    type="text"
+                                />
                             </div>
+                            <form>
+                                <input
+                                    className="add-chat-room"
+                                    onChange={(e) => setCreatedRoom(e.target.value)}
+                                    type="text"
+                                    placeholder="Create Chatroom"
+                                    value={createdRoom}
+                                />
+                                <Button
+                                    onClick={handleCreateChatRoom}
+                                    className="create-room-btn"
+                                    variant="secondary"
+                                >
+                                Create
+                                </Button>
+                            </form>
+                            <Link to="/">
+                                <Button
+                                    onClick={handleLogout}
+                                    className="logout-btn"
+                                    variant="outline-secondary"
+                                >
+                                Logout
+                                </Button>
+                            </Link>
                         </div>
-                        <form>
-                            <input
-                                className="add-chat-room"
-                                onChange={(e) => setCreatedRoom(e.target.value)}
-                                type="text"
-                                placeholder="Create Chatroom"
-                                value={createdRoom}
-                            />
-                            <Button
-                                onClick={handleCreateChatRoom}
-                                className="create-room-btn"
-                                variant="secondary"
-                            >
-                            Create
-                            </Button>
-                        </form>
-                        <Link to="/">
-                            <Button
-                                onClick={handleLogout}
-                                className="logout-btn"
-                                variant="outline-secondary"
-                            >
-                            Logout
-                            </Button>
-                        </Link>
                     </div>
                 </div>
             </div>
-        );
-    } else {
-        return (
-            <div className="window-wrapper">
-                <p>Chat Catch</p>
-                <div className="reminder-message">
-                    Sorry, you need to log in to see the chatrooms!
-                </div>
-                <Link className="login-here" to="/">
-                    Login here.
-                </Link>
-            </div>
         )
-    }
+    // } else {
+    //     return (
+    //         <div className="window-wrapper">
+    //             <p>Chat Catch</p>
+    //             <div className="reminder-message">
+    //                 Sorry, you need to log in to see the chatrooms!
+    //                 <div>
+    //                     <Link className="login-here" to="/">
+    //                         Login here.
+    //                     </Link>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     )
+    // }
 }
 
 export default Chat;
