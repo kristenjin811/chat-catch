@@ -25,22 +25,17 @@ function Chat() {
   // executes all component functions and calls first, then executes useEffects in order.
 
     useEffect(() => {
-      const fetchChatrooms = async () => {
-          console.log("---1 fetching Chatrooms")
-          const url = "http://localhost:8000/api/chatrooms";
-          const response = await fetch(url);
-          if (response.ok) {
-              const data = await response.json();
-              setChatrooms(data);
-          }
-      }
+        const fetchChatrooms = async () => {
+            const url = "http://localhost:8000/api/chatrooms";
+            const response = await fetch(url);
+            if (response.ok) {
+                const data = await response.json();
+                setChatrooms(data);
+            }
+        }
       fetchChatrooms()
     }, [submitted] )
 
-    // if (!chatrooms){
-    //     fetchChatrooms()
-    //     console.log("---2 Fetched Chatrooms")
-    // }
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView();

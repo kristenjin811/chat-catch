@@ -24,6 +24,7 @@ TestUserCreated = {
 
 def test_create_account():
     class TestUserQuery(TestCase):
+
         def create(self, id, email, full_name):
             return ["639281736dc1541c96bba8cb", "user@email.com", "full_name"]
 
