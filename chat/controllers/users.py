@@ -38,11 +38,11 @@ async def get_all_users():
 async def create_user(request, collection):
     # salt = bcrypt.gensalt().decode()
     # hashed_password = get_password_hash(request.password + salt)
-
     user = {}
-    user["username"] = request.username
-    # user["salt"] = salt
-    # user["hashed_password"] = hashed_password
+    user["user_name"] = request["user_name"]
+    user["full_name"] = request["full_name"]
+    user["email"] = request["email"]
+
     dbuser = UserInDB(**user)
     try:
         response = collection.insert_one(dict(dbuser))

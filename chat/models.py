@@ -16,7 +16,9 @@ from datetime import datetime
 
 # USER MODELS
 class User(BaseModel):
-    username: str
+    user_name: str
+    full_name: str
+    email: str
     # hashed_password: str
     # salt: str
     # profile_pic_img_src: Optional[str]

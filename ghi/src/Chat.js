@@ -113,9 +113,9 @@ function Chat() {
     const handleCreateChatRoom = async (event) => {
         event.preventDefault();
         const chatroom = createdRoom;
-        const username = "Bob";
+        const user_name = activeUser;
         const data = {
-            username: username,
+            user_name: username,
             chatroom_name: chatroom,
         };
         const url = `${process.env.REACT_APP_CHAT_API_HOST}/api/chatrooms/`;
