@@ -19,6 +19,7 @@ function Chat() {
   const [getMessages, setGetMessages] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [createdRoom, setCreatedRoom] = useState("");
+  const [emojiStr, setEmojiStr] = useState("")
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
@@ -118,15 +119,18 @@ function Chat() {
   }
 
   let selectedEmoji = emojiObj.native;
+
   useEffect(() => {
+    setEmojiStr(selectedEmoji);
     if (selectedEmoji) {
-      setInputStr(inputStr + selectedEmoji);
+      setInputStr(inputStr => inputStr + selectedEmoji);
       let added = true;
       if (added) {
       }
       added = false;
     }
   }, [selectedEmoji]);
+
 
   if (token) {
     return (

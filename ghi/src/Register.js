@@ -5,7 +5,7 @@ import { useToken } from "./GetToken";
 
 
 export default function Register() {
-  const [, , , signup] = useToken();
+  const [, , ] = useToken();
 
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
