@@ -13,7 +13,6 @@ COPY mongodb.py mongodb.py
 COPY request_forms.py request_forms.py
 COPY utils.py utils.py
 COPY test test
-COPY tests tests
 COPY authenticator.py authenticator.py
 # Copy all of the subdirectories in your service's directory
 # Modify these instructions to do that

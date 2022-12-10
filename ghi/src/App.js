@@ -1,6 +1,5 @@
 import React from 'react';
 import Chat from './Chat'
-// import UserList from './UsersList'
 import Login from './Login'
 import Register from './Register'
 import {
@@ -22,12 +21,12 @@ function GetToken() {
 function App() {
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/chat-catch/">
       <AuthProvider>
         <GetToken />
           <div className="container">
             <Routes>
-              <Route path="/" element={<Login />} />
+              <Route path="" element={<Login />} />
               <Route path="register/" element={<Register />} />
               <Route path="chats/" element={<Chat />} />
             </Routes>

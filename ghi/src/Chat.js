@@ -25,14 +25,15 @@ function Chat() {
   // executes all component functions and calls first, then executes useEffects in order.
 
     useEffect(() => {
-        const fetchChatrooms = async () => {
-            const url = "http://localhost:8000/api/chatrooms";
-            const response = await fetch(url);
-            if (response.ok) {
-                const data = await response.json();
-                setChatrooms(data);
-            }
-        }
+      const fetchChatrooms = async () => {
+          console.log("---1 fetching Chatrooms")
+          const url = `${process.env.REACT_APP_CHAT_API_HOST}/api/chatrooms`;
+          const response = await fetch(url);
+          if (response.ok) {
+              const data = await response.json();
+              setChatrooms(data);
+          }
+      }
       fetchChatrooms()
     }, [submitted] )
 
@@ -48,7 +49,7 @@ function Chat() {
 
     const connectToWebSocket = (selectedChatroom) => {
         console.log("---Checking Websocket State")
-        const websocket = new WebSocket(`ws://localhost:8000/ws/${activeUser}/${selectedChatroom}`);
+        const websocket = new WebSocket(`ws://${process.env.REACT_APP_CHAT_API_HOST}/ws/${activeUser}/${selectedChatroom}`);
         websocket.onopen = () => {
             console.log('---Websocket connected to client!');
         };
@@ -117,7 +118,7 @@ function Chat() {
             username: username,
             chatroom_name: chatroom,
         };
-        const url = `http://localhost:8000/api/chatrooms/`;
+        const url = `${process.env.REACT_APP_CHAT_API_HOST}/api/chatrooms/`;
         const fetchConfig = {
             method: "POST",
             body: JSON.stringify(data),
@@ -286,7 +287,7 @@ function Chat() {
                                 Create
                                 </Button>
                             </form>
-                            <Link to="/">
+                            <Link to="">
                                 <Button
                                     onClick={handleLogout}
                                     className="logout-btn"
@@ -307,7 +308,7 @@ function Chat() {
                 <div className="reminder-message">
                     Sorry, you need to log in to see the chatrooms!
                     <div>
-                        <Link className="login-here" to="/">
+                        <Link className="login-here" to="">
                             Login here.
                         </Link>
                     </div>
