@@ -56,7 +56,11 @@ async def create_account(
         username=info.email,
         password=info.password,
         full_name=info.full_name
+<<<<<<< HEAD
         )
+=======
+    )
+>>>>>>> a550b2171225ed2bf81aba23099ccce806f50c8d
     token = await authenticator.login(response, request, form, accounts)
 
     return AccountToken(account=account, **token.dict())

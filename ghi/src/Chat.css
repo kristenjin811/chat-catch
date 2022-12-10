@@ -339,11 +339,9 @@ b{
 	padding: 8px 0;
   transition: background 0.2s linear;
 }
-
 .right-tabs > ul.tabs > li > a:hover{
   background: #DDE5F1;
 }
-
 .right-tabs > ul.tabs > li.active{
 	border-bottom: none;
 }
@@ -440,13 +438,12 @@ ul.tabs-container{
 .jspVerticalBar{
 	width: 7px;
 }
-
 .chatroom-list{
 	margin-bottom: 0px;
 	margin-top: 4px;
+	overflow-y: scroll;
+	height:370px;
 }
-
-
 .member-name-in-list{
 	background: #5f768d;
   color: rgb(210, 210, 210);
@@ -466,13 +463,6 @@ ul.tabs-container{
 }
 .title{
 	text-align: center;
-
-}
-.logout-btn {
-	cursor: pointer;
-	margin-left: 50px;
-	position: absolute;
-	bottom: -12px;
 }
 .send-btn {
 	margin-left: 350px;
@@ -482,25 +472,41 @@ ul.tabs-container{
 	font-size: 14px;
 	margin-bottom: 10px;
 }
-
 .add-chat-room {
-	cursor: pointer;
-  	margin-left: 11px;
-  	position: absolute;
-  	bottom: 55px;
+	margin-left: 8px;
+	position: absolute;
+	bottom: 57px;
 	text-align: center;
 	width: 65%;
+	border-color:#c3ccd3
 }
-
 .create-room-btn{
 	cursor: pointer;
-  	margin-left: 125px;
-  	position: absolute;
-  	bottom: 35px;
+	margin-left: 125px;
+	position: absolute;
+	bottom: 37px;
 	text-align: left;
 	height: 4%;
 	width: 25%;
-	font-size: 12px;
+	font-size: 11px;
 	padding: 1px;
-	padding-left: 3px;
+	padding-left: 4px;
+}
+.logout-btn {
+	cursor: pointer;
+	margin-left: 50px;
+	position: absolute;
+	bottom: -12px;
+}
+.members-list {
+	overflow-y: scroll;
+	height:495px;
+}
+.reminder-message {
+	text-align: center;
+	margin-top: 60px;
+	font-size: 14px;
+}
+.login-here {
+	color: black;
 }

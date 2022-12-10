@@ -103,9 +103,6 @@ export function useToken() {
   }
 
   async function signup(email, full_name, password) {
-    console.log('email::', email)
-    console.log('password::', password)
-    console.log('full_name::', full_name)
 
     const url = `${process.env.REACT_APP_CHAT_API_HOST}/api/accounts/`;
     const response = await fetch(url, {
@@ -120,12 +117,10 @@ export function useToken() {
         "Content-Type": "application/json",
       },
     });
-    console.log('::::', response)
     if (response.ok) {
       await login(email, password);
     }
     return false;
-    console.log(":::::::::", email, password)
   }
 
   return [token, login, logout, signup];
