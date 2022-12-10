@@ -27,7 +27,7 @@ function Chat() {
     useEffect(() => {
       const fetchChatrooms = async () => {
           console.log("---1 fetching Chatrooms")
-          const url = `${process.env.REACT_APP_CHAT_API_HOST}/api/chatrooms`;
+          const url = `https://${process.env.REACT_APP_CHAT_API_HOST}/api/chatrooms`;
           const response = await fetch(url);
           if (response.ok) {
               const data = await response.json();
@@ -118,7 +118,7 @@ function Chat() {
             username: username,
             chatroom_name: chatroom,
         };
-        const url = `${process.env.REACT_APP_CHAT_API_HOST}/api/chatrooms/`;
+        const url = `https://${process.env.REACT_APP_CHAT_API_HOST}/api/chatrooms/`;
         const fetchConfig = {
             method: "POST",
             body: JSON.stringify(data),
