@@ -460,6 +460,8 @@ ul.tabs-container{
   cursor: pointer;
   border-radius: 3px;
 	margin-left: 0px;
+	color: black;
+	font-size: 14px;
 }
 .title{
 	text-align: center;
@@ -500,7 +502,7 @@ ul.tabs-container{
 }
 .members-list {
 	overflow-y: scroll;
-	height:495px;
+	height:490px;
 }
 .reminder-message {
 	text-align: center;

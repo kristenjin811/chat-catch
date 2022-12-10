@@ -229,7 +229,7 @@ function Chat() {
                   <li onClick={(e) => setSelectedChatroom(e.target.value)}>
                     {chatrooms?.map(({ _id, chatroom_name }) => {
                       return (
-                        <Link key={_id} value={chatroom_name}>
+                        <Link key={_id} value={chatroom_name} style={{ textDecoration: 'none' }}>
                           <option className="chatroom-name-list">
                             {chatroom_name}
                           </option>
