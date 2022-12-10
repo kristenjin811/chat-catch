@@ -48,7 +48,7 @@
 
 
 12/2/2022:
-    Got the regestration page done today. The functionality between the login and registration page work with each other now! I've given up trying to implement authenticion through the front end and I'm going to go back to the matierial we were given. Thought maybe I had a bright idea for our project, but room for creativty comes later. We just gotta get this thing finished for now.
+    Got the registration page done today. The functionality between the login and registration page work with each other now! I've given up trying to implement authenticion through the front end and I'm going to go back to the matierial we were given. Thought maybe I had a bright idea for our project, but room for creativty comes later. We just gotta get this thing finished for now.
 
 
 
@@ -59,4 +59,17 @@
 
 
 12/5/2022:
-    
+    Started really working on the back end auth today. Getting pretty far but relating a lot of this code back to our endpoints we need has proven to be pretty difficult. Group morale does seem to be going up as I know Jared is making decen progress with websockets. I need to get this auth finished asap becuase a lot of the websocket stuff won't work without the authentication working from the back end. Should be done within a couple days though.
+
+
+12/6/2022:
+    A lot of the endpoints were made today and they seem to be making tokens and doing well, should be done with it by tomorrow. I did get stuck on an error that took FOREVER, but with the help of another group, they were able to give us good information. Dean and I ended up getting it fixed. We ran into some other smaller erros but those didnt take to long to get fixed.
+
+
+12/7/2022:
+    Finished the auth! Was prtty tough doing it by myself but I am glad I did. I do feel pretty accomplished. Now, Wenqi and I are going to start to implement it into our react and front end code. Dean and Jared have been working with a lot of people trying to get websockets to be made and bug free, hope that gets fixed soon. Deadline is starting to get a little scary.
+
+
+12/8/2022:
+    Today was a lot of success. Wenqi and I were able to get the login, register, and logout feature to work. Now we do have some bugs that need to get fixed but once we get those sorted out, I think we are going to have our MVP done soon. I had to go a little earlier today, but I think Wenqi and Dean got a good amount of bugs sorted out. I've got a great team!
+

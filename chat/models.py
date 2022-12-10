@@ -38,6 +38,7 @@ class Message(BaseModel):
 
 class MessageInDB(Message):
     _id: ObjectId
+    message: Message
     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
 
@@ -45,7 +46,7 @@ class MessageInDB(Message):
 class Chatroom(BaseModel):
     chatroom_name: str
     members: Optional[List[UserInDB]] = []
-    # messages: Optional[List[MessageInDB]] = []
+    messages: Optional[List[MessageInDB]] = []
     last_pinged: datetime = Field(default_factory=datetime.utcnow)
     active: bool = False
 

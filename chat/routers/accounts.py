@@ -18,24 +18,27 @@ from queries.accounts import (
     DuplicateAccountError,
 )
 
+
 class AccountForm(BaseModel):
     username: str
     password: str
 
+
 class AccountToken(Token):
     account: AccountOut
+
 
 class HttpError(BaseModel):
     detail: str
 
-router = APIRouter()
 
+router = APIRouter()
 
 
 @router.get("/token", response_model=AccountToken | None)
 async def get_token(
     request: Request,
-    account: AccountOut = Depends(authenticator.try_get_current_account_data)
+    account: AccountOut = Depends(authenticator.try_get_current_account_data),
 ) -> AccountToken | None:
     if account and authenticator.cookie_name in request.cookies:
         return {
@@ -43,10 +46,6 @@ async def get_token(
             "type": "Bearer",
             "account": account,
         }
-
-
-
-
 
 
 @router.post("/api/accounts", response_model=AccountToken | HttpError)
@@ -75,7 +74,8 @@ async def create_account(
 # @router.get("/token", response_model=AccountToken | None)
 # async def get_token(
 #     request: Request,
-#     account: AccountOut = Depends(authenticator.try_get_current_account_data),
+#     account: AccountOut = Depends(
+# authenticator.try_get_current_account_data),
 # ) -> AccountToken | None:
 #     if account and authenticator.cookie_name in request.cookies:
 #         return {
