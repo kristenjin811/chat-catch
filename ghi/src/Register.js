@@ -5,7 +5,7 @@ import { useToken } from "./GetToken";
 
 
 export default function Register() {
-  const [, , ] = useToken();
+  const [, , , signup] = useToken();
 
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
@@ -17,8 +17,10 @@ export default function Register() {
     setPass("");
     setName("");
   };
+  console.log("heyyy")
   async function handleSubmit(e) {
     e.preventDefault();
+    await signup(email, name, pass);
     clearState();
     navigate("/chats/");
   }
@@ -37,7 +39,7 @@ export default function Register() {
               <input className="input" value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="password" />
               <button type="submit" className="btn btn-dark btn-block btn-large">Register</button>
             </form>
-            <Link className="login" to="">Login</Link>
+            <Link className="login" to="/">Login</Link>
           </div>
       </div>
     </>

@@ -17,16 +17,16 @@ function GetToken() {
   useToken();
   return null
 }
-
+//  basename="/chat-catch/" <---add to browser router for production
 function App() {
 
   return (
-    <BrowserRouter basename="/chat-catch/">
+    <BrowserRouter >
       <AuthProvider>
         <GetToken />
           <div className="container">
             <Routes>
-              <Route path="" element={<Login />} />
+              <Route path="/" element={<Login />} />
               <Route path="register/" element={<Register />} />
               <Route path="chats/" element={<Chat />} />
             </Routes>

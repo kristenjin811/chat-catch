@@ -2,9 +2,17 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 let internalToken = null;
 
+let full_name = null;
+
 export function getToken() {
   return internalToken;
 }
+
+
+export function getFullName() {
+  return full_name;
+}
+
 
 export async function getTokenInternal() {
   const url = `${process.env.REACT_APP_CHAT_API_HOST}/token`;
@@ -13,8 +21,9 @@ export async function getTokenInternal() {
       credentials: "include",
     });
     if (response.ok) {
-      const data = await response.json();
-      internalToken = data.access_token;
+      const {access_token, account} = await response.json();
+      internalToken = access_token;
+      full_name = account.full_name;
       return internalToken;
     }
   } catch (e) {}

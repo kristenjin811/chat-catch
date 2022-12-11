@@ -5,7 +5,7 @@ import "./Chat.css";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 import { Link, useNavigate } from "react-router-dom";
-import {useToken, useAuthContext } from "./GetToken";
+import {useToken, useAuthContext, getFullName} from "./GetToken";
 
 
 function Chat() {
@@ -44,12 +44,16 @@ function Chat() {
 
     const handleClick = (event) => {
         const chatroom = event.target.value
+        const name = getFullName()
+        console.log("------- name", name)
+        setActiveUser(name)
+        console.log("-------- activeUser", activeUser)
         connectToWebSocket(chatroom)
     }
 
     const connectToWebSocket = (selectedChatroom) => {
         console.log("---Checking Websocket State")
-        const websocket = new WebSocket(`wss://${process.env.REACT_APP_CHAT_API_HOST}/wss/${activeUser}/${selectedChatroom}`);
+        const websocket = new WebSocket(`ws://localhost:8000/ws/${activeUser}/${selectedChatroom}`);
         websocket.onopen = () => {
             console.log('---Websocket connected to client!');
         };
@@ -265,11 +269,6 @@ function Chat() {
                                         })}
                                     </li>
                                 </ul>
-                                <input
-                                    onChange={(e) => setActiveUser(e.target.value)}
-                                    className="text"
-                                    type="text"
-                                />
                             </div>
                             <form>
                                 <input
@@ -308,7 +307,7 @@ function Chat() {
                 <div className="reminder-message">
                     Sorry, you need to log in to see the chatrooms!
                     <div>
-                        <Link className="login-here" to="">
+                        <Link className="login-here" to="/">
                             Login here.
                         </Link>
                     </div>

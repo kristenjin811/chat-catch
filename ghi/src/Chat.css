@@ -473,6 +473,9 @@ ul.tabs-container{
 .chat-text {
 	font-size: 14px;
 	margin-bottom: 10px;
+	word-wrap: break-word;
+	max-width: 100%;
+	white-space: pre-wrap;
 }
 .add-chat-room {
 	margin-left: 8px;
@@ -502,7 +505,7 @@ ul.tabs-container{
 }
 .members-list {
 	overflow-y: scroll;
-	height:495px;
+	height:493px;
 }
 .reminder-message {
 	text-align: center;
