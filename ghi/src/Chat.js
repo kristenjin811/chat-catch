@@ -5,7 +5,7 @@ import "./Chat.css";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 import { Link, useNavigate } from "react-router-dom";
-import {useToken, useAuthContext } from "./GetToken";
+import {useToken, useAuthContext, getFullName } from "./GetToken";
 
 
 function Chat() {
@@ -23,6 +23,7 @@ function Chat() {
     const [ws, setWs] = useState(null)
     const messagesEndRef = useRef(null)
   // executes all component functions and calls first, then executes useEffects in order.
+    setActiveUser(getFullName())
 
     useEffect(() => {
       const fetchChatrooms = async () => {
