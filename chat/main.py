@@ -27,8 +27,8 @@ logger = logging.getLogger(__name__)
 
 app.add_middleware(
     CORSMiddleware,
-    # allow_origins=["*"],
-    allow_origins=[os.environ.get("CORS_HOST", "REACT_APP_CHAT_API_HOST"), "http://localhost:3000", "https://chatty-cathys.gitlab.io"], # noqa
+    allow_origins=["*"],
+    # allow_origins=[os.environ.get("CORS_HOST", "http://localhost:3000")]
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -77,7 +77,7 @@ async def shutdown_event():
 manager = ConnectionManager()
 
 
-@app.websocket("/wss/{user_name}/{chatroom_name}")
+@app.websocket("/ws/{user_name}/{chatroom_name}")
 async def websocket_endpoint(websocket: WebSocket, user_name, chatroom_name):
     await manager.connect(websocket, user_name, chatroom_name)
     try:

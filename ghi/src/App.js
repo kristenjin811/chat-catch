@@ -21,7 +21,7 @@ function GetToken() {
 function App() {
 
   return (
-    <BrowserRouter basename="/chat-catch/">
+    <BrowserRouter>
       <AuthProvider>
         <GetToken />
           <div className="container">
