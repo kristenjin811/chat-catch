@@ -5,7 +5,7 @@ import "./Chat.css";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 import { Link, useNavigate } from "react-router-dom";
-import {useToken, useAuthContext} from "./GetToken";
+import {useToken, useAuthContext, getFullName} from "./GetToken";
 
 
 function Chat() {
@@ -44,6 +44,10 @@ function Chat() {
 
     const handleClick = (event) => {
         const chatroom = event.target.value
+        const name = getFullName()
+        console.log("------- name", name)
+        setActiveUser(name)
+        console.log("-------- activeUser", activeUser)
         connectToWebSocket(chatroom)
     }
 
@@ -265,11 +269,6 @@ function Chat() {
                                         })}
                                     </li>
                                 </ul>
-                                <input
-                                    onChange={(e) => setActiveUser(e.target.value)}
-                                    className="text"
-                                    type="text"
-                                />
                             </div>
                             <form>
                                 <input
