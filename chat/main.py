@@ -77,7 +77,7 @@ async def shutdown_event():
 manager = ConnectionManager()
 
 
-@app.websocket("/wss/{user_name}/{chatroom_name}")
+@app.websocket("/ws/{user_name}/{chatroom_name}")
 async def websocket_endpoint(websocket: WebSocket, user_name, chatroom_name):
     await manager.connect(websocket, user_name, chatroom_name)
     try:
