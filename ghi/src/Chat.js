@@ -19,7 +19,7 @@ function Chat() {
     const [getMessages, setGetMessages] = useState([]);
     const [submitted, setSubmitted] = useState(false);
     const [createdRoom, setCreatedRoom] = useState("");
-    const [activeUser, setActiveUser] = useState("")
+    // const [activeUser, setActiveUser] = useState("")
     const [ws, setWs] = useState(null)
     const messagesEndRef = useRef(null)
   // executes all component functions and calls first, then executes useEffects in order.
