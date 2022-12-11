@@ -178,14 +178,14 @@ function Chat() {
                                 >
                                 Members
                                 </li>
-                                {users?.map(({ date_created, username }) => {
+                                {users?.map(({ date_created, user_name }) => {
                                     return (
                                         <option
                                         className="member-name-in-list"
                                         key={date_created}
-                                        value={username}
+                                        value={user_name}
                                         >
-                                        {username}
+                                        {user_name}
                                         </option>
                                     );
                                 })};
