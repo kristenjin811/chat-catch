@@ -22,8 +22,9 @@ async def upload_message_to_chatroom(data):
             "user_name": message_data["user_name"],
             "content": message_data["content"],
         }
+        print("chatroom.members", chatroom["members"])
         if current_user not in chatroom["members"]:
-            await upload_member_to_chatroom(current_user, chatroom)
+            await upload_member_to_chatroom(current_user, chatroom_name)
         collection = db.chatrooms
         collection.update_one(
             {"_id": ObjectId(chatroom["_id"])},
@@ -35,11 +36,13 @@ async def upload_message_to_chatroom(data):
         return False
 
 
-async def upload_member_to_chatroom(current_user, chatroom):
+async def upload_member_to_chatroom(current_user, chatroom_name):
     client = await get_nosql_db()
     db = client[MONGODB_DB_NAME]
     try:
+        print("am i uploading these members")
         new_member = {"user_name": current_user}
+        chatroom = await get_chatroom(chatroom_name)
         collection = db.chatrooms
         collection.update_one(
             {"_id": ObjectId(chatroom["_id"])},

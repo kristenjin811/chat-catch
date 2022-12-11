@@ -5,7 +5,11 @@ from fastapi import (
 )
 from starlette.websockets import WebSocketState
 from websocket_manager import ConnectionManager
-from controllers.chatrooms import get_chatroom, upload_message_to_chatroom
+from controllers.chatrooms import (
+    get_chatroom,
+    upload_message_to_chatroom,
+    upload_member_to_chatroom,
+)
 from mongodb import connect_to_mongo, close_mongo_connection, get_nosql_db
 from config import MONGODB_DB_NAME
 import pymongo
@@ -96,6 +100,7 @@ async def websocket_endpoint(websocket: WebSocket, user_name, chatroom_name):
             },
             default=str,
         )
+        # await upload_member_to_chatroom(user_name, chatroom_name)
         await manager.broadcast(data, user_name, chatroom_name)
         while True:
             if websocket.application_state == WebSocketState.CONNECTED:

@@ -25,15 +25,19 @@ function Chat() {
   // executes all component functions and calls first, then executes useEffects in order.
 
     useEffect(() => {
-      const fetchChatrooms = async () => {
-          console.log("---1 fetching Chatrooms")
-          const url = `${process.env.REACT_APP_CHAT_API_HOST}/api/chatrooms`;
-          const response = await fetch(url);
-          if (response.ok) {
-              const data = await response.json();
-              setChatrooms(data);
-          }
-      }
+        const fetchChatrooms = async () => {
+            console.log("---1 fetching Chatrooms")
+            const url = `${process.env.REACT_APP_CHAT_API_HOST}/api/chatrooms`;
+            const response = await fetch(url);
+            if (response.ok) {
+                const data = await response.json();
+                setChatrooms(data);
+                const name = getFullName()
+                console.log("------- name", name)
+                setActiveUser(name)
+
+            }
+        }
       fetchChatrooms()
     }, [submitted] )
 
@@ -44,9 +48,6 @@ function Chat() {
 
     const handleClick = (event) => {
         const chatroom = event.target.value
-        const name = getFullName()
-        console.log("------- name", name)
-        setActiveUser(name)
         console.log("-------- activeUser", activeUser)
         connectToWebSocket(chatroom)
     }
@@ -75,7 +76,10 @@ function Chat() {
                 const messages = chatroom.messages;
                 const members = chatroom.members;
                 setSelectedChatroom(room)
+                console.log(chatroom)
+                console.log("members...",members)
                 setUsers(members);
+                console.log("users...", users)
                 setGetMessages([...messages])
             } else {
                 setGetMessages(current => [...current, messageBody]);
@@ -182,14 +186,14 @@ function Chat() {
                                 >
                                 Members
                                 </li>
-                                {users?.map(({ date_created, username }) => {
+                                {users?.map((user, index) => {
                                     return (
                                         <option
                                         className="member-name-in-list"
-                                        key={date_created}
-                                        value={username}
+                                        key={index}
+                                        value={user}
                                         >
-                                        {username}
+                                        {user}
                                         </option>
                                     );
                                 })};
