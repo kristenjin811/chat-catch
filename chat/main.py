@@ -28,11 +28,11 @@ logger = logging.getLogger(__name__)
 app.add_middleware(
     CORSMiddleware,
     # allow_origins=["*"],
-    allow_origins=[os.environ.get(
-        "CORS_HOST",
-        "REACT_APP_CHAT_API_HOST",
-        "http://localhost:3000"
-        )],
+    allow_origins=[
+        os.environ.get(
+            "CORS_HOST", "REACT_APP_CHAT_API_HOST", "http://localhost:3000"
+        )
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -60,8 +60,8 @@ async def startup_event():
         user_collection = db.users
         chatroom_collection = db.chatrooms
         user_collection.create_index(
-            "username",
-            name="username",
+            "user_name",
+            name="user_name",
             unique=True,
         )
         chatroom_collection.create_index(
@@ -102,7 +102,7 @@ async def websocket_endpoint(websocket: WebSocket, user_name, chatroom_name):
                 try:
                     data = await websocket.receive_text()
                 except WebSocketDisconnect as e:
-                    print('e:::', e)
+                    print("e:::", e)
                     await manager.disconnect(user_name, chatroom_name)
                 await upload_message_to_chatroom(data)
                 logger.info(f"DATA RECEIVED: {data}")
