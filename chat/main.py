@@ -8,17 +8,15 @@ from websocket_manager import ConnectionManager
 from controllers.chatrooms import (
     get_chatroom,
     upload_message_to_chatroom,
-    upload_member_to_chatroom,
 )
 from mongodb import connect_to_mongo, close_mongo_connection, get_nosql_db
 from config import MONGODB_DB_NAME
 import pymongo
 import logging
 import json
+import os
 from api import router as api_router
 from fastapi.middleware.cors import CORSMiddleware
-
-import os
 from authenticator import authenticator
 from routers import accounts
 
@@ -31,12 +29,14 @@ logger = logging.getLogger(__name__)
 
 app.add_middleware(
     CORSMiddleware,
-    # allow_origins=["*"],
     allow_origins=[
-        os.environ.get("CORS_HOST", "REACT_APP_CHAT_API_HOST"),
+        os.environ.get(
+            "CORS_HOST",
+            "REACT_APP_CHAT_API_HOST"
+        ),
         "http://localhost:3000",
         "https://chatty-cathys.gitlab.io",
-    ],  # noqa
+],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -100,7 +100,6 @@ async def websocket_endpoint(websocket: WebSocket, user_name, chatroom_name):
             },
             default=str,
         )
-        # await upload_member_to_chatroom(user_name, chatroom_name)
         await manager.broadcast(data, user_name, chatroom_name)
         while True:
             if websocket.application_state == WebSocketState.CONNECTED:
