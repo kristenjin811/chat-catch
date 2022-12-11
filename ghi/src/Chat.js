@@ -27,7 +27,7 @@ function Chat() {
     useEffect(() => {
       const fetchChatrooms = async () => {
           console.log("---1 fetching Chatrooms")
-          const url = `http://${process.env.REACT_APP_CHAT_API_HOST}/api/chatrooms`;
+          const url = `${process.env.REACT_APP_CHAT_API_HOST}/api/chatrooms`;
           const response = await fetch(url);
           if (response.ok) {
               const data = await response.json();
@@ -49,7 +49,7 @@ function Chat() {
 
     const connectToWebSocket = (selectedChatroom) => {
         console.log("---Checking Websocket State")
-        const websocket = new WebSocket(`ws://${process.env.REACT_APP_CHAT_API_HOST}/ws/${activeUser}/${selectedChatroom}`);
+        const websocket = new WebSocket(`ws://localhost:8000/ws/${activeUser}/${selectedChatroom}`);
         websocket.onopen = () => {
             console.log('---Websocket connected to client!');
         };
@@ -118,7 +118,7 @@ function Chat() {
             username: username,
             chatroom_name: chatroom,
         };
-        const url = `http://${process.env.REACT_APP_CHAT_API_HOST}/api/chatrooms/`;
+        const url = `${process.env.REACT_APP_CHAT_API_HOST}/api/chatrooms/`;
         const fetchConfig = {
             method: "POST",
             body: JSON.stringify(data),
