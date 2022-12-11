@@ -26,7 +26,7 @@
   <img width="auto" height="auto" src="images/login_page.png">
 </p>
 
-## Logout page
+## SignUp page
 <p align="center">
   <img width="auto" height="auto" src="images/logout_page.png">
 </p>
