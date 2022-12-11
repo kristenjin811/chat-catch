@@ -8,6 +8,7 @@ export function getToken() {
   return internalToken;
 }
 
+
 export function getFullName() {
   return full_name;
 }

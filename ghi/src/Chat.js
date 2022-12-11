@@ -24,6 +24,7 @@ function Chat() {
     const messagesEndRef = useRef(null)
   // executes all component functions and calls first, then executes useEffects in order.
 
+
     useEffect(() => {
       const fetchChatrooms = async () => {
           console.log("---1 fetching Chatrooms")
@@ -265,11 +266,6 @@ function Chat() {
                                         })}
                                     </li>
                                 </ul>
-                                <input
-                                    onChange={(e) => setActiveUser(e.target.value)}
-                                    className="text"
-                                    type="text"
-                                />
                             </div>
                             <form>
                                 <input
