@@ -24,8 +24,8 @@ function Chat() {
     const [ws, setWs] = useState(null)
     const messagesEndRef = useRef(null)
     // executes all component functions and calls first, then executes useEffects in order.
-    // const user = getFullName()
-    // setActiveUser(user)
+    const user = getFullName()
+    setActiveUser(user)
 
     useEffect(() => {
       const fetchChatrooms = async () => {
