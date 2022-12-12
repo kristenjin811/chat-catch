@@ -10,10 +10,7 @@ from queries.client import Queries
 logger = logging.getLogger(__name__)
 
 
-async def upload_message_to_chatroom(
-    data,
-    
-    ):
+async def upload_message_to_chatroom(data):
     message_data = json.loads(data)
     client = await get_nosql_db()
     db = client[MONGODB_DB_NAME]
@@ -39,9 +36,9 @@ async def upload_message_to_chatroom(
 
 
 async def upload_member_to_chatroom(
-    current_user, 
+    current_user,
     chatroom_name,
-    ):
+):
     client = await get_nosql_db()
     db = client[MONGODB_DB_NAME]
     try:

@@ -65,7 +65,7 @@ async def get_all_chatrooms(
 
 @router.get("/chatrooms/{chatroom_name}")
 async def get_single_room(
-    chatroom_name
+    chatroom_name,
     Chatrooms: ChatroomQueries = Depends(),
 ):
     chatroom = await Chatrooms.get_chatroom(chatroom_name)
