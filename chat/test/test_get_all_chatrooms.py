@@ -13,7 +13,7 @@ class EmptyChatroomQueries:
 async def test_get_all_chatrooms():
     app.dependency_overrides[ChatroomQueries] = EmptyChatroomQueries
     async with AsyncClient(
-        app=app, base_url="{process.env.REACT_APP_CHAT_API_HOST}/api"
+        app=app, base_url=`https://{process.env.REACT_APP_CHAT_API_HOST}/api`
     ) as ac:
         response = await ac.get("/chatrooms")
     assert response.status_code == 200
