@@ -27,7 +27,6 @@ logger = logging.getLogger(__name__)
 
 app.add_middleware(
     CORSMiddleware,
-    # allow_origins=["*"],
     allow_origins=[os.environ.get("CORS_HOST", "REACT_APP_CHAT_API_HOST"), "http://localhost:3000", "https://chatty-cathys.gitlab.io"], # noqa
     allow_credentials=True,
     allow_methods=["*"],
@@ -98,7 +97,6 @@ async def websocket_endpoint(websocket: WebSocket, user_name, chatroom_name):
                 try:
                     data = await websocket.receive_text()
                 except WebSocketDisconnect as e:
-                    print('e:::', e)
                     await manager.disconnect(user_name, chatroom_name)
                 await upload_message_to_chatroom(data)
                 logger.info(f"DATA RECEIVED: {data}")
@@ -109,6 +107,5 @@ async def websocket_endpoint(websocket: WebSocket, user_name, chatroom_name):
                 )
                 await manager.connect(websocket, user_name, chatroom_name)
     except Exception as e:
-        print("we have been dismissed!", e)
         if websocket.application_state == WebSocketState.CONNECTED:
             await manager.disconnect(user_name, chatroom_name)

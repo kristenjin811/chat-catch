@@ -1,14 +1,7 @@
-# from pydantic import BaseModel, EmailStr
-# from fastapi import Response
 from models import UserInDB
 from config import MONGODB_DB_NAME
 from mongodb import get_nosql_db
 from utils import format_ids
-
-# get_user_db
-# get_all_users
-# create_user
-# delete_user
 
 
 async def get_user_db(name) -> UserInDB:
@@ -36,13 +29,8 @@ async def get_all_users():
 
 
 async def create_user(request, collection):
-    # salt = bcrypt.gensalt().decode()
-    # hashed_password = get_password_hash(request.password + salt)
-
     user = {}
     user["username"] = request.username
-    # user["salt"] = salt
-    # user["hashed_password"] = hashed_password
     dbuser = UserInDB(**user)
     try:
         response = collection.insert_one(dict(dbuser))

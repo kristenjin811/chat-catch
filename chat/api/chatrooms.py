@@ -1,10 +1,6 @@
 from fastapi import (
     APIRouter,
     Depends,
-    # Response,
-    # Request,
-    # status,
-    # HTTPException,
 )
 from controllers.chatrooms import (
     insert_chatroom,
@@ -12,13 +8,9 @@ from controllers.chatrooms import (
     get_chatroom,
     delete_chatroom,
     upload_message_to_chatroom,
-    # add_message,
-    # get_messages,
 )
 from utils import format_ids
 import json
-
-# from controllers.users import get_user_db
 from config import MONGODB_DB_NAME
 from mongodb import get_nosql_db
 from pymongo import MongoClient
@@ -28,35 +20,13 @@ from request_forms import (
     ChatroomMessageRequest,
 )
 
-
-# from models import ChatroomIn, ChatroomOut
-# from jwtdown_fastapi.authentication import Token
-
-# from pydantic import BaseModel
-
 router = APIRouter()
 
-# jmoussa has create_room, add_user_to_room_members,
-# get_all_rooms, get_single_room
 
-# endpoints:
-# create_chatroom <@router.post("/api/chatrooms")>
-# get_all_chatrooms <@router.get("/api/chatrooms")>
-# get_chatroom <@router.get("/api/chatrooms/{chatroom_id}")>
-# delete_chatroom <@router.delete("/api/chatrooms/{chatroom_id}">
-# add_user_to_chatroom_members <@router.put("/api/chatrooms/{chatroom_id}")>
-
-
-# post request to localhost:8000/api/chatroom
-# (do not understand tags...) browser is presented
-# with request form for input, function gets current
-# user and mongoclient. Then uses the controller
-# function insert_chatroom to add created chatroom to the database
 @router.post("/chatrooms")
 async def create_chatroom(
     request: ChatroomCreateRequest,
     client: MongoClient = Depends(get_nosql_db),
-    # current_user: User = Depends(get_current_active_user),
 ):
     db = client[MONGODB_DB_NAME]
     collection = db.chatrooms
@@ -91,7 +61,6 @@ async def add_message(
 @router.get("/chatrooms")
 async def get_all_chatrooms(
     client: MongoClient = Depends(get_nosql_db),
-    # current_user: User = Depends(get_current_active_user),
 ):
     chatrooms = await get_chatrooms()
     return chatrooms
@@ -99,8 +68,7 @@ async def get_all_chatrooms(
 
 @router.get("/chatrooms/{chatroom_name}")
 async def get_single_room(
-    chatroom_name,
-    # current_user: User = Depends(get_current_active_user),
+    chatroom_name
 ):
     chatroom = await get_chatroom(chatroom_name)
     formatted_chatroom = format_ids(chatroom)
@@ -116,9 +84,6 @@ async def delete_chatroom_db(chatroom_name: str):
     return True
 
 
-# @router.post("/messages")
-
-
 @router.put("/chatrooms/{chatroom_name}")
 async def create_message(
     request: ChatroomMessageRequest,
@@ -130,63 +95,3 @@ async def create_message(
     }
     res = await upload_message_to_chatroom(f"{json.dumps(data, default=str)}")
     return res
-
-
-# @router.post("/messages")
-# async def create_message(
-#     request: ChatroomMessageRequest,
-#     client: MongoClient = Depends(get_nosql_db),
-# ):
-#     db = client[MONGODB_DB_NAME]
-#     collection = db.messages
-#     res= await add_message(
-#         request.message, collection
-#     )
-#     return res
-
-# @router.get("/messages")
-# async def get_um(
-#     client: MongoClient = Depends(get_nosql_db)
-#     # current_user: User = Depends(get_current_active_user),
-# ):
-#     messages = await get_messages()
-#     return messages
-
-
-# @router.post("/chatrooms")
-# async def create_chatroom(
-#     request: ChatroomCreateRequest,
-#     client: MongoClient = Depends(get_nosql_db),
-#     # current_user: User = Depends(get_current_active_user),
-# ):
-#     db = client[MONGODB_DB_NAME]
-#     collection = db.messages
-#     res = await insert_chatroom(
-#         request.message, collection
-#     )
-#     return res
-# @router.post("/chatrooms")
-# async def create_chatroom(
-#     request: ChatroomCreateRequest,
-#     client: MongoClient = Depends(get_nosql_db),
-#     # current_user: User = Depends(get_current_active_user),
-# ):
-#     db = client[MONGODB_DB_NAME]
-#     collection = db.messages
-#     res = await insert_chatroom(
-#         request.message, collection
-#     res= await add_message(
-#         request.message, collection
-#     )
-#     return res
-
-
-# @router.post("/chatrooms")
-# async def create_message(
-#     request: ChatroomMessageRequest,
-#     client: MongoClient = Depends(get_nosql_db),
-# ):
-#     db = client[MONGODB_DB_NAME]
-#     collection = db.messages
-#     res = await upload_message_to_chatroom(request.message, collection)
-#     return res
