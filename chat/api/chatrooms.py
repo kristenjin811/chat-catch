@@ -75,9 +75,9 @@ async def get_single_room(
 
 @router.delete("/chatrooms/{chatroom_name}")
 async def delete_chatroom_db(
+    chatroom_name: str,
     Chatrooms: ChatroomQueries = Depends(),
-    chatroom_name: str
-    ):
+):
     try:
         await Chatrooms.delete_chatroom(chatroom_name)
     except Exception as e:
