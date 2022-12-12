@@ -22,7 +22,7 @@ function Chat() {
     const [activeUser, setActiveUser] = useState("")
     const [ws, setWs] = useState(null)
     const messagesEndRef = useRef(null)
-  // executes all component functions and calls first, then executes useEffects in order.
+
 
     useEffect(() => {
       const fetchChatrooms = async () => {
@@ -51,15 +51,11 @@ function Chat() {
     }
 
     const connectToWebSocket = (selectedChatroom) => {
-        console.log("---Checking Websocket State")
         const websocket = new WebSocket(`wss://${process.env.REACT_APP_CHAT_API_HOST}/wss/${activeUser}/${selectedChatroom}`);
         websocket.onopen = () => {
-            console.log('---Websocket connected to client!');
         };
         websocket.onmessage = (event) => {
-            console.log("---On Message")
             const message = JSON.parse(event.data);
-            console.log("message:", message)
             const room = message.chatroom_name
             const username = message.user_name
             const content = message.content
@@ -80,16 +76,12 @@ function Chat() {
                 setGetMessages(current => [...current, messageBody]);
             }
         };
-        websocket.onclose = () => {
-            console.log("---On Close")
-
-        };
+        websocket.onclose = () => {};
         websocket.onerror = (error) => {
             console.log("---On Error", error.message)
             websocket.close()
         };
         setWs(websocket);
-        console.log("---Set ws to equal Websocket")
     }
 
 
@@ -317,180 +309,3 @@ function Chat() {
 }
 
 export default Chat;
-
-//                         {/* <div className="members-list">
-//                             <ul className="">
-//                                 <li */}
-//                                 className="members-list-title"
-//                                 onChange={(e) => setUsers(e.target.value)}
-//                                 >
-//                   Members
-//                 </li>
-//                 {users?.map(({ date_created, username }) => {
-//                   return (
-//                     <option
-//                       className="member-name-in-list"
-//                       key={date_created}
-//                       value={username}
-//                     >
-//                       {username}
-//                     </option>
-//                   );
-//                 })}
-//                 ;
-//               </ul>
-//             </div>
-//             <div className="chat-area">
-//               <div className="chat-area-title">
-//                 <b>Current Room: </b>
-//                 <b> {selectedChatroom}</b>
-//               </div>
-//               <div
-//                 className="chat-list"
-//               >
-//                 {!getMessages
-//                   ? getMessages
-//                   : getMessages.map(({ username, content }, index) => {
-//                     return (
-//                       <option className="chat-text" key={index}>
-//                           {`${username}: ${content}`}
-//                         </option>
-//                       );
-//                     })}
-//               <div ref={messagesEndRef}>
-//               </div>
-//               </div>
-
-//                 <form>
-//                   <div className="input-area">
-//                     {showPicker && (
-//                       <Picker data={data} onEmojiSelect={setEmojiObj} />
-//                     )}
-//                     <div className="input-wrapper">
-//                       <input
-//                         className="text-input"
-//                         onChange={(e) => setInputStr(e.target.value)}
-//                         type="text"
-//                         value={inputStr}
-//                       />
-//                       <img
-//                         className="emoji-icon"
-//                         src="https://icons.getbootstrap.com/assets/icons/emoji-smile.svg"
-//                         alt=""
-//                         onClick={() => setShowPicker((val) => !val)}
-//                       />
-//                       <Button
-//                         onClick={handleSubmit}
-//                         type="submit"
-//                         className="send-btn"
-//                         variant="secondary"
-//                       >
-//                         {" "}
-//                         Send{" "}
-//                       </Button>
-//                     </div>
-//                   </div>
-//                 </form>
-//               </div>
-
-//             <div className="right-tabs">
-//                 <ul className="tabs-container">
-//                 <div className="title">
-//                     <b>Your Chatrooms</b>
-//                 </div>
-//                 </ul>
-//                 <div className="chatroom-list">
-//                 <ul>
-//                     <li onClick={handleClick}>
-//                     {chatrooms?.map(({ _id, chatroom_name }) => {
-//                         return (
-//                             <a
-//                                 href="!#"
-//                                 key={_id}
-//                                 value={chatroom_name}
-
-//                             ><option className="chatroom-name-list">
-//                                 {chatroom_name}</option>
-//                             </a>
-//                         );
-//                     })}
-//                     </li>
-//                 </ul>
-//                 <input
-//                         onChange={(e) => setActiveUser(e.target.value)}
-//                         className="text"
-//                         type="text"
-//                     />
-//                 </div>
-//                 <Link to="/">
-//                 <Button className="logout-btn" variant="outline-secondary">
-//                     Logout
-//                 </Button>
-//                 </Link>
-//             </div>
-//             </div>
-//         </div>
-//         </div>
-//             <div className="right-tabs">
-//               <ul className="tabs-container">
-//                 <div className="title">
-//                   <b>Your Chatrooms</b>
-//                 </div>
-//               </ul>
-//               <div className="chatroom-list">
-//                 <ul>
-//                   <li onClick={(e) => setSelectedChatroom(e.target.value)}>
-//                     {chatrooms?.map(({ _id, chatroom_name }) => {
-//                       return (
-//                         <Link key={_id} value={chatroom_name}>
-//                           <option className="chatroom-name-list">
-//                             {chatroom_name}
-//                           </option>
-//                         </Link>
-//                       );
-//                     })}
-//                   </li>
-//                 </ul>
-//               </div>
-//             <form>
-//                 <input
-//                     className="add-chat-room"
-//                     onChange={(e) => setCreatedRoom(e.target.value)}
-//                     type="text"
-//                     placeholder="Create Chatroom"
-//                     value={createdRoom}
-//                 />
-//                 <Button
-//                     onClick={handleCreateChatRoom}
-//                     className="create-room-btn"
-//                     variant="secondary"
-//                 >
-//                     Create
-//                 </Button>
-//             </form>
-//                 <Link to="/">
-//                     <Button onClick={handleLogout} className="logout-btn" variant="outline-secondary">
-//                         Logout
-//                     </Button>
-//                 </Link>
-//         </div>
-//     </div>
-//     );
-//   } else {
-//     return (
-//     <div className="window-wrapper">
-//       <p>Chat Catch</p>
-//       <div className="reminder-message">
-//         Sorry, you need to log in to see the chatrooms!
-//         <div>
-//         <Link className="login-here" to="/">
-//           Login here.
-//         </Link>
-//         </div>
-//       </div>
-//     </div>
-//   )
-//   }
-// }
-
-// export default Chat;

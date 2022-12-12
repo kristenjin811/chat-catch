@@ -96,7 +96,7 @@ async def websocket_endpoint(websocket: WebSocket, user_name, chatroom_name):
             if websocket.application_state == WebSocketState.CONNECTED:
                 try:
                     data = await websocket.receive_text()
-                except WebSocketDisconnect as e:
+                except WebSocketDisconnect:
                     await manager.disconnect(user_name, chatroom_name)
                 await upload_message_to_chatroom(data)
                 logger.info(f"DATA RECEIVED: {data}")
@@ -106,6 +106,6 @@ async def websocket_endpoint(websocket: WebSocket, user_name, chatroom_name):
                     f"{websocket.application_state},reconnecting..."
                 )
                 await manager.connect(websocket, user_name, chatroom_name)
-    except Exception as e:
+    except Exception:
         if websocket.application_state == WebSocketState.CONNECTED:
             await manager.disconnect(user_name, chatroom_name)
