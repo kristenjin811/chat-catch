@@ -5,7 +5,7 @@ import "./Chat.css";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 import { Link, useNavigate } from "react-router-dom";
-import {useToken, useAuthContext} from "./GetToken";
+import {useToken, useAuthContext, getFullName} from "./GetToken";
 
 
 function Chat() {
@@ -32,6 +32,9 @@ function Chat() {
           if (response.ok) {
               const data = await response.json();
               setChatrooms(data);
+              const name = getFullName()
+              console.log("------- name", name)
+              setActiveUser(name)
           }
       }
       fetchChatrooms()
@@ -178,14 +181,14 @@ function Chat() {
                                 >
                                 Members
                                 </li>
-                                {users?.map(({ date_created, username }) => {
+                                {users?.map((user, index) => {
                                     return (
                                         <option
                                         className="member-name-in-list"
-                                        key={date_created}
-                                        value={username}
+                                        key={index}
+                                        value={user}
                                         >
-                                        {username}
+                                        {user}
                                         </option>
                                     );
                                 })};
@@ -265,11 +268,6 @@ function Chat() {
                                         })}
                                     </li>
                                 </ul>
-                                <input
-                                    onChange={(e) => setActiveUser(e.target.value)}
-                                    className="text"
-                                    type="text"
-                                />
                             </div>
                             <form>
                                 <input
