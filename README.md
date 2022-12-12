@@ -18,7 +18,7 @@
 
 ## OverView
 <p align="center">
-  <img width="auto" height="auto" src="images/OverviewCC.png">
+  <img width="auto" height="auto" src="images/Overview.png">
 </p>
 
 ## Login page
