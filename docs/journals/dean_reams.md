@@ -1,3 +1,45 @@
+12/11/22
+Today, I worked on:
+
+-adding the last piece jared finished to the deploy
+
+we are having an issue with trying to create one last
+unit test. By passing our data base isn't proving to be
+very easy we hope to get some help asap tommorrow to 
+complete this and then we will be ready to demo.
+
+we did get the last piece up and running now and it is
+deployed. 
+
+12/10/22
+Today, I worked on:
+
+-getting a MVP app up and running in render
+
+after a bit of struggle we did get render to 
+deploy a close to complete MVP one more step untill
+we fell that we can get it MVP worthy and we
+will try and finish that tommorrow. 
+
+12/9/22
+Today, I worked on:
+
+-trying to complete a unit test for creating a user
+
+I asked for a bit of help with my unit test and 
+was helped by some siers. We got it to work 
+with alot of googling and .env manipulation.
+
+12/8/22
+Today, I worked on:
+
+-looked at unit tests and started to build one
+
+started to build out a unit test that would test
+if we could create a user. I ran into issues 
+concerning the signin key I think tommorrow
+I will ask for help to get past this blocker
+
 12/7/22
 Today, I worked on:
 
