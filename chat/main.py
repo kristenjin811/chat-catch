@@ -5,7 +5,7 @@ from fastapi import (
 )
 from starlette.websockets import WebSocketState
 from websocket_manager import ConnectionManager
-from controllers.chatrooms import get_chatroom, upload_message_to_chatroom
+from controllers.chatrooms import ChatroomQueries, upload_message_to_chatroom
 from mongodb import connect_to_mongo, close_mongo_connection, get_nosql_db
 from config import MONGODB_DB_NAME
 import pymongo
@@ -77,10 +77,15 @@ manager = ConnectionManager()
 
 
 @app.websocket("/wss/{user_name}/{chatroom_name}")
-async def websocket_endpoint(websocket: WebSocket, user_name, chatroom_name):
+async def websocket_endpoint(
+    websocket: WebSocket, 
+    user_name, 
+    chatroom_name,
+    Chatrooms: ChatroomQueries = Depends(),
+    ):
     await manager.connect(websocket, user_name, chatroom_name)
     try:
-        chatroom = await get_chatroom(chatroom_name)
+        chatroom = await Chatrooms.get_chatroom(chatroom_name)
         data = json.dumps(
             {
                 "content": f"{user_name} has entered the chat",

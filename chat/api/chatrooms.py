@@ -3,10 +3,7 @@ from fastapi import (
     Depends,
 )
 from controllers.chatrooms import (
-    insert_chatroom,
-    get_chatrooms,
-    get_chatroom,
-    delete_chatroom,
+    ChatroomQueries
     upload_message_to_chatroom,
 )
 from utils import format_ids
@@ -27,10 +24,11 @@ router = APIRouter()
 async def create_chatroom(
     request: ChatroomCreateRequest,
     client: MongoClient = Depends(get_nosql_db),
+    Chatrooms: ChatroomQueries = Depends(),
 ):
     db = client[MONGODB_DB_NAME]
     collection = db.chatrooms
-    res = await insert_chatroom(
+    res = await Chatrooms.insert_chatroom(
         request.username, request.chatroom_name, collection
     )
     return res
@@ -40,9 +38,8 @@ async def create_chatroom(
 async def add_message(
     request: AddMessageRequest,
     client: MongoClient = Depends(get_nosql_db),
+    Chatrooms: ChatroomQueries = Depends(),
 ):
-    db = client[MONGODB_DB_NAME]
-    collection = db.chatrooms
     chatroom = await get_chatroom(request.chatroom)
     collection.update_one(
         {"chatroom_name": chatroom["chatroom_name"]},
@@ -60,25 +57,29 @@ async def add_message(
 
 @router.get("/chatrooms")
 async def get_all_chatrooms(
-    client: MongoClient = Depends(get_nosql_db),
+    Chatrooms: ChatroomQueries = Depends(),
 ):
-    chatrooms = await get_chatrooms()
+    chatrooms = await Chatrooms.get_chatrooms()
     return chatrooms
 
 
 @router.get("/chatrooms/{chatroom_name}")
 async def get_single_room(
     chatroom_name
+    Chatrooms: ChatroomQueries = Depends(),
 ):
-    chatroom = await get_chatroom(chatroom_name)
+    chatroom = await Chatrooms.get_chatroom(chatroom_name)
     formatted_chatroom = format_ids(chatroom)
     return formatted_chatroom
 
 
 @router.delete("/chatrooms/{chatroom_name}")
-async def delete_chatroom_db(chatroom_name: str):
+async def delete_chatroom_db(
+    Chatrooms: ChatroomQueries = Depends(),
+    chatroom_name: str
+    ):
     try:
-        await delete_chatroom(chatroom_name)
+        await Chatrooms.delete_chatroom(chatroom_name)
     except Exception as e:
         return e
     return True
