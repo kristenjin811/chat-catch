@@ -3,7 +3,7 @@ from fastapi import (
     Depends,
 )
 from controllers.chatrooms import (
-    ChatroomQueries
+    ChatroomQueries,
     upload_message_to_chatroom,
 )
 from utils import format_ids

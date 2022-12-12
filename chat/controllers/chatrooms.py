@@ -6,18 +6,21 @@ from utils import format_ids
 import logging
 from bson import ObjectId
 import json
-
+from queries.client import Queries
 logger = logging.getLogger(__name__)
 
 
-async def upload_message_to_chatroom(data):
+async def upload_message_to_chatroom(
+    data,
+    
+    ):
     message_data = json.loads(data)
     client = await get_nosql_db()
     db = client[MONGODB_DB_NAME]
     try:
         current_user = message_data["user_name"]
         chatroom_name = message_data["chatroom_name"]
-        chatroom = await get_chatroom(chatroom_name)
+        chatroom = await ChatroomQueries.get_chatroom(chatroom_name)
         message_body = {
             "user_name": message_data["user_name"],
             "content": message_data["content"],
@@ -35,12 +38,15 @@ async def upload_message_to_chatroom(data):
         return False
 
 
-async def upload_member_to_chatroom(current_user, chatroom_name):
+async def upload_member_to_chatroom(
+    current_user, 
+    chatroom_name,
+    ):
     client = await get_nosql_db()
     db = client[MONGODB_DB_NAME]
     try:
         new_member = current_user
-        chatroom = await get_chatroom(chatroom_name)
+        chatroom = await ChatroomQueries.get_chatroom(chatroom_name)
         collection = db.chatrooms
         collection.update_one(
             {"_id": ObjectId(chatroom["_id"])},
@@ -70,14 +76,11 @@ class ChatroomQueries(Queries):
         return res
 
     async def get_chatrooms(self):
-        print("inside get chatrooms inside chatroom queries")
         rows = self.collection.find()
         row_list = []
         for row in rows:
-            print("row", row)
             f_row = format_ids(row)
             row_list.append(f_row)
-        print("rows and row_list", rows, "and", row_list)
         return row_list
 
     async def get_chatroom(self, chatroom_name) -> ChatroomInDB:

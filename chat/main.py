@@ -2,6 +2,7 @@ from fastapi import (
     FastAPI,
     WebSocket,
     WebSocketDisconnect,
+    Depends,
 )
 from starlette.websockets import WebSocketState
 from websocket_manager import ConnectionManager
@@ -78,11 +79,11 @@ manager = ConnectionManager()
 
 @app.websocket("/wss/{user_name}/{chatroom_name}")
 async def websocket_endpoint(
-    websocket: WebSocket, 
-    user_name, 
+    websocket: WebSocket,
+    user_name,
     chatroom_name,
     Chatrooms: ChatroomQueries = Depends(),
-    ):
+):
     await manager.connect(websocket, user_name, chatroom_name)
     try:
         chatroom = await Chatrooms.get_chatroom(chatroom_name)
