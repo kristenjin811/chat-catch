@@ -7,6 +7,7 @@ import logging
 from bson import ObjectId
 import json
 from queries.client import Queries
+
 logger = logging.getLogger(__name__)
 
 
