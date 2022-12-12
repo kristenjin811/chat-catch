@@ -40,7 +40,9 @@ async def add_message(
     client: MongoClient = Depends(get_nosql_db),
     Chatrooms: ChatroomQueries = Depends(),
 ):
-    chatroom = await get_chatroom(request.chatroom)
+    db = client[MONGODB_DB_NAME]
+    collection = db.chatrooms
+    chatroom = await Chatrooms.get_chatroom(request.chatroom)
     collection.update_one(
         {"chatroom_name": chatroom["chatroom_name"]},
         {
