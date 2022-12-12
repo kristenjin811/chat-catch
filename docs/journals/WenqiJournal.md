@@ -79,10 +79,22 @@ Today I continued to work on the front-end pages. I added an automatic scroll fu
 
 
 ## Dec 8, 2022
-Today I worked on the authentication. We created a new signing key with openssl, and put that in render environment. We followed all the steps in learn to create front-end authentication but we still struggled to make it work. After many hours, we figured out that we need the username and password to keep their name in authentication for it to work. Now we got authentication work in both front-end and the back-end.
+Today I worked on authentication on the front-end. We created a new signing key with openssl, and put that in render environment. We followed all the steps in learn to create front-end authentication but we still struggled to make it work. After many hours, we figured out that we need the username and password to keep their name in authentication for it to work. Now we got authentication work in both front-end and the back-end.
 We still need to make the chat page to be protected by the token so only logged in users is able to see the chat page.
 
 
 ## Dec 9, 2022
-Authentication is fully done!!! I was able to fix the page to be protected by token. Now, user has to login to see their chat page.
+Authentication is fully done!!! I was able to fix the page to be protected by token with my team. Now, user has to login to see their chat page.
 I also pair programmed with my team to add a create-chatroom feature to the chat page.
+
+
+## Dec 10, 2022
+We spent a lot of time merging and cleaning up the codes again. We created a new branch for us to work locally. Otherwise we won't be able to see the changes made into our deployed branch before the deployment, which is very dangerous.
+
+## Dec 11, 2022
+We worked on unit tests together as team today. The unit test for the chatroom endpoint is difficult because of the shape of our database with the use of websockets. Hopefully we can get some help from instructors tomororw before the demo. 
+
+We had an issue when we deploy with the unit tests. We figured out that we need to add environment variables in Gitlab as well. We were missing the DATABASE_URL. After we fix that, the pipline passed through. The frontend deployment was successful. 
+
+## Dec 12, 2022
+We worked on Readme.
