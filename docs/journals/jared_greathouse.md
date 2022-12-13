@@ -1,3 +1,24 @@
+December 12, 2022
+Over the weekend we all worked hard to make sure pipelines were fixed, README was updated, memberlist showed up when inside a chatroom, and all unit tests except for mine were functional. I got some help from Adrian and James to get my unit test built as my api endpoints were using asynchronous queries and finding material to help me build a unit test based on them was difficult to come by. It took a bit to insert my unit test and fix the pipeline, but after we did. Adrian did a dry run with us and we performed a demo for Shahzhad and Andrew.
+
+December 9, 2022
+Woke up this morning and had an epiphany about why the websockets were closing down chatrooms when any user abruptly closed their web browser. I changed the websocket path to have user_name then chatroom_name instead of the reverse. I also turned off the dismissal broadcast message, as I think this was also contributing to the error.  We worked on fixing our deployment pipeline with flake8 work and working out more functionality.
+
+December 8, 2022
+Really discouraged today. We were able to merge my websocket code with the rest of the team's code base, we can initiate a websocket and do a few rounds of live-chat, but if any user refreshes their browser, all chatrooms which that user went to get closed and no other user can access them afterwords until the server is rebooted. Worked with Daniel until late and could not discover what the problem was.
+
+December 7, 2022
+I am still working on the websocket, but now we thought it was important for me to merge my websocket code as it currently is with everyone else's code that has been merged in main. My hope is that if we merge our code, we will have a better idea of exactly what needs to be done besides the websocket and unit tests.
+
+December 6, 2022
+The rest of the group appears to be making real head way on the authentication and front end. We are try to deploy our app as it is now, just to get familiar with the process. We now understand the pipeline and why every time we push it says pipeline failed. We are making sure to run flake8 on our project before pushing and leave all unit tests commented out with a fake test only, so we can pass the pipeline.
+
+December 5, 2022
+Over the weekend, I was able to get the websocket to connect, but all the rooms close down after a web browser refresh. back to the drawing board.
+
+December 2, 2022
+Working on getting the websocket working. Been wracking my brain trying to figure this out. I don't know if I can make this work.
+
 December 1, 2022
 We finished merging branches to main as a group and fixing our app file structure. Then Dean and I pair programmed our barebones endpoints for users and chatrooms. We are feeling much better about our project and understand that we will have to work through the weekend to get the back end fully functional.
 
